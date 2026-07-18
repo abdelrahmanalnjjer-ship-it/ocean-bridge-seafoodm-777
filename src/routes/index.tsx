@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
-import { MediaSlot } from "@/components/site-chrome";
 import { CATEGORIES } from "@/data/species";
 import heroImg from "@/assets/hero-dhow.jpg.asset.json";
 import portImg from "@/assets/port-cranes.jpg.asset.json";
