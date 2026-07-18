@@ -118,25 +118,39 @@ function AboutPage() {
               { n: "01", title: "Structured Sourcing", body: "Leveraging our vetted Oman partner network to match precise international buyer specifications with seasonal catch availability and processing capabilities." },
               { n: "02", title: "Supplier Verification", body: "Strict multi-layered verification combining remote document audits (Corporate KYC, HACCP, GACC CIFER validity) with physical inspections of facilities, processing lines, and cold-chain infrastructure." },
               { n: "03", title: "Transaction Coordination", body: "Orchestrating the entire transactional lifecycle — from blind introductions and risk-mitigated negotiation structuring to rigid export documentation oversight and freight alignment." },
-            ].map((c) => (
-              <div key={c.n} className="border-t border-border/60 pt-6 grid md:grid-cols-[60px_1fr] gap-4">
+            ].map((c, i) => (
+              <motion.div
+                key={c.n}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="border-t border-border/60 pt-6 grid md:grid-cols-[60px_1fr] gap-4"
+              >
                 <div className="font-mono text-xs text-muted-foreground">{c.n}</div>
                 <div>
                   <div className="font-display text-2xl mb-2">{c.title}</div>
                   <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">{c.body}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </section>
 
           <section id="regulatory">
             <h2 className="font-display text-3xl md:text-4xl mb-8">Regulatory Mastery</h2>
             <div className="grid md:grid-cols-2 gap-px bg-border/60">
-              {REGS.map((r) => (
-                <div key={r.region} className="bg-background p-8">
-                  <div className="font-mono text-xs text-accent-foreground/70 mb-4">{r.region}</div>
+              {REGS.map((r, i) => (
+                <motion.div
+                  key={r.region}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="bg-background p-8"
+                >
+                  <div className="font-mono text-xs text-[#e07458] mb-4">{r.region}</div>
                   <p className="text-sm text-muted-foreground leading-relaxed">{r.body}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </section>
