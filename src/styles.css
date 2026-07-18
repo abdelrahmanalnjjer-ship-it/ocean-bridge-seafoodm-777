@@ -62,6 +62,9 @@
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --color-brand-accent: #C73E1D;
+  --color-brand-navy: #06142e;
+  --color-brand-ice: #F0F4F8;
 }
 
 :root {
@@ -149,3 +152,22 @@
     color: var(--color-foreground);
   }
 }
+
+/* Light-section override: scopes theme tokens to a bright surface so
+   descendant components using semantic tokens flip to dark-on-light. */
+.section-light {
+  --background: oklch(0.985 0.004 240);   /* ~#F8FAFC */
+  --foreground: oklch(0.19 0.06 260);     /* deep navy */
+  --card: oklch(0.96 0.007 240);
+  --card-foreground: oklch(0.19 0.06 260);
+  --muted: oklch(0.94 0.008 240);
+  --muted-foreground: oklch(0.42 0.03 250);
+  --border: oklch(0.19 0.06 260 / 0.14);
+  --primary: oklch(0.19 0.06 260);
+  --primary-foreground: oklch(0.985 0.004 240);
+  --accent: oklch(0.56 0.09 245);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.bg-brand-navy { background-color: var(--color-brand-navy); }

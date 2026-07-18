@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useI18n, type Locale } from "@/i18n/i18n";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 function LocaleSwitcher() {
   const { locale, setLocale } = useI18n();
@@ -37,13 +38,12 @@ export function SiteHeader() {
     { to: "/contact", label: t("nav.contact") },
   ] as const;
   return (
-    <header className="fixed top-0 inset-x-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
+    <header className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-brand-navy/90 backdrop-blur-xl text-white">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <div className="h-8 w-8 border border-foreground/40 flex items-center justify-center font-display text-sm">O</div>
-          <div className="leading-tight">
-            <div className="font-display text-sm tracking-wide">Ocean Bridge Trade</div>
-            <div className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground">Muscat · Oman</div>
+          <img src={logoAsset.url} alt="Ocean Bridge Trade" className="h-9 w-auto brightness-0 invert" />
+          <div className="hidden sm:block leading-tight border-l border-white/20 pl-3">
+            <div className="text-[9px] uppercase tracking-[0.25em] text-white/60">Muscat · Oman</div>
           </div>
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-[13px] tracking-wide">
@@ -52,8 +52,8 @@ export function SiteHeader() {
               key={l.to}
               to={l.to}
               activeOptions={{ exact: l.to === "/" }}
-              activeProps={{ className: "text-foreground" }}
-              inactiveProps={{ className: "text-muted-foreground hover:text-foreground transition-colors" }}
+              activeProps={{ className: "text-white border-b-2 border-[#C73E1D] pb-1" }}
+              inactiveProps={{ className: "text-white/70 hover:text-white transition-colors" }}
             >
               {l.label}
             </Link>
@@ -65,13 +65,13 @@ export function SiteHeader() {
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-border/60 bg-background px-6 py-6 space-y-4">
+        <div className="md:hidden border-t border-white/10 bg-brand-navy px-6 py-6 space-y-4">
           {links.map((l) => (
-            <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="block text-sm">
+            <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="block text-sm text-white/80 hover:text-white">
               {l.label}
             </Link>
           ))}
-          <div className="pt-4 border-t border-border/60"><LocaleSwitcher /></div>
+          <div className="pt-4 border-t border-white/10"><LocaleSwitcher /></div>
         </div>
       )}
     </header>
@@ -80,35 +80,52 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const { t } = useI18n();
+  const legal = [
+    "Privacy and Cookies",
+    "Cookie Preferences",
+    "Terms & Conditions",
+    "Security & Fraud Awareness",
+    "Regulatory Disclosures",
+  ];
   return (
-    <footer className="border-t border-border/60 mt-32">
+    <footer className="mt-32 bg-brand-navy text-white border-t border-white/10">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="font-display text-2xl">Ocean Bridge Trade</div>
-          <p className="mt-3 text-sm text-muted-foreground max-w-sm">
+          <img src={logoAsset.url} alt="Ocean Bridge Trade" className="h-12 w-auto brightness-0 invert mb-4" />
+          <p className="mt-3 text-sm text-white/70 max-w-sm">
             {t("brand.tagline")} Structured seafood sourcing between Oman and global processors.
           </p>
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground mb-4">Navigate</div>
+          <div className="text-[11px] uppercase tracking-[0.25em] text-white/50 mb-4">Navigate</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:text-foreground text-muted-foreground">{t("nav.home")}</Link></li>
-            <li><Link to="/products" className="hover:text-foreground text-muted-foreground">{t("nav.products")}</Link></li>
-            <li><Link to="/about" className="hover:text-foreground text-muted-foreground">{t("nav.about")}</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground text-muted-foreground">{t("nav.contact")}</Link></li>
+            <li><Link to="/" className="hover:text-white text-white/70">{t("nav.home")}</Link></li>
+            <li><Link to="/products" className="hover:text-white text-white/70">{t("nav.products")}</Link></li>
+            <li><Link to="/about" className="hover:text-white text-white/70">{t("nav.about")}</Link></li>
+            <li><Link to="/contact" className="hover:text-white text-white/70">{t("nav.contact")}</Link></li>
           </ul>
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground mb-4">Contact</div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+          <div className="text-[11px] uppercase tracking-[0.25em] text-white/50 mb-4">Contact</div>
+          <ul className="space-y-2 text-sm text-white/70">
             <li>Muscat, Sultanate of Oman</li>
             <li>info@oceanbridge-trade.com</li>
             <li className="font-mono text-xs">+968 77 62 1857</li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-6 flex justify-between items-center text-[11px] tracking-widest uppercase text-muted-foreground">
+      {/* Legal / regulatory sub-menu */}
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px] tracking-wide text-white/60">
+          {legal.map((label) => (
+            <a key={label} href="#" className="hover:text-white transition-colors">
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-5 flex justify-between items-center text-[11px] tracking-widest uppercase text-white/50">
           <span>© {new Date().getFullYear()} Ocean Bridge Trade</span>
           <span>Bridging Origin. Verifying Supply.</span>
         </div>
