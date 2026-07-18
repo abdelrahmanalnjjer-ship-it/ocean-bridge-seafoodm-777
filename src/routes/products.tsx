@@ -44,7 +44,7 @@ function ProductsPage() {
       </section>
 
       {/* Controls */}
-      <section className="sticky top-16 z-40 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+      <section className="section-light sticky top-16 z-40 border-b border-border backdrop-blur-xl">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-1 flex-wrap">
             {CATEGORIES.map((c) => (
@@ -53,7 +53,7 @@ function ProductsPage() {
                 onClick={() => setCategory(c.id)}
                 className={`px-4 py-2 text-xs uppercase tracking-[0.2em] transition-colors border ${
                   category === c.id
-                    ? "border-foreground text-foreground"
+                    ? "border-[#C73E1D] text-[#C73E1D] bg-[#C73E1D]/5"
                     : "border-transparent text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -61,11 +61,11 @@ function ProductsPage() {
               </button>
             ))}
           </div>
-          <div className="flex items-center border border-border/60">
+          <div className="flex items-center border border-border">
             <button
               onClick={() => setView("grid")}
               className={`flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-colors ${
-                view === "grid" ? "bg-foreground text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                view === "grid" ? "bg-[#C73E1D] text-white" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <LayoutGrid className="size-3.5" /> {t("products.view.grid")}
@@ -73,7 +73,7 @@ function ProductsPage() {
             <button
               onClick={() => setView("terminal")}
               className={`flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-colors ${
-                view === "terminal" ? "bg-foreground text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                view === "terminal" ? "bg-[#C73E1D] text-white" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <Table2 className="size-3.5" /> {t("products.view.terminal")}
@@ -83,7 +83,7 @@ function ProductsPage() {
       </section>
 
       {/* Content */}
-      <section>
+      <section className="section-light">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
           <AnimatePresence mode="wait">
             {view === "grid" ? (
