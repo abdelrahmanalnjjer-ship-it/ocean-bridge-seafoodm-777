@@ -5,6 +5,17 @@ import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { MediaSlot } from "@/components/site-chrome";
 import { CATEGORIES } from "@/data/species";
+import heroImg from "@/assets/hero-dhow.jpg.asset.json";
+import portImg from "@/assets/port-cranes.jpg.asset.json";
+import fishermenImg from "@/assets/fishermen.jpg.asset.json";
+import muscatImg from "@/assets/muscat-skyline.jpg.asset.json";
+import harborImg from "@/assets/harbor-dusk.jpg.asset.json";
+import omanCoastImg from "@/assets/oman-coast.jpg.asset.json";
+import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
+import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
+
+const VLOG_IMAGES = [portImg, muscatImg, fishermenImg, harborImg, dhowDetailImg];
+const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -40,11 +51,12 @@ function Index() {
       {/* HERO */}
       <section className="relative min-h-[92vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <MediaSlot label="/public/media/hero.mp4" aspect="h-full" className="!aspect-auto h-full" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+          <img src={heroImg.url} alt="Muscat harbor" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#06142e]/70 via-[#06142e]/60 to-[#06142e]" />
         </div>
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 py-24 w-full">
-          <div className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground mb-8">
+          <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.35em] text-white/70 mb-8">
+            <span className="h-px w-8 bg-[#C73E1D]" />
             Ocean Bridge Trade · Est. Muscat
           </div>
           <motion.h1
@@ -59,16 +71,16 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="mt-8 max-w-xl text-base md:text-lg text-muted-foreground"
+            className="mt-8 max-w-xl text-base md:text-lg text-white/75"
           >
             {t("hero.sub")} A specialized commercial representation firm connecting fragmented origin markets with structured international buyers.
           </motion.p>
           <div className="mt-12 flex flex-wrap gap-4">
-            <Link to="/products" className="group inline-flex items-center gap-3 border border-foreground/60 hover:bg-foreground hover:text-primary-foreground px-8 py-4 text-sm tracking-wide transition-colors">
+            <Link to="/products" className="group inline-flex items-center gap-3 bg-[#C73E1D] hover:bg-[#a8321a] text-white px-8 py-4 text-sm tracking-wide transition-colors">
               {t("hero.cta.catalog")}
               <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
             </Link>
-            <Link to="/contact" className="inline-flex items-center gap-3 border border-border/60 hover:border-foreground/60 px-8 py-4 text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/contact" className="inline-flex items-center gap-3 border border-white/40 hover:border-white px-8 py-4 text-sm tracking-wide text-white/80 hover:text-white transition-colors">
               {t("hero.cta.contact")}
             </Link>
           </div>
@@ -76,27 +88,34 @@ function Index() {
       </section>
 
       {/* MANIFESTO */}
-      <section className="border-t border-border/60">
+      <section className="section-light">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 md:py-48">
+          <motion.div
+            initial={{ opacity: 0, width: 0 }}
+            whileInView={{ opacity: 1, width: "3rem" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="h-[3px] bg-[#C73E1D] mb-10"
+          />
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2 }}
             className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.15] max-w-5xl"
           >
-            We do not own fleets, plants, or warehouses. We own the discipline —
-            <span className="text-muted-foreground"> due diligence, cold-chain oversight, and the transaction itself.</span>
+            We engineer continuous, high-volume global supply lines.
+            <span className="text-muted-foreground"> From rigorous origin-point due diligence to uncompromised cold-chain oversight, we control the complete commercial architecture for international processors.</span>
           </motion.p>
         </div>
       </section>
 
       {/* VLOG */}
-      <section className="border-t border-border/60 bg-card/30">
+      <section className="section-light border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">03 — Field</div>
+              <div className="text-[11px] uppercase tracking-[0.3em] text-[#C73E1D] mb-4">03 — Field</div>
               <h2 className="font-display text-3xl md:text-5xl">{t("section.vlog")}</h2>
               <p className="mt-3 text-muted-foreground max-w-lg">{t("section.vlog.sub")}</p>
             </div>
@@ -105,16 +124,16 @@ function Index() {
             {VLOG.map((v, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.08 }}
                 className="min-w-[320px] md:min-w-[420px] snap-start group cursor-pointer"
               >
-                <div className="relative overflow-hidden">
-                  <MediaSlot label={`/public/media/vlog/${i + 1}.mp4`} />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-background/40">
-                    <div className="size-14 rounded-full border border-foreground/70 flex items-center justify-center">
+                <div className="relative overflow-hidden aspect-video">
+                  <img src={VLOG_IMAGES[i % VLOG_IMAGES.length].url} alt={v.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                    <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
                       <Play className="size-5 ml-0.5" />
                     </div>
                   </div>
@@ -132,29 +151,36 @@ function Index() {
       {/* CAPABILITIES */}
       <section className="border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">04 — Competencies</div>
+          <div className="text-[11px] uppercase tracking-[0.3em] text-[#e07458] mb-4">04 — Competencies</div>
           <h2 className="font-display text-3xl md:text-5xl max-w-3xl mb-20">{t("section.capabilities")}</h2>
           <div className="grid md:grid-cols-3 gap-px bg-border/60">
-            {CAPABILITIES.map((c) => (
-              <div key={c.n} className="bg-background p-10">
+            {CAPABILITIES.map((c, i) => (
+              <motion.div
+                key={c.n}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                className="bg-background p-10 border-t-2 border-transparent hover:border-[#C73E1D] transition-colors"
+              >
                 <div className="font-mono text-xs text-accent-foreground/60 mb-8">{c.n}</div>
                 <div className="font-display text-2xl mb-6">{c.title}</div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{c.body}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* SPECIES TEASER */}
-      <section className="border-t border-border/60 bg-card/30">
+      <section className="section-light border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">05 — Portfolio</div>
+              <div className="text-[11px] uppercase tracking-[0.3em] text-[#C73E1D] mb-4">05 — Portfolio</div>
               <h2 className="font-display text-3xl md:text-5xl max-w-3xl">{t("section.species")}</h2>
             </div>
-            <Link to="/products" className="inline-flex items-center gap-2 text-sm border-b border-foreground/40 pb-1 hover:border-foreground transition-colors">
+            <Link to="/products" className="inline-flex items-center gap-2 text-sm text-[#C73E1D] border-b border-[#C73E1D] pb-1 hover:opacity-70 transition-opacity">
               View full matrix <ArrowUpRight className="size-4" />
             </Link>
           </div>
@@ -162,15 +188,20 @@ function Index() {
             {CATEGORIES.map((c, i) => (
               <motion.div
                 key={c.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="border border-border/60 p-8 hover:border-foreground/40 transition-colors group"
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="border border-border bg-card overflow-hidden hover:border-[#C73E1D] transition-colors group"
               >
-                <div className="font-mono text-xs text-muted-foreground mb-6">0{i + 1}</div>
-                <div className="font-display text-xl mb-4">{c.label_en}</div>
-                <div className="h-px w-8 bg-foreground/40 group-hover:w-16 transition-all" />
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length].url} alt={c.label_en} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="p-6">
+                  <div className="font-mono text-xs text-muted-foreground mb-3">0{i + 1}</div>
+                  <div className="font-display text-xl mb-4">{c.label_en}</div>
+                  <div className="h-px w-8 bg-[#C73E1D] group-hover:w-16 transition-all" />
+                </div>
               </motion.div>
             ))}
           </div>
@@ -181,19 +212,31 @@ function Index() {
       <section className="border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="grid md:grid-cols-2 gap-16">
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">06 — Global</div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-[11px] uppercase tracking-[0.3em] text-[#e07458] mb-4">06 — Global</div>
               <h2 className="font-display text-3xl md:text-5xl">{t("section.gateways")}</h2>
               <p className="mt-6 text-muted-foreground max-w-md">
                 Primary flow directed toward major international processing and distribution hubs.
               </p>
-            </div>
+            </motion.div>
             <div className="divide-y divide-border/60">
-              {GATEWAYS.map((g) => (
-                <div key={g.region} className="py-6 flex items-baseline justify-between">
+              {GATEWAYS.map((g, i) => (
+                <motion.div
+                  key={g.region}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="py-6 flex items-baseline justify-between"
+                >
                   <div className="font-display text-2xl">{g.region}</div>
                   <div className="font-mono text-xs text-muted-foreground">{g.hubs}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -201,14 +244,21 @@ function Index() {
       </section>
 
       {/* REGULATORY */}
-      <section className="border-t border-border/60 bg-card/30">
+      <section className="section-light border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-8 text-center">Regulatory Mastery</div>
+          <div className="text-[11px] uppercase tracking-[0.3em] text-[#C73E1D] mb-8 text-center">Regulatory Mastery</div>
           <div className="flex flex-wrap justify-center gap-3">
-            {REG.map((r) => (
-              <div key={r} className="border border-border/60 px-5 py-3 text-xs tracking-wide font-mono text-muted-foreground">
+            {REG.map((r, i) => (
+              <motion.div
+                key={r}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="border border-border px-5 py-3 text-xs tracking-wide font-mono text-foreground/80 hover:border-[#C73E1D] hover:text-[#C73E1D] transition-colors"
+              >
                 {r}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -217,10 +267,16 @@ function Index() {
       {/* CTA */}
       <section className="border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 text-center">
-          <h2 className="font-display text-4xl md:text-6xl max-w-3xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="font-display text-4xl md:text-6xl max-w-3xl mx-auto"
+          >
             Ready to initiate a sourcing inquiry?
-          </h2>
-          <Link to="/contact" className="mt-12 inline-flex items-center gap-3 border border-foreground/60 hover:bg-foreground hover:text-primary-foreground px-10 py-5 text-sm tracking-wide transition-colors">
+          </motion.h2>
+          <Link to="/contact" className="mt-12 inline-flex items-center gap-3 bg-[#C73E1D] hover:bg-[#a8321a] text-white px-10 py-5 text-sm tracking-wide transition-colors">
             Initiate Inquiry <ArrowUpRight className="size-4" />
           </Link>
         </div>
