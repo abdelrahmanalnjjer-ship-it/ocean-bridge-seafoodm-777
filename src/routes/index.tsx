@@ -53,7 +53,15 @@ function Index() {
       {/* HERO */}
       <section className="relative min-h-[92vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg.url} alt="Muscat harbor" className="h-full w-full object-cover" />
+          <video
+            src={vlog1.url}
+            className="h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={heroImg.url}
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-[#06142e]/70 via-[#06142e]/60 to-[#06142e]" />
         </div>
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 py-24 w-full">
