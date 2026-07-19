@@ -5,6 +5,8 @@ import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { CATEGORIES } from "@/data/species";
 import heroImg from "@/assets/hero-dhow.jpg.asset.json";
+import vlog1 from "@/assets/vlog-1.mp4.asset.json";
+import vlog2 from "@/assets/vlog-2.mp4.asset.json";
 import portImg from "@/assets/port-cranes.jpg.asset.json";
 import fishermenImg from "@/assets/fishermen.jpg.asset.json";
 import muscatImg from "@/assets/muscat-skyline.jpg.asset.json";
@@ -14,6 +16,7 @@ import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
 import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
 
 const VLOG_IMAGES = [portImg, muscatImg, fishermenImg, harborImg, dhowDetailImg];
+const VLOG_VIDEOS: (typeof vlog1 | null)[] = [vlog1, vlog2, null, null, null];
 const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
 export const Route = createFileRoute("/")({
@@ -36,11 +39,11 @@ const GATEWAYS = [
 const REG = ["GACC Decree 248", "CIFER Registration", "EU TRACES", "IUU Catch Cert.", "FDA HACCP 21 CFR 123", "SFDA FASAH", "Halal Oversight"];
 
 const VLOG = [
-  { title: "Sohar Port — Q3 Cold-Chain Audit", date: "Sept 2025" },
-  { title: "Muscat Wholesale Landing", date: "Aug 2025" },
-  { title: "Qingdao Buyer Delegation", date: "Jul 2025" },
-  { title: "Salalah Kingfish Season", date: "Apr 2025" },
-  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2025" },
+  { title: "Origin Waters — Muscat Coastline", date: "Jul 2026" },
+  { title: "Dhow Fleet — Traditional Landing", date: "Jun 2026" },
+  { title: "Qingdao Buyer Delegation", date: "May 2026" },
+  { title: "Salalah Kingfish Season", date: "Apr 2026" },
+  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2026" },
 ];
 
 function Index() {
@@ -130,12 +133,26 @@ function Index() {
                 className="min-w-[320px] md:min-w-[420px] snap-start group cursor-pointer"
               >
                 <div className="relative overflow-hidden aspect-video">
-                  <img src={VLOG_IMAGES[i % VLOG_IMAGES.length].url} alt={v.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                    <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
-                      <Play className="size-5 ml-0.5" />
-                    </div>
-                  </div>
+                  {VLOG_VIDEOS[i] ? (
+                    <video
+                      src={VLOG_VIDEOS[i]!.url}
+                      className="h-full w-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <>
+                      <img src={VLOG_IMAGES[i % VLOG_IMAGES.length].url} alt={v.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                        <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
+                          <Play className="size-5 ml-0.5" />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="mt-4 flex items-baseline justify-between">
                   <div className="font-display text-lg">{v.title}</div>
