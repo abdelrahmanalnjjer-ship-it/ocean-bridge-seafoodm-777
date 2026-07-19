@@ -17,7 +17,6 @@ import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
 import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
 
 const VLOG_IMAGES = [portImg, muscatImg, fishermenImg, harborImg, dhowDetailImg];
-const VLOG_VIDEOS: (typeof vlog1 | null)[] = [vlog1, vlog2, null, null, null];
 const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
 export const Route = createFileRoute("/")({
