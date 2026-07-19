@@ -52,7 +52,8 @@ function Index() {
   return (
     <div>
       {/* HERO */}
-      <HeroVideos />
+      <section className="relative min-h-[92vh] flex items-end overflow-hidden bg-[#06142e]">
+        <HeroVideos />
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 py-24 w-full">
           <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.35em] text-white/70 mb-8">
             <span className="h-px w-8 bg-[#C73E1D]" />
