@@ -17,7 +17,6 @@ import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
 import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
 
 const VLOG_IMAGES = [portImg, muscatImg, fishermenImg, harborImg, dhowDetailImg];
-const VLOG_VIDEOS: (typeof vlog1 | null)[] = [vlog1, vlog2, null, null, null];
 const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
 export const Route = createFileRoute("/")({
@@ -131,26 +130,12 @@ function Index() {
                 className="min-w-[320px] md:min-w-[420px] snap-start group cursor-pointer"
               >
                 <div className="relative overflow-hidden aspect-video">
-                  {VLOG_VIDEOS[i] ? (
-                    <video
-                      src={VLOG_VIDEOS[i]!.url}
-                      className="h-full w-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                    />
-                  ) : (
-                    <>
-                      <img src={VLOG_IMAGES[i % VLOG_IMAGES.length].url} alt={v.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                        <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
-                          <Play className="size-5 ml-0.5" />
-                        </div>
-                      </div>
-                    </>
-                  )}
+                  <img src={VLOG_IMAGES[i % VLOG_IMAGES.length].url} alt={v.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                    <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
+                      <Play className="size-5 ml-0.5" />
+                    </div>
+                  </div>
                 </div>
                 <div className="mt-4 flex items-baseline justify-between">
                   <div className="font-display text-lg">{v.title}</div>
