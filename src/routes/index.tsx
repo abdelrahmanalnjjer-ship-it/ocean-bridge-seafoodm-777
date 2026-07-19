@@ -5,6 +5,8 @@ import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { CATEGORIES } from "@/data/species";
 import heroImg from "@/assets/hero-dhow.jpg.asset.json";
+import vlog1 from "@/assets/vlog-1.mp4.asset.json";
+import vlog2 from "@/assets/vlog-2.mp4.asset.json";
 import portImg from "@/assets/port-cranes.jpg.asset.json";
 import fishermenImg from "@/assets/fishermen.jpg.asset.json";
 import muscatImg from "@/assets/muscat-skyline.jpg.asset.json";
@@ -14,6 +16,7 @@ import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
 import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
 
 const VLOG_IMAGES = [portImg, muscatImg, fishermenImg, harborImg, dhowDetailImg];
+const VLOG_VIDEOS: (typeof vlog1 | null)[] = [vlog1, vlog2, null, null, null];
 const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
 export const Route = createFileRoute("/")({
@@ -36,11 +39,11 @@ const GATEWAYS = [
 const REG = ["GACC Decree 248", "CIFER Registration", "EU TRACES", "IUU Catch Cert.", "FDA HACCP 21 CFR 123", "SFDA FASAH", "Halal Oversight"];
 
 const VLOG = [
-  { title: "Sohar Port — Q3 Cold-Chain Audit", date: "Sept 2025" },
-  { title: "Muscat Wholesale Landing", date: "Aug 2025" },
-  { title: "Qingdao Buyer Delegation", date: "Jul 2025" },
-  { title: "Salalah Kingfish Season", date: "Apr 2025" },
-  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2025" },
+  { title: "Origin Waters — Muscat Coastline", date: "Jul 2026" },
+  { title: "Dhow Fleet — Traditional Landing", date: "Jun 2026" },
+  { title: "Qingdao Buyer Delegation", date: "May 2026" },
+  { title: "Salalah Kingfish Season", date: "Apr 2026" },
+  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2026" },
 ];
 
 function Index() {
