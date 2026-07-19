@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { CATEGORIES } from "@/data/species";
@@ -51,19 +52,7 @@ function Index() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative min-h-[92vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <video
-            src={vlog1.url}
-            className="h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={heroImg.url}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#06142e]/70 via-[#06142e]/60 to-[#06142e]" />
-        </div>
+      <HeroVideos />
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 py-24 w-full">
           <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.35em] text-white/70 mb-8">
             <span className="h-px w-8 bg-[#C73E1D]" />
