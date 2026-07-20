@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { CATEGORIES } from "@/data/species";
+import { VLOG_ARTICLES } from "@/data/vlog";
 import heroImg from "@/assets/hero-dhow.jpg.asset.json";
 import vlog1 from "@/assets/vlog-1.mp4.asset.json";
 import vlog2 from "@/assets/vlog-2.mp4.asset.json";
@@ -16,7 +16,6 @@ import omanCoastImg from "@/assets/oman-coast.jpg.asset.json";
 import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
 import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
 
-const VLOG_IMAGES = [portImg, muscatImg, fishermenImg, harborImg, dhowDetailImg];
 const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
 export const Route = createFileRoute("/")({
@@ -38,16 +37,15 @@ const GATEWAYS = [
 
 const REG = ["GACC Decree 248", "CIFER Registration", "EU TRACES", "IUU Catch Cert.", "FDA HACCP 21 CFR 123", "SFDA FASAH", "Halal Oversight"];
 
-const VLOG = [
-  { title: "Origin Waters — Muscat Coastline", date: "Jul 2026" },
-  { title: "Dhow Fleet — Traditional Landing", date: "Jun 2026" },
-  { title: "Qingdao Buyer Delegation", date: "May 2026" },
-  { title: "Salalah Kingfish Season", date: "Apr 2026" },
-  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2026" },
-];
-
 function Index() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const vlog = [...VLOG_ARTICLES].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 5);
+  const vlogTitle = (a: (typeof vlog)[number]) =>
+    locale === "ar" ? a.title_ar : locale === "zh" ? a.title_zh : a.title_en;
+  const vlogDate = (iso: string) => {
+    const l = locale === "zh" ? "zh-CN" : locale === "ar" ? "ar" : "en-US";
+    return new Date(iso).toLocaleDateString(l, { month: "short", year: "numeric" });
+  };
   return (
     <div>
       {/* HERO */}
@@ -112,35 +110,40 @@ function Index() {
       {/* VLOG */}
       <section className="section-light border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24">
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex items-end justify-between mb-12 gap-6 flex-wrap">
             <div>
               <div className="text-[11px] uppercase tracking-[0.3em] text-[#C73E1D] mb-4">03 — Field</div>
               <h2 className="font-display text-3xl md:text-5xl">{t("section.vlog")}</h2>
               <p className="mt-3 text-muted-foreground max-w-lg">{t("section.vlog.sub")}</p>
             </div>
+            <Link to="/vlog" className="inline-flex items-center gap-2 text-sm text-[#C73E1D] border-b border-[#C73E1D] pb-1 hover:opacity-70 transition-opacity">
+              {locale === "ar" ? "كل الأخبار" : locale === "zh" ? "全部新闻" : "All news"} <ArrowUpRight className="size-4" />
+            </Link>
           </div>
           <div className="flex gap-6 overflow-x-auto pb-6 -mx-6 px-6 lg:-mx-12 lg:px-12 snap-x">
-            {VLOG.map((v, i) => (
+            {vlog.map((v, i) => (
               <motion.div
-                key={i}
+                key={v.slug}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.08 }}
                 className="min-w-[320px] md:min-w-[420px] snap-start group cursor-pointer"
               >
-                <div className="relative overflow-hidden aspect-video">
-                  <img src={VLOG_IMAGES[i % VLOG_IMAGES.length].url} alt={v.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                    <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
-                      <Play className="size-5 ml-0.5" />
+                <Link to="/vlog/$slug" params={{ slug: v.slug }} className="block">
+                  <div className="relative overflow-hidden aspect-video">
+                    <img src={v.image} alt={vlogTitle(v)} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                      <div className="size-14 rounded-full border border-white flex items-center justify-center text-white">
+                        <Play className="size-5 ml-0.5" />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="mt-4 flex items-baseline justify-between">
-                  <div className="font-display text-lg">{v.title}</div>
-                  <div className="font-mono text-[11px] text-muted-foreground">{v.date}</div>
-                </div>
+                  <div className="mt-4 flex items-baseline justify-between gap-4">
+                    <div className="font-display text-lg group-hover:text-[#C73E1D] transition-colors">{vlogTitle(v)}</div>
+                    <div className="font-mono text-[11px] text-muted-foreground shrink-0">{vlogDate(v.date)}</div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>

@@ -7,6 +7,7 @@ type Dict = Record<string, string>;
 const en: Dict = {
   "nav.home": "Home",
   "nav.products": "Products",
+  "nav.vlog": "Vlog",
   "nav.about": "About",
   "nav.contact": "Connect",
   "brand.name": "Ocean Bridge Trade",
@@ -39,6 +40,7 @@ const en: Dict = {
 const ar: Dict = {
   "nav.home": "الرئيسية",
   "nav.products": "المنتجات",
+  "nav.vlog": "المدوّنة",
   "nav.about": "من نحن",
   "nav.contact": "تواصل",
   "brand.name": "أوشن بريدج تريد",
@@ -71,6 +73,7 @@ const ar: Dict = {
 const zh: Dict = {
   "nav.home": "首页",
   "nav.products": "产品",
+  "nav.vlog": "视频博客",
   "nav.about": "关于我们",
   "nav.contact": "联系我们",
   "brand.name": "海桥贸易",
