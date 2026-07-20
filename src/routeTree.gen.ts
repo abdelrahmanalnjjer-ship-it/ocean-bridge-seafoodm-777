@@ -14,6 +14,7 @@ import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VlogSlugRouteImport } from './routes/vlog.$slug'
 
 const VlogRoute = VlogRouteImport.update({
   id: '/vlog',
@@ -40,20 +41,27 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VlogSlugRoute = VlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => VlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
-  '/vlog': typeof VlogRoute
+  '/vlog': typeof VlogRouteWithChildren
+  '/vlog/$slug': typeof VlogSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
-  '/vlog': typeof VlogRoute
+  '/vlog': typeof VlogRouteWithChildren
+  '/vlog/$slug': typeof VlogSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,14 +69,22 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
-  '/vlog': typeof VlogRoute
+  '/vlog': typeof VlogRouteWithChildren
+  '/vlog/$slug': typeof VlogSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/products' | '/vlog'
+  fullPaths: '/' | '/about' | '/contact' | '/products' | '/vlog' | '/vlog/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/products' | '/vlog'
-  id: '__root__' | '/' | '/about' | '/contact' | '/products' | '/vlog'
+  to: '/' | '/about' | '/contact' | '/products' | '/vlog' | '/vlog/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/products'
+    | '/vlog'
+    | '/vlog/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,7 +92,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   ProductsRoute: typeof ProductsRoute
-  VlogRoute: typeof VlogRoute
+  VlogRoute: typeof VlogRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -116,15 +132,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vlog/$slug': {
+      id: '/vlog/$slug'
+      path: '/$slug'
+      fullPath: '/vlog/$slug'
+      preLoaderRoute: typeof VlogSlugRouteImport
+      parentRoute: typeof VlogRoute
+    }
   }
 }
+
+interface VlogRouteChildren {
+  VlogSlugRoute: typeof VlogSlugRoute
+}
+
+const VlogRouteChildren: VlogRouteChildren = {
+  VlogSlugRoute: VlogSlugRoute,
+}
+
+const VlogRouteWithChildren = VlogRoute._addFileChildren(VlogRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   ProductsRoute: ProductsRoute,
-  VlogRoute: VlogRoute,
+  VlogRoute: VlogRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
