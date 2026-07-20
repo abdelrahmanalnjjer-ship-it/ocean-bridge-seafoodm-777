@@ -1,8 +1,8 @@
-import portImg from "@/assets/port-cranes.jpg.asset.json";
-import fishermenImg from "@/assets/fishermen.jpg.asset.json";
-import muscatImg from "@/assets/muscat-skyline.jpg.asset.json";
-import harborImg from "@/assets/harbor-dusk.jpg.asset.json";
-import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
+import img1 from "@/assets/home-1.jpg.asset.json";
+import img2 from "@/assets/home-2.jpg.asset.json";
+import img3 from "@/assets/home-3.jpg.asset.json";
+import img4 from "@/assets/home-4.jpg.asset.json";
+import img5 from "@/assets/home-5.jpg.asset.json";
 
 export interface VlogArticle {
   slug: string;
@@ -26,7 +26,7 @@ export const VLOG_ARTICLES: VlogArticle[] = [
   {
     slug: "muscat-coastline-origin-waters",
     date: "2026-07-12",
-    image: portImg.url,
+    image: img1.url,
     tag_en: "Field Report",
     tag_ar: "تقرير ميداني",
     tag_zh: "现场报道",
@@ -55,7 +55,7 @@ export const VLOG_ARTICLES: VlogArticle[] = [
   {
     slug: "qingdao-buyer-delegation",
     date: "2026-06-24",
-    image: muscatImg.url,
+    image: img2.url,
     tag_en: "Trade Desk",
     tag_ar: "مكتب التجارة",
     tag_zh: "贸易台",
@@ -84,7 +84,7 @@ export const VLOG_ARTICLES: VlogArticle[] = [
   {
     slug: "salalah-kingfish-season",
     date: "2026-04-30",
-    image: harborImg.url,
+    image: img3.url,
     tag_en: "Season Bulletin",
     tag_ar: "نشرة الموسم",
     tag_zh: "季节公告",
@@ -113,7 +113,7 @@ export const VLOG_ARTICLES: VlogArticle[] = [
   {
     slug: "gacc-cifer-facility-walkthrough",
     date: "2026-03-18",
-    image: fishermenImg.url,
+    image: img4.url,
     tag_en: "Compliance",
     tag_ar: "الامتثال",
     tag_zh: "合规",
@@ -142,7 +142,7 @@ export const VLOG_ARTICLES: VlogArticle[] = [
   {
     slug: "traditional-dhow-fleet-landing",
     date: "2026-02-05",
-    image: dhowDetailImg.url,
+    image: img5.url,
     tag_en: "Field Report",
     tag_ar: "تقرير ميداني",
     tag_zh: "现场报道",

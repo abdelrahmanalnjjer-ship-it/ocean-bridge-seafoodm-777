@@ -5,15 +5,15 @@ import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { CATEGORIES } from "@/data/species";
 import { VLOG_ARTICLES } from "@/data/vlog";
-import heroImg from "@/assets/hero-dhow.jpg.asset.json";
 import vlog1 from "@/assets/vlog-1.mp4.asset.json";
 import vlog2 from "@/assets/vlog-2.mp4.asset.json";
-import fishermenImg from "@/assets/fishermen.jpg.asset.json";
-import harborImg from "@/assets/harbor-dusk.jpg.asset.json";
-import omanCoastImg from "@/assets/oman-coast.jpg.asset.json";
-import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
+import heroImg from "@/assets/home-1.jpg.asset.json";
+import cat1 from "@/assets/home-6.jpg.asset.json";
+import cat2 from "@/assets/home-7.jpg.asset.json";
+import cat3 from "@/assets/home-8.jpg.asset.json";
+import cat4 from "@/assets/home-9.jpg.asset.json";
 
-const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
+const CATEGORY_IMAGES = [cat1, cat2, cat3, cat4];
 
 export const Route = createFileRoute("/")({
   component: Index,
