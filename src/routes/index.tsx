@@ -8,13 +8,10 @@ import { VLOG_ARTICLES } from "@/data/vlog";
 import heroImg from "@/assets/hero-dhow.jpg.asset.json";
 import vlog1 from "@/assets/vlog-1.mp4.asset.json";
 import vlog2 from "@/assets/vlog-2.mp4.asset.json";
-import portImg from "@/assets/port-cranes.jpg.asset.json";
 import fishermenImg from "@/assets/fishermen.jpg.asset.json";
-import muscatImg from "@/assets/muscat-skyline.jpg.asset.json";
 import harborImg from "@/assets/harbor-dusk.jpg.asset.json";
 import omanCoastImg from "@/assets/oman-coast.jpg.asset.json";
 import harborBoatsImg from "@/assets/harbor-boats.jpg.asset.json";
-import dhowDetailImg from "@/assets/dhow-detail.jpg.asset.json";
 
 const CATEGORY_IMAGES = [omanCoastImg, harborBoatsImg, fishermenImg, harborImg];
 
