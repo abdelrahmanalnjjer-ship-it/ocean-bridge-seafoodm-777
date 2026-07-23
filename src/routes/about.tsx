@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import harborBoats from "@/assets/harbor-boats.jpg.asset.json";
+import fishermen from "@/assets/fishermen.jpg.asset.json";
+import portCranes from "@/assets/port-cranes.jpg.asset.json";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -34,9 +37,20 @@ function AboutPage() {
       <section className="border-b border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 pt-24 pb-20">
           <div className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground mb-6">About</div>
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05] max-w-5xl">
-            A corporate bridge between fragmented origin markets and structured international buyers.
-          </h1>
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 items-end">
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05]">
+              A corporate bridge between fragmented origin markets and structured international buyers.
+            </h1>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="aspect-[4/3] overflow-hidden"
+            >
+              <img src={harborBoats.url} alt="Muscat harbour" className="h-full w-full object-cover" />
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -107,9 +121,20 @@ function AboutPage() {
 
           <section id="origin">
             <h2 className="font-display text-3xl md:text-4xl mb-6">Origin Infrastructure</h2>
-            <p className="text-muted-foreground leading-relaxed max-w-3xl">
-              Operating directly from our Muscat headquarters, our core operational advantage is anchored by a deep-rooted, Oman-based commercial partner network. This localized infrastructure provides continuous on-the-ground market intelligence, executes rigorous physical facility audits, and maintains absolute oversight of cold-chain integrity prior to export.
-            </p>
+            <div className="grid md:grid-cols-[1fr_1fr] gap-10 items-center">
+              <p className="text-muted-foreground leading-relaxed">
+                Operating directly from our Muscat headquarters, our core operational advantage is anchored by a deep-rooted, Oman-based commercial partner network. This localized infrastructure provides continuous on-the-ground market intelligence, executes rigorous physical facility audits, and maintains absolute oversight of cold-chain integrity prior to export.
+              </p>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="aspect-[4/3] overflow-hidden"
+              >
+                <img src={fishermen.url} alt="Omani fishermen at work" className="h-full w-full object-cover" />
+              </motion.div>
+            </div>
           </section>
 
           <section id="competencies" className="space-y-6">
@@ -137,6 +162,15 @@ function AboutPage() {
           </section>
 
           <section id="regulatory">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="aspect-[21/9] overflow-hidden mb-10"
+            >
+              <img src={portCranes.url} alt="Port export infrastructure" className="h-full w-full object-cover" />
+            </motion.div>
             <h2 className="font-display text-3xl md:text-4xl mb-8">Regulatory Mastery</h2>
             <div className="grid md:grid-cols-2 gap-px bg-border/60">
               {REGS.map((r, i) => (
