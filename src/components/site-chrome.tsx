@@ -34,7 +34,6 @@ export function SiteHeader() {
   const links = [
     { to: "/", label: t("nav.home") },
     { to: "/products", label: t("nav.products") },
-    { to: "/vlog", label: t("nav.vlog") },
     { to: "/about", label: t("nav.about") },
     { to: "/contact", label: t("nav.contact") },
   ] as const;
@@ -102,7 +101,6 @@ export function SiteFooter() {
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="hover:text-white text-white/70">{t("nav.home")}</Link></li>
             <li><Link to="/products" className="hover:text-white text-white/70">{t("nav.products")}</Link></li>
-            <li><Link to="/vlog" className="hover:text-white text-white/70">{t("nav.vlog")}</Link></li>
             <li><Link to="/about" className="hover:text-white text-white/70">{t("nav.about")}</Link></li>
             <li><Link to="/contact" className="hover:text-white text-white/70">{t("nav.contact")}</Link></li>
           </ul>

@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowUpRight, Mail, MapPin, Phone, Linkedin } from "lucide-react";
+import { motion } from "framer-motion";
+import harborDusk from "@/assets/harbor-dusk.jpg.asset.json";
+import dhowDetail from "@/assets/dhow-detail.jpg.asset.json";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -20,13 +23,26 @@ function ContactPage() {
     <div>
       <section className="border-b border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 pt-24 pb-16">
-          <div className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground mb-6">Connect</div>
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05] max-w-4xl">
-            The Global Trade Desk.
-          </h1>
-          <p className="mt-8 max-w-xl text-muted-foreground">
-            All inquiries are treated as confidential. A member of our commercial team will respond within one business day.
-          </p>
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-end">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground mb-6">Connect</div>
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05]">
+                The Global Trade Desk.
+              </h1>
+              <p className="mt-8 max-w-xl text-muted-foreground">
+                All inquiries are treated as confidential. A member of our commercial team will respond within one business day.
+              </p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="aspect-[4/3] overflow-hidden"
+            >
+              <img src={harborDusk.url} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -34,6 +50,15 @@ function ContactPage() {
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-20 grid md:grid-cols-[1fr_1.2fr] gap-16">
           {/* Left */}
           <div className="space-y-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="aspect-[4/3] overflow-hidden"
+            >
+              <img src={dhowDetail.url} alt="Traditional dhow detail" className="h-full w-full object-cover" />
+            </motion.div>
             <div>
               <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Headquarters</div>
               <div className="flex items-start gap-3">
