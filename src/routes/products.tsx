@@ -10,8 +10,8 @@ import catCephalopods from "@/assets/cat-cephalopods.png.asset.json";
 import catCrustaceans from "@/assets/cat-crustaceans.png.asset.json";
 
 const CATEGORY_IMAGES: Record<Category, string> = {
-  tuna: catPelagic.url,
-  pelagic: catCephalopods.url,
+  pelagic: catPelagic.url,
+  tuna: catCephalopods.url,
   demersal: catDemersal.url,
   cephalopod: catCrustaceans.url,
 };
