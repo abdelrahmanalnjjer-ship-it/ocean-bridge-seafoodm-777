@@ -3,8 +3,18 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, LayoutGrid, Table2 } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
-import { MediaSlot } from "@/components/site-chrome";
 import { SPECIES, CATEGORIES, type Category, type Species } from "@/data/species";
+import catPelagic from "@/assets/cat-pelagic.png.asset.json";
+import catDemersal from "@/assets/cat-demersal.png.asset.json";
+import catCephalopods from "@/assets/cat-cephalopods.png.asset.json";
+import catCrustaceans from "@/assets/cat-crustaceans.png.asset.json";
+
+const CATEGORY_IMAGES: Record<Category, string> = {
+  pelagic: catPelagic.url,
+  demersal: catDemersal.url,
+  cephalopod: catCephalopods.url,
+  crustacean: catCrustaceans.url,
+};
 
 export const Route = createFileRoute("/products")({
   head: () => ({
@@ -96,7 +106,7 @@ function ProductsPage() {
                 className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
               >
                 {filtered.map((s) => (
-                  <SpeciesCard key={s.id} s={s} name={nameFor(s)} t={t} />
+                  <SpeciesCard key={s.id} s={s} name={nameFor(s)} t={t} image={CATEGORY_IMAGES[s.category]} />
                 ))}
               </motion.div>
             ) : (
@@ -117,11 +127,13 @@ function ProductsPage() {
   );
 }
 
-function SpeciesCard({ s, name, t }: { s: Species; name: string; t: (k: string) => string }) {
+function SpeciesCard({ s, name, t, image }: { s: Species; name: string; t: (k: string) => string; image: string }) {
   return (
     <div className="group relative border border-border/60 bg-card/40 overflow-hidden hover:border-foreground/40 transition-all">
       <div className="relative overflow-hidden">
-        <MediaSlot label={`/public/media/products/${s.slug}.jpg`} />
+        <div className="aspect-video overflow-hidden bg-[#06142e]">
+          <img src={image} alt={name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        </div>
         <div className="absolute top-3 right-3 font-mono text-[10px] px-2 py-1 bg-background/70 backdrop-blur-md border border-border/60">
           {s.status === "Available" ? "● AVAILABLE" : "○ SEASONAL"}
         </div>
