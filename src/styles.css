@@ -62,33 +62,40 @@
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --color-brand-accent: #C73E1D;
-  --color-brand-navy: #06142e;
-  --color-brand-ice: #F0F4F8;
+  --color-brand-accent: #2F4F67;   /* Deep Marine Blue - primary interactive */
+  --color-brand-ocean: #4A6F8F;    /* Ocean Blue - secondary interactive */
+  --color-brand-navy: #06142e;     /* Original navy - sparing accent */
+  --color-brand-teal: #14b8a6;     /* Original teal - sparing accent */
+  --color-brand-olive: #6B7456;    /* Natural olive - category indicator */
+  --color-brand-dill: #5F8B5A;     /* Fresh dill green - success only */
+  --color-brand-sand: #C7B299;     /* Sand beige - premium badge */
+  --color-brand-graphite: #3C3C3C; /* Borders, dividers */
+  --color-brand-slate: #232323;    /* Cards */
+  --color-brand-black: #121212;    /* Deep ocean black */
 }
 
 :root {
   --radius: 0.625rem;
-  /* Ocean Bridge Trade — Navy Trust palette */
-  --background: oklch(0.19 0.06 260);        /* #0f1b3d deep navy */
-  --foreground: oklch(0.95 0.01 240);        /* #e8edf3 */
-  --card: oklch(0.27 0.06 258);              /* #1e3a5f */
-  --card-foreground: oklch(0.95 0.01 240);
-  --popover: oklch(0.22 0.06 260);
-  --popover-foreground: oklch(0.95 0.01 240);
-  --primary: oklch(0.95 0.01 240);           /* light on dark */
-  --primary-foreground: oklch(0.19 0.06 260);
-  --secondary: oklch(0.27 0.06 258);
-  --secondary-foreground: oklch(0.95 0.01 240);
-  --muted: oklch(0.27 0.06 258);
-  --muted-foreground: oklch(0.72 0.03 245);
-  --accent: oklch(0.56 0.09 245);            /* #3b6fa0 steel blue */
-  --accent-foreground: oklch(0.98 0.005 240);
+  /* Ocean Bridge Trade — Premium Marine Industrial */
+  --background: oklch(0.19 0 0);             /* #121212 deep ocean black */
+  --foreground: oklch(0.94 0 0);             /* #E6E6E6 body */
+  --card: oklch(0.26 0 0);                   /* #232323 slate black */
+  --card-foreground: oklch(0.94 0 0);
+  --popover: oklch(0.24 0 0);
+  --popover-foreground: oklch(0.94 0 0);
+  --primary: oklch(0.46 0.04 235);           /* #2F4F67 deep marine */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.26 0 0);
+  --secondary-foreground: oklch(0.94 0 0);
+  --muted: oklch(0.26 0 0);
+  --muted-foreground: oklch(0.72 0 0);       /* #A5A5A5 */
+  --accent: oklch(0.55 0.05 240);            /* #4A6F8F ocean blue */
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.95 0.01 240 / 0.12);
-  --input: oklch(0.95 0.01 240 / 0.18);
-  --ring: oklch(0.56 0.09 245);
+  --border: oklch(1 0 0 / 0.08);             /* subtle white line */
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.55 0.05 240);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -153,21 +160,77 @@
   }
 }
 
-/* Light-section override: scopes theme tokens to a bright surface so
-   descendant components using semantic tokens flip to dark-on-light. */
-.section-light {
-  --background: oklch(0.985 0.004 240);   /* ~#F8FAFC */
-  --foreground: oklch(0.19 0.06 260);     /* deep navy */
-  --card: oklch(0.96 0.007 240);
-  --card-foreground: oklch(0.19 0.06 260);
-  --muted: oklch(0.94 0.008 240);
-  --muted-foreground: oklch(0.42 0.03 250);
-  --border: oklch(0.19 0.06 260 / 0.14);
-  --primary: oklch(0.19 0.06 260);
-  --primary-foreground: oklch(0.985 0.004 240);
-  --accent: oklch(0.56 0.09 245);
+/* Alternating dark sections: a slightly lighter slate against #121212. */
+.section-slate {
+  --background: oklch(0.23 0 0);             /* #1c1c1c */
+  --card: oklch(0.28 0 0);                   /* #2a2a2a */
   background-color: var(--background);
   color: var(--foreground);
 }
 
-.bg-brand-navy { background-color: var(--color-brand-navy); }
+.bg-brand-navy   { background-color: var(--color-brand-navy); }
+.bg-brand-black  { background-color: var(--color-brand-black); }
+.bg-brand-slate  { background-color: var(--color-brand-slate); }
+.text-brand-marine { color: var(--color-brand-accent); }
+.text-brand-ocean  { color: var(--color-brand-ocean); }
+.text-brand-sand   { color: var(--color-brand-sand); }
+.border-brand-marine { border-color: var(--color-brand-accent); }
+
+/* Premium primary CTA — Deep Marine Blue with smooth hover shift. */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--color-brand-accent);
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  transition: background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+}
+.btn-primary:hover { background-color: var(--color-brand-ocean); transform: translateY(-1px); box-shadow: 0 10px 30px -12px rgba(74,111,143,0.5); }
+.btn-primary:active { transform: translateY(0); background-color: #26445a; }
+.btn-primary:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
+.btn-primary:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; box-shadow: none; transform: none; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.85);
+  padding: 1rem 2rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  transition: border-color 250ms ease, color 250ms ease, background-color 250ms ease;
+}
+.btn-outline:hover { border-color: var(--color-brand-ocean); color: #fff; background-color: rgba(74,111,143,0.08); }
+.btn-outline:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
+
+/* Card lift on hover for product/category tiles. */
+.card-lift { transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease; }
+.card-lift:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6); border-color: var(--color-brand-accent); }
+
+/* Nav link underline animation. */
+.nav-link { position: relative; padding-bottom: 4px; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background-color: var(--color-brand-ocean);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 300ms ease;
+}
+.nav-link:hover::after, .nav-link[data-active="true"]::after { transform: scaleX(1); transform-origin: left; }
+
+/* Respect reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
