@@ -4,16 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, LayoutGrid, Table2 } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { SPECIES, CATEGORIES, type Category, type Species } from "@/data/species";
-import catPelagic from "@/assets/cat-pelagic.png.asset.json";
-import catDemersal from "@/assets/cat-demersal.png.asset.json";
-import catCephalopods from "@/assets/cat-cephalopods.png.asset.json";
-import catCrustaceans from "@/assets/cat-crustaceans.png.asset.json";
 
 const CATEGORY_IMAGES: Record<Category, string> = {
-  pelagic: catPelagic.url,
-  tuna: catCephalopods.url,
-  demersal: catDemersal.url,
-  cephalopod: catCrustaceans.url,
+  pelagic: "/product-images/pelagic.png",
+  tuna: "/product-images/cephalopods.png",
+  demersal: "/product-images/demersal.png",
+  cephalopod: "/product-images/crustaceans.png",
 };
 
 export const Route = createFileRoute("/products")({

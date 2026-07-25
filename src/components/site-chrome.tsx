@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { useI18n, type Locale } from "@/i18n/i18n";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import logoAsset from "@/assets/logo.png.asset.json";
+
+const LOGO_IMAGE = "/logos/logo.png";
 
 function LocaleSwitcher() {
   const { locale, setLocale } = useI18n();
@@ -41,7 +42,7 @@ export function SiteHeader() {
     <header className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-brand-navy/90 backdrop-blur-xl text-white">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logoAsset.url} alt="Ocean Bridge Trade" className="h-9 w-auto brightness-0 invert" />
+          <img src={LOGO_IMAGE} alt="Ocean Bridge Trade" className="h-9 w-auto brightness-0 invert" />
           <div className="hidden sm:block leading-tight border-l border-white/20 pl-3">
             <div className="text-[9px] uppercase tracking-[0.25em] text-white/60">Muscat · Oman</div>
           </div>
@@ -91,7 +92,7 @@ export function SiteFooter() {
     <footer className="mt-32 bg-brand-navy text-white border-t border-white/10">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
-          <img src={logoAsset.url} alt="Ocean Bridge Trade" className="h-12 w-auto brightness-0 invert mb-4" />
+          <img src={LOGO_IMAGE} alt="Ocean Bridge Trade" className="h-12 w-auto brightness-0 invert mb-4" />
           <p className="mt-3 text-sm text-white/70 max-w-sm">
             {t("brand.tagline")} Structured seafood sourcing between Oman and global processors.
           </p>

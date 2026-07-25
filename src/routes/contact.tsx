@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowUpRight, Mail, MapPin, Phone, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
-import harborDusk from "@/assets/harbor-dusk.jpg.asset.json";
-import dhowDetail from "@/assets/dhow-detail.jpg.asset.json";
+
+const HARBOR_DUSK_IMAGE = "/website-images/harbor-dusk.jpg";
+const DHOW_DETAIL_IMAGE = "/website-images/dhow-detail.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -40,7 +41,7 @@ function ContactPage() {
               transition={{ duration: 0.8 }}
               className="aspect-[4/3] overflow-hidden"
             >
-              <img src={harborDusk.url} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
+              <img src={HARBOR_DUSK_IMAGE} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
             </motion.div>
           </div>
         </div>
@@ -57,7 +58,7 @@ function ContactPage() {
               transition={{ duration: 0.7 }}
               className="aspect-[4/3] overflow-hidden"
             >
-              <img src={dhowDetail.url} alt="Traditional dhow detail" className="h-full w-full object-cover" />
+              <img src={DHOW_DETAIL_IMAGE} alt="Traditional dhow detail" className="h-full w-full object-cover" />
             </motion.div>
             <div>
               <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Headquarters</div>

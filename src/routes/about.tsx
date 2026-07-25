@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import harborBoats from "@/assets/harbor-boats.jpg.asset.json";
-import fishermen from "@/assets/fishermen.jpg.asset.json";
-import portCranes from "@/assets/port-cranes.jpg.asset.json";
+
+const HARBOR_BOATS_IMAGE = "/website-images/harbor-boats.jpg";
+const FISHERMEN_IMAGE = "/website-images/fishermen.jpg";
+const PORT_CRANES_IMAGE = "/website-images/port-cranes.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -48,7 +49,7 @@ function AboutPage() {
               transition={{ duration: 0.8 }}
               className="aspect-[4/3] overflow-hidden"
             >
-              <img src={harborBoats.url} alt="Muscat harbour" className="h-full w-full object-cover" />
+              <img src={HARBOR_BOATS_IMAGE} alt="Muscat harbour" className="h-full w-full object-cover" />
             </motion.div>
           </div>
         </div>
@@ -132,7 +133,7 @@ function AboutPage() {
                 transition={{ duration: 0.8 }}
                 className="aspect-[4/3] overflow-hidden"
               >
-                <img src={fishermen.url} alt="Omani fishermen at work" className="h-full w-full object-cover" />
+                <img src={FISHERMEN_IMAGE} alt="Omani fishermen at work" className="h-full w-full object-cover" />
               </motion.div>
             </div>
           </section>
@@ -169,7 +170,7 @@ function AboutPage() {
               transition={{ duration: 0.8 }}
               className="aspect-[21/9] overflow-hidden mb-10"
             >
-              <img src={portCranes.url} alt="Port export infrastructure" className="h-full w-full object-cover" />
+              <img src={PORT_CRANES_IMAGE} alt="Port export infrastructure" className="h-full w-full object-cover" />
             </motion.div>
             <h2 className="font-display text-3xl md:text-4xl mb-8">Regulatory Mastery</h2>
             <div className="grid md:grid-cols-2 gap-px bg-border/60">

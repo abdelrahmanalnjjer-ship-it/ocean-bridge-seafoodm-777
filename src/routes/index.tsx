@@ -3,25 +3,21 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Play } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
 import { CATEGORIES } from "@/data/species";
-import heroVideo from "@/assets/hero-video.mp4.asset.json";
-import heroPoster from "@/assets/hero-dhow.jpg.asset.json";
-import catPelagic from "@/assets/cat-pelagic.png.asset.json";
-import catDemersal from "@/assets/cat-demersal.png.asset.json";
-import catCephalopods from "@/assets/cat-cephalopods.png.asset.json";
-import catCrustaceans from "@/assets/cat-crustaceans.png.asset.json";
-import vlogImg1 from "@/assets/harbor-boats.jpg.asset.json";
-import vlogImg2 from "@/assets/harbor-dusk.jpg.asset.json";
-import vlogImg3 from "@/assets/fishermen.jpg.asset.json";
-import vlogImg4 from "@/assets/port-cranes.jpg.asset.json";
-import vlogImg5 from "@/assets/dhow-detail.jpg.asset.json";
 
-const CATEGORY_IMAGES = [catPelagic, catDemersal, catCephalopods, catCrustaceans];
+const HERO_VIDEO = "/videos/9031955-uhd_3840_2160_30fps.mp4";
+const HERO_POSTER = "/website-images/hero-poster.jpg";
+const CATEGORY_IMAGES = [
+  "/product-images/pelagic.png",
+  "/product-images/demersal.png",
+  "/product-images/cephalopods.png",
+  "/product-images/crustaceans.png",
+];
 const VLOG_CARDS = [
-  { title: "Origin Waters — Muscat Coastline", date: "Jul 2026", image: vlogImg1.url },
-  { title: "Qingdao Buyer Delegation Concludes Muscat Visit", date: "Jun 2026", image: vlogImg2.url },
-  { title: "Salalah Kingfish Season — Volume & Grade Outlook", date: "Apr 2026", image: vlogImg3.url },
-  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2026", image: vlogImg4.url },
-  { title: "Dhow Fleet — Traditional Landing at Dawn", date: "Feb 2026", image: vlogImg5.url },
+  { title: "Origin Waters — Muscat Coastline", date: "Jul 2026", image: "/website-images/harbor-boats.jpg" },
+  { title: "Qingdao Buyer Delegation Concludes Muscat Visit", date: "Jun 2026", image: "/website-images/harbor-dusk.jpg" },
+  { title: "Salalah Kingfish Season — Volume & Grade Outlook", date: "Apr 2026", image: "/website-images/fishermen.jpg" },
+  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2026", image: "/website-images/port-cranes.jpg" },
+  { title: "Dhow Fleet — Traditional Landing at Dawn", date: "Feb 2026", image: "/website-images/dhow-detail.jpg" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -51,8 +47,8 @@ function Index() {
       <section className="relative min-h-[92vh] flex items-end overflow-hidden bg-[#06142e]">
         <div className="absolute inset-0 overflow-hidden">
           <video
-            src={heroVideo.url}
-            poster={heroPoster.url}
+            src={HERO_VIDEO}
+            poster={HERO_POSTER}
             className="h-full w-full object-cover"
             autoPlay
             muted
@@ -202,7 +198,7 @@ function Index() {
                 className="border border-border bg-card overflow-hidden hover:border-[#C73E1D] transition-colors group"
               >
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length].url} alt={c.label_en} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.label_en} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-6">
                   <div className="font-mono text-xs text-muted-foreground mb-3">0{i + 1}</div>
