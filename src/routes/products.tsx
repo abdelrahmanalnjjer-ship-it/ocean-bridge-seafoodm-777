@@ -196,7 +196,7 @@ function TerminalTable({ rows, nameFor, t }: { rows: Species[]; nameFor: (s: Spe
                 </span>
               </td>
               <td className="px-4 py-3 text-right">
-                <button className="text-[10px] uppercase tracking-[0.2em] hover:text-foreground text-muted-foreground inline-flex items-center gap-1">
+                <button className="text-[10px] uppercase tracking-[0.2em] hover:text-white text-muted-foreground inline-flex items-center gap-1">
                   {t("products.initiate")} <ArrowUpRight className="size-3" />
                 </button>
               </td>

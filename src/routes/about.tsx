@@ -183,7 +183,7 @@ function AboutPage() {
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className="bg-background p-8"
                 >
-                  <div className="font-mono text-xs text-[#e07458] mb-4">{r.region}</div>
+                  <div className="font-mono text-xs text-brand-marine mb-4">{r.region}</div>
                   <p className="text-sm text-muted-foreground leading-relaxed">{r.body}</p>
                 </motion.div>
               ))}
