@@ -4,7 +4,6 @@ import { ArrowUpRight, Mail, MapPin, Phone, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
 
 const HARBOR_DUSK_IMAGE = "/website-images/harbor-dusk.jpg";
-const DHOW_DETAIL_IMAGE = "/website-images/dhow-detail.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -22,104 +21,102 @@ function ContactPage() {
   const [sent, setSent] = useState(false);
   return (
     <div>
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 pt-24 pb-16">
-          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-end">
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground mb-6">Connect</div>
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05]">
-                The Global Trade Desk.
-              </h1>
-              <p className="mt-8 max-w-xl text-muted-foreground">
-                All inquiries are treated as confidential. A member of our commercial team will respond within one business day.
-              </p>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="aspect-[4/3] overflow-hidden"
-            >
-              <img src={HARBOR_DUSK_IMAGE} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
-            </motion.div>
-          </div>
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-border/60">
+        <div className="absolute inset-0">
+          <img src={HARBOR_DUSK_IMAGE} alt="" className="h-full w-full object-cover opacity-30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/60 via-[#121212]/80 to-[#121212]" />
+        </div>
+        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-32 pb-20">
+          <div className="text-[11px] uppercase tracking-[0.35em] text-brand-marine mb-6">Buyer Desk</div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="font-display text-5xl md:text-6xl lg:text-7xl leading-[1.05] max-w-3xl text-white"
+          >
+            Initiate a buyer inquiry.
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.25 }}
+            className="mt-8 max-w-xl text-muted-foreground"
+          >
+            For international processors, importers, and distributors sourcing Oman-origin seafood. All inquiries are confidential and reviewed within 48 business hours.
+          </motion.p>
         </div>
       </section>
 
+      {/* Two-column: form + info */}
       <section>
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-20 grid md:grid-cols-[1fr_1.2fr] gap-16">
-          {/* Left */}
-          <div className="space-y-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="aspect-[4/3] overflow-hidden"
-            >
-              <img src={DHOW_DETAIL_IMAGE} alt="Traditional dhow detail" className="h-full w-full object-cover" />
-            </motion.div>
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Headquarters</div>
-              <div className="flex items-start gap-3">
-                <MapPin className="size-4 mt-1 text-muted-foreground" />
-                <div>
-                  <div className="font-display text-xl">Muscat</div>
-                  <div className="text-sm text-muted-foreground">Sultanate of Oman</div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Communications</div>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+968 77 62 1857</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">Oman</span></li>
-                <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+20 106 897 1773</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">Egypt</span></li>
-                <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+971 50 485 0309</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">WhatsApp</span></li>
-                <li className="flex items-center gap-3"><Mail className="size-4 text-muted-foreground" /><a href="mailto:info@oceanbridge-trade.com" className="hover:text-foreground">info@oceanbridge-trade.com</a></li>
-                <li className="flex items-center gap-3"><Linkedin className="size-4 text-muted-foreground" /><a href="https://www.linkedin.com/company/oceanbridge-trade" target="_blank" rel="noreferrer" className="hover:text-foreground">/company/oceanbridge-trade</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Portal</div>
-              <a href="https://www.oceanbridge-trade.com" className="font-mono text-sm hover:text-foreground">www.oceanbridge-trade.com</a>
-            </div>
-          </div>
-
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24 grid md:grid-cols-[1.4fr_1fr] gap-12">
           {/* Form */}
-          <div className="border border-border/60 bg-card/40 p-8 md:p-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="border border-border bg-card p-8 md:p-12"
+          >
             {sent ? (
               <div className="min-h-[400px] flex flex-col items-center justify-center text-center">
-                <div className="font-display text-3xl mb-4">Inquiry received.</div>
-                <p className="text-muted-foreground max-w-sm">Thank you. A member of our commercial desk will respond within one business day.</p>
+                <div className="font-display text-3xl mb-4 text-white">Inquiry received.</div>
+                <p className="text-muted-foreground max-w-sm">A member of our commercial desk will respond within 48 business hours.</p>
               </div>
             ) : (
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSent(true);
-                }}
+                onSubmit={(e) => { e.preventDefault(); setSent(true); }}
                 className="space-y-6"
               >
                 <div className="grid md:grid-cols-2 gap-6">
                   <Field label="Full Name" name="name" required />
                   <Field label="Company" name="company" required />
-                  <Field label="Country" name="country" required />
-                  <Field label="Estimated Volume (MT)" name="volume" />
+                  <Field label="Destination Market" name="market" required placeholder="e.g. Qingdao, Rotterdam, Jeddah" />
+                  <Field label="Target Volume (MT / month)" name="volume" required />
                 </div>
-                <Field label="Species of Interest" name="species" placeholder="e.g. Yellowfin Tuna, Cuttlefish, Grouper" />
+                <Field label="Product Requirements" name="species" required placeholder="Species, grade, size, packaging" />
+                <Field label="Preferred Incoterms" name="incoterms" placeholder="e.g. FOB Salalah, CFR Qingdao" />
                 <div>
-                  <label className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Message</label>
-                  <textarea rows={5} required className="mt-2 w-full bg-transparent border-b border-border/60 focus:border-foreground/80 outline-none py-2 text-sm resize-none" />
+                  <label className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Additional Context</label>
+                  <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--color-brand-ocean)] outline-none py-2 text-sm resize-none transition-colors" />
                 </div>
-                <button type="submit" className="group inline-flex items-center gap-3 border border-foreground/60 hover:bg-foreground hover:text-primary-foreground px-8 py-4 text-xs uppercase tracking-[0.25em] transition-colors">
-                  Initiate Inquiry <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
+                <button type="submit" className="btn-primary group">
+                  Submit Buyer Inquiry <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
                 </button>
               </form>
             )}
-          </div>
+          </motion.div>
+
+          {/* Info card */}
+          <motion.aside
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="border border-border bg-card p-8 md:p-10 self-start"
+          >
+            <div className="text-[11px] uppercase tracking-[0.3em] text-brand-marine mb-6">Contact</div>
+            <div className="flex items-start gap-3 mb-8">
+              <MapPin className="size-4 mt-1 text-muted-foreground" />
+              <div>
+                <div className="font-display text-xl text-white">Muscat</div>
+                <div className="text-sm text-muted-foreground">Sultanate of Oman</div>
+              </div>
+            </div>
+
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+968 77 62 1857</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">Oman</span></li>
+              <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+971 50 485 0309</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">WhatsApp</span></li>
+              <li className="flex items-center gap-3"><Mail className="size-4 text-muted-foreground" /><a href="mailto:info@oceanbridge-trade.com" className="hover:text-white transition-colors">info@oceanbridge-trade.com</a></li>
+              <li className="flex items-center gap-3"><Linkedin className="size-4 text-muted-foreground" /><a href="https://www.linkedin.com/company/oceanbridge-trade" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">/company/oceanbridge-trade</a></li>
+            </ul>
+
+            <div className="mt-10 pt-8 border-t border-border">
+              <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-3">Response SLA</div>
+              <div className="font-display text-2xl text-white">48 business hours</div>
+            </div>
+          </motion.aside>
         </div>
       </section>
     </div>
@@ -135,7 +132,7 @@ function Field({ label, name, required, placeholder }: { label: string; name: st
         name={name}
         required={required}
         placeholder={placeholder}
-        className="mt-2 w-full bg-transparent border-b border-border/60 focus:border-foreground/80 outline-none py-2 text-sm"
+        className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--color-brand-ocean)] outline-none py-2 text-sm transition-colors"
       />
     </div>
   );

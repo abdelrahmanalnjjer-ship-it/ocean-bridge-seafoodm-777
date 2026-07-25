@@ -50,18 +50,19 @@ function ProductsPage() {
       </section>
 
       {/* Controls */}
-      <section className="section-light sticky top-16 z-40 border-b border-border backdrop-blur-xl">
+      <section className="section-slate sticky top-16 z-40 border-b border-border backdrop-blur-xl">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-1 flex-wrap">
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setCategory(c.id)}
-                className={`px-4 py-2 text-xs uppercase tracking-[0.2em] transition-colors border ${
+                className={`px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all border ${
                   category === c.id
-                    ? "border-[#C73E1D] text-[#C73E1D] bg-[#C73E1D]/5"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                    ? "border-brand-marine text-white bg-[color:var(--color-brand-accent)]/15"
+                    : "border-transparent text-muted-foreground hover:text-white"
                 }`}
+                style={category === c.id ? { borderColor: "var(--color-brand-accent)" } : undefined}
               >
                 {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}
               </button>
@@ -71,16 +72,18 @@ function ProductsPage() {
             <button
               onClick={() => setView("grid")}
               className={`flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-colors ${
-                view === "grid" ? "bg-[#C73E1D] text-white" : "text-muted-foreground hover:text-foreground"
+                view === "grid" ? "text-white" : "text-muted-foreground hover:text-white"
               }`}
+              style={view === "grid" ? { backgroundColor: "var(--color-brand-accent)" } : undefined}
             >
               <LayoutGrid className="size-3.5" /> {t("products.view.grid")}
             </button>
             <button
               onClick={() => setView("terminal")}
               className={`flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-colors ${
-                view === "terminal" ? "bg-[#C73E1D] text-white" : "text-muted-foreground hover:text-foreground"
+                view === "terminal" ? "text-white" : "text-muted-foreground hover:text-white"
               }`}
+              style={view === "terminal" ? { backgroundColor: "var(--color-brand-accent)" } : undefined}
             >
               <Table2 className="size-3.5" /> {t("products.view.terminal")}
             </button>
@@ -89,7 +92,7 @@ function ProductsPage() {
       </section>
 
       {/* Content */}
-      <section className="section-light">
+      <section>
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
           <AnimatePresence mode="wait">
             {view === "grid" ? (
@@ -125,9 +128,9 @@ function ProductsPage() {
 
 function SpeciesCard({ s, name, t, image }: { s: Species; name: string; t: (k: string) => string; image: string }) {
   return (
-    <div className="group relative border border-border/60 bg-card/40 overflow-hidden hover:border-foreground/40 transition-all">
+    <div className="group relative border border-border card-lift bg-card overflow-hidden">
       <div className="relative overflow-hidden">
-        <div className="aspect-video overflow-hidden bg-[#06142e]">
+        <div className="aspect-video overflow-hidden bg-brand-black">
           <img src={image} alt={name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
         </div>
         <div className="absolute top-3 right-3 font-mono text-[10px] px-2 py-1 bg-background/70 backdrop-blur-md border border-border/60">
@@ -135,7 +138,7 @@ function SpeciesCard({ s, name, t, image }: { s: Species; name: string; t: (k: s
         </div>
       </div>
       <div className="p-6">
-        <div className="font-display text-2xl leading-tight">{name}</div>
+        <div className="font-display text-2xl leading-tight text-white">{name}</div>
         <div className="font-mono text-[11px] italic text-muted-foreground mt-1">{s.scientific}</div>
 
         <div className="mt-6 grid grid-cols-3 gap-2">
@@ -145,12 +148,12 @@ function SpeciesCard({ s, name, t, image }: { s: Species; name: string; t: (k: s
         </div>
 
         <div className="mt-6 h-px w-full bg-border/60" />
-        <button className="mt-4 w-full text-left text-xs uppercase tracking-[0.25em] text-muted-foreground group-hover:text-foreground flex items-center justify-between transition-colors">
+        <button className="mt-4 w-full text-left text-xs uppercase tracking-[0.25em] text-muted-foreground group-hover:text-white flex items-center justify-between transition-colors">
           <span>{t("products.request")}</span>
           <ArrowUpRight className="size-3.5 group-hover:rotate-45 transition-transform" />
         </button>
       </div>
-      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_50%_0%,rgba(59,111,160,0.18),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_50%_0%,rgba(47,79,103,0.22),transparent_70%)]" />
     </div>
   );
 }
