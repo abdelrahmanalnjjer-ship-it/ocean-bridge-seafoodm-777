@@ -1,70 +1,131 @@
-export type Category = "tuna" | "pelagic" | "demersal" | "cephalopod";
-export type SizeType = "weight_per_piece_kg" | "pieces_per_kg" | "weight_per_tail_kg";
-export type Status = "Available" | "Seasonal";
-
 export interface Species {
   id: number;
   slug: string;
   name_en: string;
-  name_ar: string;
   name_ar_om: string;
+  name_ar: string;
   name_zh: string;
   scientific: string;
   hs_code: string;
-  size_type: SizeType;
-  sizes: string[];
-  status: Status;
+  size_type: string;
+  sizes: string;
+  status: string;
   season_start: string;
   season_end: string;
-  category: Category;
+  category: "pelagic" | "tuna" | "demersal" | "cephalopod";
+  image: string;
+  alt: string;
+  caption: string;
+  origin: string;
+  freezingMethod: string;
+  grade: string;
 }
 
-const slug = (s: string) =>
-  s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+const ST: Record<string, string> = { 
+  w: "weight_per_piece_kg", 
+  p: "pieces_per_kg", 
+  t: "weight_per_tail_kg" 
+};
 
-const raw: Omit<Species, "slug">[] = [
-  { id: 1, name_en: "Amberjack", name_ar_om: "والدو", name_ar: "أمبرجاك", name_zh: "章红鱼 / 红甘鱼", scientific: "Seriola dumerili", hs_code: "0302.99", size_type: "weight_per_piece_kg", sizes: ["2-4kg","4-6kg","6kg+"], status: "Seasonal", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 2, name_en: "Yellowfin Tuna", name_ar_om: "كَنعَد", name_ar: "تونة صفراء الزعانف", name_zh: "黄鳍金枪鱼", scientific: "Thunnus albacares", hs_code: "0302.32", size_type: "weight_per_piece_kg", sizes: ["10-20kg","20-30kg","30-40kg","40kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "tuna" },
-  { id: 3, name_en: "Longtail Tuna", name_ar_om: "حور", name_ar: "تونة طويلة الذيل", name_zh: "青干金枪鱼", scientific: "Thunnus tonggol", hs_code: "0302.35", size_type: "weight_per_piece_kg", sizes: ["10-20kg","20-30kg","30kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "tuna" },
-  { id: 4, name_en: "Bigeye Tuna", name_ar_om: "حنّون", name_ar: "تونة كبيرة العين", name_zh: "大眼金枪鱼", scientific: "Thunnus obesus", hs_code: "0302.39", size_type: "weight_per_piece_kg", sizes: ["20-40kg","40-60kg","60kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "tuna" },
-  { id: 5, name_en: "Skipjack Tuna", name_ar_om: "غزال / بونيتو", name_ar: "تونة وثّابة", name_zh: "鲣鱼", scientific: "Katsuwonus pelamis", hs_code: "0302.31", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-3kg","3-5kg","5kg+"], status: "Available", season_start: "May", season_end: "Sep", category: "tuna" },
-  { id: 6, name_en: "Kingfish / Spanish Mackerel", name_ar_om: "خبط", name_ar: "إسقمري ملكي", name_zh: "马鲛鱼", scientific: "Scomberomorus commerson", hs_code: "0302.69", size_type: "weight_per_piece_kg", sizes: ["2-4kg","4-6kg","6kg+"], status: "Available", season_start: "Jan", season_end: "May", category: "pelagic" },
-  { id: 7, name_en: "Mahi Mahi / Dorado", name_ar_om: "أنفالوس / دلفين", name_ar: "سمك الدلفين", name_zh: "鲯鳅", scientific: "Coryphaena hippurus", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-3kg","3-5kg","5kg+"], status: "Available", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 8, name_en: "Barracuda", name_ar_om: "جَدّ", name_ar: "براكودا / سمك السيف المسنن", name_zh: "金梭鱼", scientific: "Sphyraena barracuda", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["2-4kg","4-6kg","6kg+"], status: "Available", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 9, name_en: "Cobia", name_ar_om: "كوبيه / سمك أسود", name_ar: "كوبيه أسود", name_zh: "军曹鱼", scientific: "Rachycentron canadum", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["3-6kg","6-10kg","10kg+"], status: "Seasonal", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 10, name_en: "Grouper / Hamour", name_ar_om: "هامور", name_ar: "هامور", name_zh: "石斑鱼", scientific: "Epinephelus sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-4kg","4kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "demersal" },
-  { id: 11, name_en: "Emperor Fish / Sherry", name_ar_om: "شِري / جِمة", name_ar: "شري / إمبراطور", name_zh: "龙占鱼", scientific: "Lethrinus sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["0.5-1kg","1-2kg","2kg+"], status: "Available", season_start: "Sep", season_end: "Mar", category: "demersal" },
-  { id: 12, name_en: "Red Snapper", name_ar_om: "شِري أحمر / سنابور", name_ar: "شِري أحمر", name_zh: "红鲷鱼", scientific: "Lutjanus sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-4kg","4kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "demersal" },
-  { id: 13, name_en: "Malabar Blood Snapper", name_ar_om: "شِري مالاباري", name_ar: "شِري ملاباري", name_zh: "马拉巴血鲷", scientific: "Lutjanus malabaricus", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["2-4kg","4-6kg","6kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "demersal" },
-  { id: 14, name_en: "Sea Bream / Black-Seabream", name_ar_om: "صافي / نقور", name_ar: "أسهم بحر / دنيس", name_zh: "黑鲷 / 鲷鱼", scientific: "Acanthopagrus sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["0.5-1kg","1-2kg","2kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "demersal" },
-  { id: 15, name_en: "King Soldierbream / Kof", name_ar_om: "كوف", name_ar: "كوف ملكي", name_zh: "长棘鲷", scientific: "Argyrops spinifer", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["0.5-1kg","1-2kg","2kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "demersal" },
-  { id: 16, name_en: "Silver Pomfret", name_ar_om: "زبيدي فضي", name_ar: "زبيدي فضي", name_zh: "银鲳", scientific: "Pampus argenteus", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["0.3-0.5kg","0.5-0.8kg","0.8kg+"], status: "Seasonal", season_start: "Oct", season_end: "Mar", category: "demersal" },
-  { id: 17, name_en: "Black Pomfret", name_ar_om: "زبيدي أسود", name_ar: "زبيدي أسود", name_zh: "黑鲳", scientific: "Parastromateus niger", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["0.5-1kg","1-2kg","2kg+"], status: "Seasonal", season_start: "Oct", season_end: "Mar", category: "demersal" },
-  { id: 18, name_en: "Grey Mullet", name_ar_om: "بياح / غنّام", name_ar: "بياح رمادي", name_zh: "灰鲻鱼", scientific: "Mugil cephalus", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-4kg","4kg+"], status: "Available", season_start: "Sep", season_end: "Feb", category: "demersal" },
-  { id: 19, name_en: "Catfish (Marine)", name_ar_om: "قِراض / سمك البقر", name_ar: "قِراض بحري", name_zh: "海鲶鱼", scientific: "Arius sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-4kg","4kg+"], status: "Available", season_start: "Oct", season_end: "Mar", category: "demersal" },
-  { id: 20, name_en: "Lizardfish", name_ar_om: "أم رقيبة", name_ar: "سمك السحالي", name_zh: "狗母鱼", scientific: "Saurida sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["0.2-0.4kg","0.4-0.6kg","0.6kg+"], status: "Available", season_start: "Sep", season_end: "Mar", category: "demersal" },
-  { id: 21, name_en: "Indian Oil Sardine", name_ar_om: "سردين هندي", name_ar: "سردين هندي", name_zh: "印度油鲱", scientific: "Sardinella longiceps", hs_code: "0302.41", size_type: "pieces_per_kg", sizes: ["8/10","10/12","12/15","15/20"], status: "Seasonal", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 22, name_en: "Goldstripe Sardinella", name_ar_om: "سردين ذهبي الخط", name_ar: "سردين ذهبي الخط", name_zh: "金带小沙丁鱼", scientific: "Sardinella gibbosa", hs_code: "0302.41", size_type: "pieces_per_kg", sizes: ["15/20","20/30","30/40"], status: "Seasonal", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 23, name_en: "Indian Mackerel", name_ar_om: "يرفة / لافاني", name_ar: "إسقمري هندي", name_zh: "印度鲭鱼", scientific: "Rastrelliger kanagurta", hs_code: "0302.70", size_type: "pieces_per_kg", sizes: ["4/6","6/8","8/10","10/12"], status: "Available", season_start: "May", season_end: "Sep", category: "pelagic" },
-  { id: 24, name_en: "Horse Mackerel", name_ar_om: "جاميس", name_ar: "جاموس بحري", name_zh: "竹荚鱼", scientific: "Trachurus sp.", hs_code: "0302.89", size_type: "pieces_per_kg", sizes: ["4/6","6/8","8/10","10/12"], status: "Available", season_start: "May", season_end: "Sep", category: "pelagic" },
-  { id: 25, name_en: "Yellowstripe Scad", name_ar_om: "مورو / سكاد", name_ar: "سكاد أصفر الخط", name_zh: "黄条竹夹鱼", scientific: "Decapterus sp.", hs_code: "0302.89", size_type: "pieces_per_kg", sizes: ["10/12","12/14","14/16","16/20"], status: "Seasonal", season_start: "May", season_end: "Sep", category: "pelagic" },
-  { id: 26, name_en: "Cuttlefish", name_ar_om: "حبار", name_ar: "حبار", name_zh: "墨鱼", scientific: "Sepia pharaonis", hs_code: "0307.41", size_type: "weight_per_piece_kg", sizes: ["0.5-1kg","1-2kg","2kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "cephalopod" },
-  { id: 27, name_en: "Squid / Calamari", name_ar_om: "نَغار / حبار", name_ar: "حبار / كالاماري", name_zh: "鱿鱼", scientific: "Sepioteuthis sp.", hs_code: "0307.42", size_type: "weight_per_piece_kg", sizes: ["0.3-0.5kg","0.5-1kg","1kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "cephalopod" },
-  { id: 28, name_en: "Octopus", name_ar_om: "قَدّ / أخطبوط", name_ar: "أخطبوط", name_zh: "章鱼", scientific: "Octopus vulgaris", hs_code: "0307.51", size_type: "weight_per_piece_kg", sizes: ["1-2kg","2-3kg","3kg+"], status: "Available", season_start: "Oct", season_end: "Apr", category: "cephalopod" },
-  { id: 29, name_en: "Spiny Lobster / Rock Lobster", name_ar_om: "غِلاس", name_ar: "جراد البحر الشوكي", name_zh: "岩龙虾", scientific: "Panulirus ornatus", hs_code: "0306.11", size_type: "weight_per_tail_kg", sizes: ["0.3-0.5kg","0.5-0.8kg","0.8kg+"], status: "Seasonal", season_start: "Oct", season_end: "Apr", category: "cephalopod" },
-  { id: 30, name_en: "Slipper Lobster", name_ar_om: "غِلاس طين / مجذاف", name_ar: "جراد البحر المجدافي", name_zh: "拖鞋龙虾", scientific: "Thenus sp.", hs_code: "0306.12", size_type: "weight_per_tail_kg", sizes: ["0.2-0.4kg","0.4-0.6kg","0.6kg+"], status: "Seasonal", season_start: "Oct", season_end: "Apr", category: "cephalopod" },
-  { id: 31, name_en: "Tiger Prawn", name_ar_om: "جمبري / روبيان", name_ar: "روبيان نحمر", name_zh: "虎虾", scientific: "Penaeus monodon", hs_code: "0306.17", size_type: "pieces_per_kg", sizes: ["10/15","15/20","20/30","30/40"], status: "Seasonal", season_start: "Sep", season_end: "Nov", category: "cephalopod" },
-  { id: 32, name_en: "White Shrimp", name_ar_om: "روبيان أبيض", name_ar: "روبيان أبيض", name_zh: "白虾", scientific: "Penaeus indicus", hs_code: "0306.17", size_type: "pieces_per_kg", sizes: ["20/30","30/40","40/50","50/60"], status: "Available", season_start: "Sep", season_end: "Nov", category: "cephalopod" },
-  { id: 33, name_en: "Ribbon Fish", name_ar_om: "سمك الحزام / سيف", name_ar: "سمك الشريط", name_zh: "带鱼", scientific: "Trichiurus lepturus", hs_code: "0303.89", size_type: "weight_per_piece_kg", sizes: ["0.3-0.5kg","0.5-0.8kg","0.8kg+"], status: "Available", season_start: "Oct", season_end: "Mar", category: "pelagic" },
-  { id: 34, name_en: "Wahoo", name_ar_om: "واهو / كمارة", name_ar: "واهاو", name_zh: "刺鲅", scientific: "Acanthocybium solandri", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["10-20kg","20-30kg","30kg+"], status: "Seasonal", season_start: "May", season_end: "Oct", category: "pelagic" },
-  { id: 35, name_en: "Sailfish / Marlin", name_ar_om: "شُراع / مرلين", name_ar: "سمك الشراع / مارلين", name_zh: "旗鱼", scientific: "Istiophorus sp.", hs_code: "0302.89", size_type: "weight_per_piece_kg", sizes: ["20-40kg","40-60kg","60kg+"], status: "Seasonal", season_start: "Oct", season_end: "Apr", category: "pelagic" },
+const S: Record<string, string> = { 
+  A: "Available", 
+  S: "Seasonal" 
+};
+
+const freezingMethodByCategory: Record<string, string> = {
+  pelagic: "IQF / Sea-Frozen / Land-Frozen",
+  tuna: "Super-Frozen (-60°C) / Air-Freight / Land-Frozen",
+  demersal: "IQF / Block Frozen",
+  cephalopod: "IQF / Block Frozen",
+};
+
+const slugify = (text: string) => 
+  text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+
+type SpeciesTuple = [
+  id: number,
+  name_en: string,
+  name_ar_om: string,
+  name_ar: string,
+  name_zh: string,
+  scientific: string,
+  hs_code: string,
+  size_type: string,
+  sizes: string,
+  status: string,
+  season_start: string,
+  season_end: string,
+  category: "pelagic" | "tuna" | "demersal" | "cephalopod",
+  filename: string,
+  caption: string
 ];
 
-export const SPECIES: Species[] = raw.map((s) => ({ ...s, slug: slug(s.name_en) }));
+const items: SpeciesTuple[] = [
+  [1,"Amberjack","والدو","أمبرجاك","章红鱼 / 红甘鱼","Seriola dumerili","0302.99","w","2-4kg, 4-6kg, 6kg+","S","May","Oct","pelagic","seafood-01-amberjack-yellowtail.jpg","Premium whole amberjack — sashimi & grill grade."],
+  [2,"Yellowfin Tuna","كَنعَد","تونة صفراء الزعانف","黄鳍金枪鱼","Thunnus albacares","0302.32","w","10-20kg, 20-30kg, 30-40kg, 40kg+","A","Oct","Apr","tuna","seafood-02-yellowfin-tuna.jpg","Whole yellowfin tuna — line-caught, sashimi grade."],
+  [3,"Longtail Tuna","حور","تونة طويلة الذيل","青干金枪鱼","Thunnus tonggol","0302.35","w","10-20kg, 20-30kg, 30kg+","A","Oct","Apr","tuna","seafood-03-longtail-tuna.jpg","Whole longtail tuna — lean, firm red flesh."],
+  [4,"Bigeye Tuna","حنّون","تونة كبيرة العين","大眼金枪鱼","Thunnus obesus","0302.39","w","20-40kg, 40-60kg, 60kg+","A","Oct","Apr","tuna","seafood-04-bigeye-tuna.jpg","Whole bigeye tuna — rich, deep-red sashimi grade."],
+  [5,"Skipjack Tuna","غزال / بونيتو","تونة وثّابة","鲣鱼","Katsuwonus pelamis","0302.31","w","1-2kg, 2-3kg, 3-5kg, 5kg+","A","May","Sep","tuna","seafood-05-skipjack-tuna.jpg","Whole skipjack tuna — bold flavour, bonito & tataki."],
+  [6,"Kingfish / Spanish Mackerel","خبط","إسقمري ملكي","马鲛鱼","Scomberomorus commerson","0302.69","w","2-4kg, 4-6kg, 6kg+","A","Jan","May","pelagic","seafood-06-spanish-mackerel.jpg","Whole Spanish mackerel — firm, oily, grill-ready."],
+  [7,"Mahi Mahi / Dorado","أنفالوس / دلفين","سمك الدلفين","鲯鳅","Coryphaena hippurus","0302.89","w","1-2kg, 2-3kg, 3-5kg, 5kg+","A","May","Oct","pelagic","seafood-07-mahi-mahi.jpg","Whole mahi-mahi — mild, lean, vibrant skin."],
+  [8,"Barracuda","جَدّ","براكودا / سمك السيف المسنن","金梭鱼","Sphyraena barracuda","0302.89","w","2-4kg, 4-6kg, 6kg+","A","May","Oct","pelagic","seafood-08-barracuda.jpg","Whole barracuda — firm white flesh, steaks & curry."],
+  [9,"Cobia","كوبيه / سمك أسود","كوبيه أسود","军曹鱼","Rachycentron canadum","0302.89","w","3-6kg, 6-10kg, 10kg+","S","May","Oct","pelagic","seafood-09-cobia.jpg","Whole cobia — buttery, steak-cut friendly."],
+  [10,"Grouper / Hamour","هامور","هامور","石斑鱼","Epinephelus sp.","0302.89","w","1-2kg, 2-4kg, 4kg+","A","Oct","Apr","demersal","seafood-10-grouper.jpg","Whole grouper — delicate white flesh, premium banquet fish."],
+  [11,"Emperor Fish / Sherry","شِري / جِمة","شري / إمبراطور","龙占鱼","Lethrinus sp.","0302.89","w","0.5-1kg, 1-2kg, 2kg+","A","Sep","Mar","demersal","seafood-11-emperor.jpg","Whole emperor — sweet firm flesh, reef favourite."],
+  [12,"Red Snapper","شِري أحمر / سنابور","شِري أحمر","红鲷鱼","Lutjanus sp.","0302.89","w","1-2kg, 2-4kg, 4kg+","A","Oct","Apr","demersal","seafood-12-red-snapper.jpg","Whole red snapper — classic premium table fish."],
+  [13,"Malabar Blood Snapper","شِري مالاباري","شِري ملاباري","马拉巴血鲷","Lutjanus malabaricus","0302.89","w","2-4kg, 4-6kg, 6kg+","A","Oct","Apr","demersal","seafood-13-malabar-blood-snapper.jpg","Whole Malabar blood snapper — deep-red, fine-flaked."],
+  [14,"Sea Bream / Black-Seabream","صافي / نقور","أسهم بحر / دنيس","黑鲷 / 鲷鱼","Acanthopagrus sp.","0302.89","w","0.5-1kg, 1-2kg, 2kg+","A","Oct","Apr","demersal","seafood-14-black-sea-bream.jpg","Whole black sea bream — firm, savoury, whole-grill."],
+  [15,"King Soldierbream / Kof","كوف","كوف ملكي","长棘鲷","Argyrops spinifer","0302.89","w","0.5-1kg, 1-2kg, 2kg+","A","Oct","Apr","demersal","seafood-15-longspine-seabream.jpg","Whole longspine seabream — rosy, delicate, steam-ready."],
+  [16,"Silver Pomfret","زبيدي فضي","زبيدي فضي","银鲳","Pampus argenteus","0302.89","w","0.3-0.5kg, 0.5-0.8kg, 0.8kg+","S","Oct","Mar","demersal","seafood-16-silver-pomfret.jpg","Whole silver pomfret — fine-boned, buttery, pan-fry."],
+  [17,"Black Pomfret","زبيدي أسود","زبيدي أسود","黑鲳","Parastromateus niger","0302.89","w","0.5-1kg, 1-2kg, 2kg+","S","Oct","Mar","demersal","seafood-17-black-pomfret.jpg","Whole black pomfret — meaty, rich, grill & fry."],
+  [18,"Grey Mullet","بياح / غنّام","بياح رمادي","灰鲻鱼","Mugil cephalus","0302.89","w","1-2kg, 2-4kg, 4kg+","A","Sep","Feb","demersal","seafood-18-grey-mullet.jpg","Whole grey mullet — firm, full-flavoured, coastal staple."],
+  [19,"Catfish (Marine)","قِراض / سمك البقر","قِراض بحري","海鲶鱼","Arius sp.","0302.89","w","1-2kg, 2-4kg, 4kg+","A","Oct","Mar","demersal","seafood-19-sea-catfish.jpg","Whole sea catfish — soft, gelatinous, curry & stew."],
+  [20,"Lizardfish","أم رقيبة","سمك السحالي","狗母鱼","Saurida sp.","0302.89","w","0.2-0.4kg, 0.4-0.6kg, 0.6kg+","A","Sep","Mar","demersal","seafood-20-lizardfish.jpg","Whole lizardfish — surimi & fish-ball base, firm."],
+  [21,"Indian Oil Sardine","سردين هندي","سردين هندي","印度油鲱","Sardinella longiceps","0302.41","p","8/10, 10/12, 12/15, 15/20","S","May","Oct","pelagic","seafood-21-indian-oil-sardine.jpg","Whole Indian oil sardine — oily, omega-rich, fry & can."],
+  [22,"Goldstripe Sardinella","سردين ذهبي الخط","سردين ذهبي الخط","金带小沙丁鱼","Sardinella gibbosa","0302.41","p","15/20, 20/30, 30/40","S","May","Oct","pelagic","seafood-22-goldstripe-sardinella.jpg","Whole goldstripe sardinella — small, oily, fry & bait."],
+  [23,"Indian Mackerel","يرفة / لافاني","إسقمري هندي","印度鲭鱼","Rastrelliger kanagurta","0302.70","p","4/6, 6/8, 8/10, 10/12","A","May","Sep","pelagic","seafood-23-indian-mackerel.jpg","Whole Indian mackerel — oily, flavourful, grill & fry."],
+  [24,"Horse Mackerel","جاميس","جاموس بحري","竹荚鱼","Trachurus sp.","0302.89","p","4/6, 6/8, 8/10, 10/12","A","May","Sep","pelagic","seafood-24-horse-mackerel-scad.jpg","Whole horse mackerel / scad — lean, umami, fry & salt-grill."],
+  [25,"Yellowstripe Scad","مورو / سكاد","سكاد أصفر الخط","黄条竹夹鱼","Decapterus sp.","0302.89","p","10/12, 12/14, 14/16, 16/20","S","May","Sep","pelagic","seafood-25-yellowstripe-scad.jpg","Whole yellowstripe scad — small, sweet, fry & crisp."],
+  [26,"Cuttlefish","حبار","حبار","墨鱼","Sepia pharaonis","0307.41","w","0.5-1kg, 1-2kg, 2kg+","A","Oct","Apr","cephalopod","seafood-26-cuttlefish.jpg","Whole cuttlefish — sweet, tender, stir-fry & grill."],
+  [27,"Squid / Calamari","نَغار / حبار","حبار / كالاماري","鱿鱼","Sepioteuthis sp.","0307.42","w","0.3-0.5kg, 0.5-1kg, 1kg+","A","Oct","Apr","cephalopod","seafood-27-squid.jpg","Whole squid — clean, mild, rings & whole-grill."],
+  [28,"Octopus","قَدّ / أخطبوط","أخطبوط","章鱼","Octopus vulgaris","0307.51","w","1-2kg, 2-3kg, 3kg+","A","Oct","Apr","cephalopod","seafood-28-octopus.jpg","Whole octopus — tender, char-grill & salad."],
+  [29,"Spiny Lobster / Rock Lobster","غِلاس","جراد البحر الشوكي","岩龙虾","Panulirus ornatus","0306.11","t","0.3-0.5kg, 0.5-0.8kg, 0.8kg+","S","Oct","Apr","cephalopod","seafood-29-rock-lobster.jpg","Whole rock lobster — sweet tail meat, premium shell-on."],
+  [30,"Slipper Lobster","غِلاس طين / مجذاف","جراد البحر المجدافي","拖鞋龙虾","Thenus sp.","0306.12","t","0.2-0.4kg, 0.4-0.6kg, 0.6kg+","S","Oct","Apr","cephalopod","seafood-30-slipper-lobster.jpg","Whole slipper lobster — firm sweet meat, flat-shell."],
+  [31,"Tiger Prawn","جمبري / روبيان","روبيان أحمر","虎虾","Penaeus monodon","0306.17","p","10/15, 15/20, 20/30, 30/40","S","Sep","Nov","cephalopod","seafood-31-tiger-prawn.jpg","Whole tiger prawn — jumbo, striped, grill & curry."],
+  [32,"White Shrimp","روبيان أبيض","روبيان أبيض","白虾","Penaeus indicus","0306.17","p","20/30, 30/40, 40/50, 50/60","A","Sep","Nov","cephalopod","seafood-32-white-prawn.jpg","Whole white prawn — sweet, versatile, all-purpose."],
+  [33,"Ribbon Fish","سمك الحزام / سيف","سمك الشريط","带鱼","Trichiurus lepturus","0303.89","w","0.3-0.5kg, 0.5-0.8kg, 0.8kg+","A","Oct","Mar","demersal","seafood-33-ribbonfish-hairtail.jpg","Whole ribbonfish / hairtail — silvery, firm, fry & braise."],
+  [34,"Wahoo","واوه / كمارة","واهاو","刺鲅","Acanthocybium solandri","0302.89","w","10-20kg, 20-30kg, 30kg+","S","May","Oct","pelagic","seafood-34-cero-spotted-seer.jpg","Whole cero / spotted seer — meaty, steaks & curry."],
+  [35,"Sailfish / Marlin","شُراع / مرلين","سمك الشراع / مارلين","旗鱼","Istiophorus sp.","0302.89","w","20-40kg, 40-60kg, 60kg+","S","Oct","Apr","pelagic","seafood-35-sailfish.jpg","Whole sailfish — firm, steak-cut, grill & smoke."]
+];
 
-export const CATEGORIES: { id: Category; label_en: string; label_ar: string; label_zh: string }[] = [
-  { id: "pelagic", label_en: "Pelagic", label_ar: "أسماك سطحية", label_zh: "远洋鱼" },
-  { id: "demersal", label_en: "Demersal & Reef", label_ar: "قاعية وصخرية", label_zh: "底层与礁石鱼" },
-  { id: "cephalopod", label_en: "Cephalopods & Crustaceans", label_ar: "رأسيات القدم والقشريات", label_zh: "头足类与甲壳类" },
+export const SPECIES: Species[] = items.map(
+  ([id, name_en, name_ar_om, name_ar, name_zh, scientific, hs_code, st, sizes, status_code, season_start, season_end, category, filename, caption]) => ({
+    id,
+    slug: slugify(name_en),
+    name_en,
+    name_ar_om,
+    name_ar,
+    name_zh,
+    scientific,
+    hs_code,
+    size_type: ST[st],
+    sizes,
+    status: S[status_code],
+    season_start,
+    season_end,
+    category,
+    image: `/product-images/${filename}`,
+    alt: `Fresh whole ${name_en} (${name_zh}) — overhead studio product photo`,
+    caption,
+    origin: "Oman",
+    freezingMethod: freezingMethodByCategory[category] || "IQF / Block Frozen",
+    grade: "Export Grade A",
+  })
+);
+
+export const CATEGORIES = [
+  { id: "pelagic", label_en: "Pelagic", label_ar: "أسماك سطحية", label_zh: "远洋鱼类" },
+  { id: "demersal", label_en: "Demersal & Reef", label_ar: "قاعية وصخرية", label_zh: "底栖与礁石鱼" },
+  { id: "cephalopod", label_en: "Cephalopods & Crustaceans", label_ar: "الرأسقدميات والقشريات", label_zh: "头足类与甲壳类" },
   { id: "tuna", label_en: "Tuna", label_ar: "تونة", label_zh: "金枪鱼" },
-];
+] as const;

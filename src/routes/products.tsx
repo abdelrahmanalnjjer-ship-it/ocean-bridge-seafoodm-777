@@ -1,35 +1,25 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, LayoutGrid, Table2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { useI18n } from "@/i18n/i18n";
-import { SPECIES, CATEGORIES, type Category, type Species } from "@/data/species";
-
-const CATEGORY_IMAGES: Record<Category, string> = {
-  pelagic: "/product-images/pelagic.png",
-  tuna: "/product-images/cephalopods.png",
-  demersal: "/product-images/demersal.png",
-  cephalopod: "/product-images/crustaceans.png",
-};
+import { SPECIES, CATEGORIES, type Species } from "@/data/species";
 
 export const Route = createFileRoute("/products")({
   head: () => ({
     meta: [
-      { title: "The Institutional Trade Matrix — Ocean Bridge Trade" },
-      { name: "description", content: "35 species across Pelagic, Demersal & Reef, Cephalopods & Crustaceans and Tuna. Season-aware, transaction-specific supply." },
-      { property: "og:title", content: "The Institutional Trade Matrix" },
-      { property: "og:description", content: "Structured seafood supply from Oman: 35 species, four categories, full compliance." },
+      { title: "Institutional Seafood Portfolio — Ocean Bridge Trade" },
+      { name: "description", content: "A premium B2B seafood portfolio with local product imagery, origin-verified specifications, and direct inquiry access for processors and importers." },
+      { property: "og:title", content: "Institutional Seafood Portfolio" },
+      { property: "og:description", content: "Premium B2B seafood grid with local product photography and direct inquiry actions." },
     ],
   }),
   component: ProductsPage,
 });
 
-type View = "grid" | "terminal";
-
 function ProductsPage() {
   const { t, locale } = useI18n();
-  const [category, setCategory] = useState<Category>("pelagic");
-  const [view, setView] = useState<View>("grid");
+  const [category, setCategory] = useState<"pelagic" | "tuna" | "demersal" | "cephalopod">("pelagic");
 
   const filtered = useMemo(() => SPECIES.filter((s) => s.category === category), [category]);
 
@@ -37,30 +27,47 @@ function ProductsPage() {
     locale === "ar" ? s.name_ar : locale === "zh" ? s.name_zh : s.name_en;
 
   return (
-    <div>
-      {/* Header */}
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 pt-24 pb-16">
-          <div className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground mb-6">Catalogue · 35 Species</div>
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05] max-w-4xl">
+    <div className="bg-[radial-gradient(circle_at_top,rgba(30,41,59,0.44),transparent_42%),linear-gradient(180deg,rgba(2,6,23,0.08),transparent_12%)]">
+      <section className="relative overflow-hidden border-b border-border/60">
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_48%,rgba(30,41,59,0.92))]" />
+        <div className="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_20%_10%,rgba(51,65,85,0.45),transparent_28%),radial-gradient(circle_at_80%_0%,rgba(2,132,199,0.18),transparent_22%)]" />
+        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-28 pb-18 lg:pb-24">
+          <div className="inline-flex items-center gap-3 border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.35em] text-white/70 backdrop-blur-md">
+            Catalogue · 35 SKU
+          </div>
+          <h1 className="mt-8 font-display text-4xl md:text-6xl lg:text-7xl leading-[1.03] max-w-4xl text-white">
             {t("products.title")}
           </h1>
-          <p className="mt-8 max-w-2xl text-muted-foreground">{t("products.sub")}</p>
+          <p className="mt-7 max-w-2xl text-sm md:text-base text-slate-300/90">
+            {t("products.sub")}
+          </p>
+
+          <div className="mt-10 grid gap-3 sm:grid-cols-3 max-w-3xl">
+            {[
+              { k: "Origin-verified", v: "Oman supply chain" },
+              { k: "Premium format", v: "Local product imagery" },
+              { k: "Direct action", v: "B2B inquiry button" },
+            ].map((item) => (
+              <div key={item.k} className="border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-md">
+                <div className="text-[10px] uppercase tracking-[0.25em] text-white/55">{item.k}</div>
+                <div className="mt-2 text-sm text-white">{item.v}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Controls */}
-      <section className="section-slate sticky top-16 z-40 border-b border-border backdrop-blur-xl">
+      <section className="sticky top-16 z-40 border-b border-border/60 bg-[#0f172a]/80 backdrop-blur-xl">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-1 flex-wrap">
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setCategory(c.id)}
-                className={`px-4 py-2 text-xs uppercase tracking-[0.2em] transition-all border ${
+                className={`px-4 py-2 text-xs uppercase tracking-[0.22em] transition-all border ${
                   category === c.id
-                    ? "border-brand-marine text-white bg-[color:var(--color-brand-accent)]/15"
-                    : "border-transparent text-muted-foreground hover:text-white"
+                    ? "border-[color:var(--color-brand-accent)] text-white bg-[color:var(--color-brand-accent)]/12"
+                    : "border-transparent text-slate-400 hover:text-white"
                 }`}
                 style={category === c.id ? { borderColor: "var(--color-brand-accent)" } : undefined}
               >
@@ -68,142 +75,106 @@ function ProductsPage() {
               </button>
             ))}
           </div>
-          <div className="flex items-center border border-border">
-            <button
-              onClick={() => setView("grid")}
-              className={`flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-colors ${
-                view === "grid" ? "text-white" : "text-muted-foreground hover:text-white"
-              }`}
-              style={view === "grid" ? { backgroundColor: "var(--color-brand-accent)" } : undefined}
-            >
-              <LayoutGrid className="size-3.5" /> {t("products.view.grid")}
-            </button>
-            <button
-              onClick={() => setView("terminal")}
-              className={`flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-colors ${
-                view === "terminal" ? "text-white" : "text-muted-foreground hover:text-white"
-              }`}
-              style={view === "terminal" ? { backgroundColor: "var(--color-brand-accent)" } : undefined}
-            >
-              <Table2 className="size-3.5" /> {t("products.view.terminal")}
-            </button>
+          <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">
+            {filtered.length} items shown
           </div>
         </div>
       </section>
 
-      {/* Content */}
       <section>
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
-          <AnimatePresence mode="wait">
-            {view === "grid" ? (
-              <motion.div
-                key={"grid-" + category}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 lg:py-20">
+          <motion.div
+            key={category}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+          >
+            {filtered.map((s, index) => (
+              <motion.article
+                key={s.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.45, delay: index * 0.03 }}
               >
-                {filtered.map((s) => (
-                  <SpeciesCard key={s.id} s={s} name={nameFor(s)} t={t} image={CATEGORY_IMAGES[s.category]} />
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                key={"term-" + category}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <TerminalTable rows={filtered} nameFor={nameFor} t={t} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <SpeciesCard
+                  s={s}
+                  name={nameFor(s)}
+                  categoryLabel={locale === "ar" ? CATEGORIES.find((c) => c.id === s.category)?.label_ar ?? s.category : locale === "zh" ? CATEGORIES.find((c) => c.id === s.category)?.label_zh ?? s.category : CATEGORIES.find((c) => c.id === s.category)?.label_en ?? s.category}
+                  image={s.image}
+                  t={t}
+                />
+              </motion.article>
+            ))}
+          </motion.div>
         </div>
       </section>
     </div>
   );
 }
 
-function SpeciesCard({ s, name, t, image }: { s: Species; name: string; t: (k: string) => string; image: string }) {
+function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: string; categoryLabel: string; image: string; t: (k: string) => string }) {
   return (
-    <div className="group relative border border-border card-lift bg-card overflow-hidden">
-      <div className="relative overflow-hidden">
-        <div className="aspect-video overflow-hidden bg-brand-black">
-          <img src={image} alt={name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+    <div className="group relative h-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_56%,rgba(30,41,59,0.98))] shadow-[0_20px_80px_rgba(2,6,23,0.35)] transition-transform duration-300 hover:-translate-y-1">
+      <div className="relative overflow-hidden border-b border-white/10">
+        <div className="aspect-[4/3] overflow-hidden bg-slate-950">
+          <img
+            src={image}
+            alt={name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
         </div>
-        <div className="absolute top-3 right-3 font-mono text-[10px] px-2 py-1 bg-background/70 backdrop-blur-md border border-border/60">
-          {s.status === "Available" ? "● AVAILABLE" : "○ SEASONAL"}
+        <div className="absolute left-4 top-4 inline-flex items-center gap-2 border border-white/12 bg-slate-950/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-white/80 backdrop-blur-md">
+          {s.status === "Available" ? "Available" : "Seasonal"}
         </div>
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.9))]" />
       </div>
-      <div className="p-6">
-        <div className="font-display text-2xl leading-tight text-white">{name}</div>
-        <div className="font-mono text-[11px] italic text-muted-foreground mt-1">{s.scientific}</div>
 
-        <div className="mt-6 grid grid-cols-3 gap-2">
-          <Tag label={t("products.season")} value={`${s.season_start}–${s.season_end}`} />
-          <Tag label={t("products.size")} value={s.sizes[0]} />
-          <Tag label={t("products.hs")} value={s.hs_code} />
+      <div className="p-6 lg:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">{categoryLabel}</div>
+            <div className="mt-2 font-display text-2xl text-white leading-tight">{name}</div>
+            <div className="mt-1 text-[11px] italic text-slate-400">{s.scientific}</div>
+          </div>
+          <div className="text-right text-[10px] uppercase tracking-[0.22em] text-slate-400">
+            #{String(s.id).padStart(2, "0")}
+          </div>
         </div>
 
-        <div className="mt-6 h-px w-full bg-border/60" />
-        <button className="mt-4 w-full text-left text-xs uppercase tracking-[0.25em] text-muted-foreground group-hover:text-white flex items-center justify-between transition-colors">
-          <span>{t("products.request")}</span>
-          <ArrowUpRight className="size-3.5 group-hover:rotate-45 transition-transform" />
-        </button>
+        <div className="mt-6 grid gap-2 sm:grid-cols-3">
+          <SpecTag label={t("products.origin")} value={s.origin} />
+          <SpecTag label={t("products.freeze")} value={s.freezingMethod} />
+          <SpecTag label={t("products.grade")} value={s.grade} />
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">
+          <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.sizes.split(",")[0].trim()}</span>
+          <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.hs_code}</span>
+          <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.status}</span>
+        </div>
+
+        <Link
+          to="/contact"
+          aria-label={`B2B inquiry for ${name}`}
+          className="group mt-6 inline-flex w-full items-center justify-center gap-2 border border-[color:var(--color-brand-accent)]/55 bg-[color:var(--color-brand-accent)]/12 px-4 py-3 text-xs uppercase tracking-[0.24em] text-white transition-colors hover:bg-[color:var(--color-brand-accent)]/20"
+        >
+          {t("products.initiate")} <ArrowUpRight className="size-3.5 transition-transform group-hover:rotate-45" />
+        </Link>
       </div>
-      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_50%_0%,rgba(47,79,103,0.22),transparent_70%)]" />
+
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_40%)]" />
     </div>
   );
 }
 
-function Tag({ label, value }: { label: string; value: string }) {
+function SpecTag({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border border-border/60 px-2 py-1.5">
-      <div className="text-[9px] uppercase tracking-widest text-muted-foreground">{label}</div>
-      <div className="font-mono text-[11px] mt-0.5 truncate">{value}</div>
-    </div>
-  );
-}
-
-function TerminalTable({ rows, nameFor, t }: { rows: Species[]; nameFor: (s: Species) => string; t: (k: string) => string }) {
-  return (
-    <div className="border border-border/60 overflow-x-auto font-mono text-[12px]">
-      <table className="w-full min-w-[900px]">
-        <thead className="bg-card/60 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          <tr>
-            <th className="text-left px-4 py-3 font-normal">Species</th>
-            <th className="text-left px-4 py-3 font-normal">Scientific</th>
-            <th className="text-left px-4 py-3 font-normal">Size / Grades</th>
-            <th className="text-left px-4 py-3 font-normal">HS</th>
-            <th className="text-left px-4 py-3 font-normal">Season</th>
-            <th className="text-left px-4 py-3 font-normal">Status</th>
-            <th className="text-right px-4 py-3 font-normal">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((s, i) => (
-            <tr key={s.id} className={`border-t border-border/60 ${i % 2 === 0 ? "bg-background" : "bg-card/20"} hover:bg-accent/10 transition-colors`}>
-              <td className="px-4 py-3 text-foreground">{nameFor(s)}</td>
-              <td className="px-4 py-3 italic text-muted-foreground">{s.scientific}</td>
-              <td className="px-4 py-3 text-muted-foreground">{s.sizes.join(" · ")}</td>
-              <td className="px-4 py-3 text-muted-foreground">{s.hs_code}</td>
-              <td className="px-4 py-3 text-muted-foreground">{s.season_start}–{s.season_end}</td>
-              <td className="px-4 py-3">
-                <span className={s.status === "Available" ? "text-foreground" : "text-accent-foreground/70"}>
-                  {s.status === "Available" ? "● AVAILABLE" : "○ SEASONAL"}
-                </span>
-              </td>
-              <td className="px-4 py-3 text-right">
-                <button className="text-[10px] uppercase tracking-[0.2em] hover:text-white text-muted-foreground inline-flex items-center gap-1">
-                  {t("products.initiate")} <ArrowUpRight className="size-3" />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">
+      <div className="text-[9px] uppercase tracking-[0.26em] text-slate-400">{label}</div>
+      <div className="mt-1 text-[12px] text-white truncate">{value}</div>
     </div>
   );
 }
