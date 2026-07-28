@@ -114,6 +114,42 @@ function ProductsPage() {
   );
 }
 
+const MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function renderMonthIndicator(start: string, end: string) {
+  const monthIndex = (m: string) => MONTHS_SHORT.findIndex((x) => x === m);
+  const si = monthIndex(start);
+  const ei = monthIndex(end);
+  if (si === -1 || ei === -1) return null;
+
+  const isYearRound = si === ei;
+  const active = new Set<number>();
+
+  if (isYearRound) {
+    for (let i = 0; i < 12; i++) active.add(i);
+  } else if (ei > si) {
+    // Normal range: May-Oct → months 4-9
+    for (let i = si; i <= ei; i++) active.add(i);
+  } else {
+    // Wrap-around: Oct-Apr → months 9-11 + 0-3
+    for (let i = si; i < 12; i++) active.add(i);
+    for (let i = 0; i <= ei; i++) active.add(i);
+  }
+
+  return (
+    <div className="flex items-center gap-[2px]" role="img" aria-label={`Available ${start}–${end}`}>
+      {Array.from({ length: 12 }, (_, i) => (
+        <span
+          key={i}
+          className={`block h-2.5 w-[6px] rounded-sm transition-colors ${
+            active.has(i) ? "bg-sky-600" : "bg-slate-600/40"
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
+
 function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: string; categoryLabel: string; image: string; t: (k: string) => string }) {
   return (
     <div className="group relative h-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_56%,rgba(30,41,59,0.98))] shadow-[0_20px_80px_rgba(2,6,23,0.35)] transition-transform duration-300 hover:-translate-y-1">
@@ -126,8 +162,8 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
-        <div className="absolute left-4 top-4 inline-flex items-center gap-2 border border-white/12 bg-slate-950/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-white/80 backdrop-blur-md">
-          {s.status === "Available" ? "Available" : "Seasonal"}
+        <div className="absolute left-4 top-4 flex items-center gap-1.5 border border-white/12 bg-slate-950/70 px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-white/80 backdrop-blur-md" aria-label={`Available ${s.season_start}–${s.season_end}`}>
+          {renderMonthIndicator(s.season_start, s.season_end)}
         </div>
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.9))]" />
       </div>
@@ -144,16 +180,13 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
           </div>
         </div>
 
-        <div className="mt-6 grid gap-2 sm:grid-cols-3">
+        <div className="mt-6 grid gap-2 sm:grid-cols-2">
           <SpecTag label={t("products.origin")} value={s.origin} />
-          <SpecTag label={t("products.freeze")} value={s.freezingMethod} />
           <SpecTag label={t("products.grade")} value={s.grade} />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">
           <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.sizes.split(",")[0].trim()}</span>
-          <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.hs_code}</span>
-          <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.status}</span>
         </div>
 
         <Link

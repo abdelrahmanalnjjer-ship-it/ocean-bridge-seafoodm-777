@@ -1,0 +1,12 @@
+correct_slot,source_kind,source_ref,confidence,chat_frame,human_ok,note
+2,slot,1,high,14,,"Yellowfin Tuna — current slot 01 file goes to slot 02"
+26,slot,24,certain,37,,"Cuttlefish — current slot 24 file goes to slot 26"
+27,slot,25,certain,38,,"Squid — current slot 25 file goes to slot 27"
+25,slot,27,high,40,,"Yellowstripe Scad — current slot 27 file goes to slot 25"
+31,slot,30,certain,43,,"Tiger Prawn — current slot 30 file goes to slot 31"
+32,slot,31,certain,44,,"White Prawn — current slot 31 file goes to slot 32"
+35,slot,33,certain,46,,"Sailfish — current slot 33 file goes to slot 35"
+29,slot,34,certain,47,,"Rock Lobster — current slot 34 file goes to slot 29"
+30,slot,35,certain,48,,"Slipper Lobster — current slot 35 file goes to slot 30"
+33,raw,1784579392 (1).png,high,49,,"Ribbonfish — raw PNG 36th gen is a good Ribbonfish"
+
