@@ -134,19 +134,30 @@ function renderMonthIndicator(start: string, end: string) {
     for (let i = 0; i <= ei; i++) active.add(i);
   }
 
-  const label = isYearRound ? "Year-Round" : `In Season`;
-
   return (
-    <div className="flex items-center gap-3" role="img" aria-label={`Available ${start}–${end}`}>
-      <span className="text-[9px] uppercase tracking-[0.22em] text-white/50 whitespace-nowrap">{label}</span>
-      <div className="flex-1 flex items-center gap-[3px] bg-white/5 rounded-sm px-2 py-1.5">
+    <div className="flex flex-col gap-1.5" role="img" aria-label={`Available ${start}–${end}${isYearRound ? " (Year-Round)" : ""}`}>
+      <div className="flex items-center justify-between">
+        <span className="text-[9px] uppercase tracking-[0.22em] text-white/50">
+          {isYearRound ? "Year-Round" : `Season: ${start} – ${end}`}
+        </span>
+        <span className="text-[9px] uppercase tracking-[0.22em] text-white/30">
+          {isYearRound ? "All months" : `${active.size} months`}
+        </span>
+      </div>
+      <div className="flex items-center gap-[2px] bg-white/5 rounded-sm px-2 py-1.5">
         {Array.from({ length: 12 }, (_, i) => (
-          <span
-            key={i}
-            className={`block h-4 w-[7px] rounded-[2px] transition-colors ${
-              active.has(i) ? "bg-[color:var(--color-brand-accent)]" : "bg-white/10"
-            }`}
-          />
+          <div key={i} className="flex-1 flex flex-col items-center gap-0.5 min-w-0">
+            <span
+              className={`block h-3 w-full rounded-[1px] transition-colors ${
+                active.has(i) ? "bg-[color:var(--color-brand-accent)]" : "bg-white/8"
+              }`}
+            />
+            <span className={`text-[7px] leading-tight font-medium ${
+              active.has(i) ? "text-white/70" : "text-white/25"
+            }`}>
+              {MONTHS_SHORT[i]}
+            </span>
+          </div>
         ))}
       </div>
     </div>

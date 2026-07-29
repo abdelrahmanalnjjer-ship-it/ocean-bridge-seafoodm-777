@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 const HARBOR_BOATS_IMAGE = "/website-images/harbor-boats.jpg";
 const FISHERMEN_IMAGE = "/website-images/fishermen.jpg";
 const PORT_CRANES_IMAGE = "/website-images/port-cranes.jpg";
+const HARBOR_DUSK_IMAGE = "/website-images/harbor-dusk.jpg";
+const DHOW_DETAIL_IMAGE = "/website-images/dhow-detail.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -150,6 +152,34 @@ function AboutPage() {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[21/9]">
             <img src={PORT_CRANES_IMAGE} alt="Port export infrastructure" className="h-full w-full object-cover object-[50%_35%]" />
           </motion.div>
+        </div>
+      </section>
+
+      {/* Additional Oman imagery — harbor dusk and dhow detail */}
+      <section className="section-slate border-t border-border">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
+          <div className="eyebrow mb-5">Oman's Coast</div>
+          <h2 className="h-display h-display-md max-w-3xl mb-16">The waters and vessels that define our origin.</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+              className="media-frame aspect-[4/3]"
+            >
+              <img src={HARBOR_DUSK_IMAGE} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+              className="media-frame aspect-[4/3]"
+            >
+              <img src={DHOW_DETAIL_IMAGE} alt="Traditional Omani dhow" className="h-full w-full object-cover" />
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>

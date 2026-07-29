@@ -12,33 +12,33 @@ const HERO_SLIDES = [
     src: "/videos/9031955-uhd_3840_2160_30fps.mp4",
     kicker: "Origin · Muscat Coastline",
     headline: "Oman-origin seafood, engineered for global buyers.",
+    pos: "object-cover",
   },
   {
     src: "/videos/6618035-uhd_3840_2160_24fps(1) (online-video-cutter.com) (2).mp4",
     kicker: "Compliance · Regulatory Pre-Clearance",
     headline: "Every shipment cleared before it leaves the dock.",
+    pos: "object-cover",
   },
   {
     src: "/videos/Untitled design.mp4",
     kicker: "Logistics · Cold-Chain Integrity",
     headline: "From Oman's coast to your processing line — verified.",
+    pos: "object-contain",
   },
 ];
-const HERO_POSTER = "/website-images/hero-poster.jpg";
+
 const CATEGORY_IMAGES = [
   "/product-images/pelagic.png",
   "/product-images/demersal.png",
   "/product-images/cephalopods.png",
   "/product-images/crustaceans.png",
 ];
-/* Aspect ratios vary per shot so each frame keeps its subject; the first
- * card spans two columns so all five align to a consistent row height. */
-const VLOG_CARDS = [
-  { title: "Origin Waters — Muscat Coastline", date: "Jul 2026", image: "/website-images/harbor-boats.jpg", aspect: "aspect-[16/9]", pos: "object-center" },
-  { title: "Qingdao Buyer Delegation Concludes Muscat Visit", date: "Jun 2026", image: "/website-images/harbor-dusk.jpg", aspect: "aspect-[16/9]", pos: "object-[50%_38%]" },
-  { title: "Salalah Kingfish Season — Volume & Grade Outlook", date: "Apr 2026", image: "/website-images/fishermen.jpg", aspect: "aspect-[16/9]", pos: "object-[50%_22%]" },
-  { title: "GACC CIFER Facility Walkthrough", date: "Mar 2026", image: "/website-images/port-cranes.jpg", aspect: "aspect-[16/9]", pos: "object-[50%_35%]" },
-  { title: "Dhow Fleet — Traditional Landing at Dawn", date: "Feb 2026", image: "/website-images/dhow-detail.jpg", aspect: "aspect-[16/9]", pos: "object-[50%_30%]" },
+/* Fix 4: Replace stock photo VLOG_CARDS with "Coming soon" placeholder entries */
+const VLOG_PLACEHOLDERS = [
+  { title: "Coming soon — origin stories, market updates, and field dispatches.", icon: "📝" },
+  { title: "Real content being prepared for Q3 2026.", icon: "🎬" },
+  { title: "Subscribe to be notified when new posts publish.", icon: "🔔" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -57,6 +57,18 @@ const MARKETS = [
   { region: "European Union", body: "TRACES documentation, IUU Catch Certificates, third-country establishment listing." },
   { region: "Gulf Cooperation Council", body: "SFDA / ESMA / GSO standards, halal certification oversight, FASAH clearance." },
   { region: "United States", body: "FDA Seafood HACCP (21 CFR 123) and Foreign Supplier Verification Program compliance." },
+];
+
+/* Fix 5: Certification badges for the scrolling ticker */
+const CERT_BADGES = [
+  { label: "GACC", full: "China GACC Decree 248", color: "border-brand-marine" },
+  { label: "TRACES", full: "EU TRACES / IUU", color: "border-brand-ocean" },
+  { label: "SFDA", full: "SFDA / GSO Standards", color: "border-brand-olive" },
+  { label: "FDA HACCP", full: "FDA Seafood HACCP", color: "border-brand-sand" },
+  { label: "FSVP", full: "Foreign Supplier Verification", color: "border-brand-marine" },
+  { label: "ESMA", full: "ESMA Conformity", color: "border-brand-ocean" },
+  { label: "GSO", full: "GSO Standardization", color: "border-brand-olive" },
+  { label: "HALAL", full: "Halal Certification", color: "border-brand-sand" },
 ];
 
 const STATS = [
@@ -92,8 +104,7 @@ function Index() {
               <video
                 ref={videoRef}
                 src={active.src}
-                poster={HERO_POSTER}
-                className="h-full w-full object-cover opacity-70"
+                className={`h-full w-full opacity-70 ${active.pos === "object-contain" ? "object-contain bg-brand-black" : "object-cover"}`}
                 autoPlay
                 muted
                 playsInline
@@ -282,10 +293,10 @@ function Index() {
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-16">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
             >
               <div className="eyebrow mb-5">Markets & Compliance</div>
               <h2 className="h-display h-display-md">We've already cleared the compliance maze.</h2>
@@ -297,10 +308,10 @@ function Index() {
               {MARKETS.map((g, i) => (
                 <motion.div
                   key={g.region}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
                   className="py-6 grid md:grid-cols-[220px_1fr] gap-6 items-start"
                 >
                   <div className="font-display text-xl text-white">{g.region}</div>
@@ -312,7 +323,59 @@ function Index() {
         </div>
       </section>
 
-      {/* VLOG — editorial grid: lead story spans two columns, frames aligned */}
+      {/* CERTIFICATION TICKER — auto-scrolling compliance badges */}
+      <section className="border-t border-border/60 bg-brand-black">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center gap-4 mb-8"
+          >
+            <div className="eyebrow-bare text-[10px] uppercase tracking-[0.32em] text-brand-marine font-semibold whitespace-nowrap">
+              Certifications & Compliance
+            </div>
+            <span className="h-px flex-1 bg-white/10" />
+          </motion.div>
+          <div className="marquee-track">
+            <div className="marquee-content">
+              {/* First copy */}
+              {CERT_BADGES.map((b) => (
+                <div
+                  key={b.label}
+                  className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
+                >
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/80">
+                    {b.label.slice(0, 3)}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-white whitespace-nowrap">{b.label}</div>
+                    <div className="text-[10px] text-white/50 whitespace-nowrap">{b.full}</div>
+                  </div>
+                </div>
+              ))}
+              {/* Duplicate for seamless loop */}
+              {CERT_BADGES.map((b) => (
+                <div
+                  key={`dup-${b.label}`}
+                  className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
+                >
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/80">
+                    {b.label.slice(0, 3)}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-white whitespace-nowrap">{b.label}</div>
+                    <div className="text-[10px] text-white/50 whitespace-nowrap">{b.full}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* VLOG — placeholder cards until real content is published */}
       <section className="border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="flex items-end justify-between mb-14 gap-6 flex-wrap">
@@ -322,28 +385,18 @@ function Index() {
             </div>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {VLOG_CARDS.map((v, i) => (
-              <motion.article
+            {VLOG_PLACEHOLDERS.map((v, i) => (
+              <motion.div
                 key={v.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.55, delay: (i % 3) * 0.08 }}
-                className={`card-lift group bg-card ${i === 0 ? "sm:col-span-2 lg:col-span-2" : ""}`}
+                className="card-lift border border-dashed border-border/40 bg-card/50 p-10 flex flex-col items-center justify-center text-center min-h-[200px]"
               >
-                <div className={`media-frame overflow-hidden ${v.aspect}`}>
-                  <img
-                    src={v.image}
-                    alt={v.title}
-                    loading="lazy"
-                    className={`h-full w-full object-cover ${v.pos} group-hover:scale-105 transition-transform duration-700`}
-                  />
-                </div>
-                <div className="px-1 pt-5 pb-2">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2.5">{v.date}</div>
-                  <div className="font-display text-lg text-white leading-snug">{v.title}</div>
-                </div>
-              </motion.article>
+                <span className="text-3xl mb-4">{v.icon}</span>
+                <p className="font-display text-base text-white/60 leading-relaxed">{v.title}</p>
+              </motion.div>
             ))}
           </div>
         </div>

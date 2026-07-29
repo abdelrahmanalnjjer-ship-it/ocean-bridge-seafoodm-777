@@ -375,6 +375,123 @@
 }
 .nav-link:hover::after, .nav-link[data-active="true"]::after { transform: scaleX(1); transform-origin: left; }
 
+/* ---------- Brand ambient shadows — colored, layered depth ---------- */
+.shadow-marine {
+  box-shadow: 0 8px 32px -6px rgba(47, 79, 103, 0.35),
+              0 2px 8px -4px rgba(47, 79, 103, 0.15);
+}
+.shadow-ocean {
+  box-shadow: 0 8px 32px -6px rgba(74, 111, 143, 0.30),
+              0 2px 8px -4px rgba(74, 111, 143, 0.12);
+}
+.shadow-olive {
+  box-shadow: 0 8px 28px -6px rgba(107, 116, 86, 0.25);
+}
+.shadow-sand {
+  box-shadow: 0 8px 28px -6px rgba(199, 178, 153, 0.20);
+}
+.shadow-card {
+  box-shadow: 0 20px 60px -12px rgba(2, 6, 23, 0.50),
+              0 4px 18px -8px rgba(47, 79, 103, 0.12);
+}
+.shadow-hero {
+  box-shadow: 0 30px 80px -20px rgba(47, 79, 103, 0.25);
+}
+/* Colored ambient shadow variants for depth on dark backgrounds */
+.shadow-ambient-marine {
+  box-shadow: 0 24px 64px -16px rgba(47, 79, 103, 0.40),
+              0 8px 20px -12px rgba(47, 79, 103, 0.18);
+}
+.shadow-ambient-ocean {
+  box-shadow: 0 24px 64px -16px rgba(74, 111, 143, 0.35),
+              0 8px 20px -12px rgba(74, 111, 143, 0.15);
+}
+.shadow-ambient-olive {
+  box-shadow: 0 20px 56px -14px rgba(107, 116, 86, 0.30);
+}
+.shadow-ambient-sand {
+  box-shadow: 0 20px 56px -14px rgba(199, 178, 153, 0.22);
+}
+
+/* ---------- Varied entrance animations — each section gets a distinct feel ---------- */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-left {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes rotate-in {
+  from { opacity: 0; transform: rotate(-2deg) scale(0.96); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes clip-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes blur-in {
+  from { opacity: 0; filter: blur(6px); transform: translateY(8px); }
+  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+@keyframes stagger-fade {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up   { animation: fade-in-up 0.65s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-fade-in-down { animation: fade-in-down 0.55s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-scale-in     { animation: scale-in 0.7s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-slide-left   { animation: slide-left 0.6s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-slide-right  { animation: slide-right 0.6s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-rotate-in    { animation: rotate-in 0.7s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-clip-in      { animation: clip-in 0.8s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-blur-in      { animation: blur-in 0.6s cubic-bezier(0.19,1,0.22,1) both; }
+
+/* ---------- Marquee / ticker for certification badges ---------- */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 4%,
+    black 96%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 4%,
+    black 96%,
+    transparent 100%
+  );
+}
+.marquee-content {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+}
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
 /* Respect reduced motion. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -383,4 +500,5 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .marquee-content { animation: none; }
 }
