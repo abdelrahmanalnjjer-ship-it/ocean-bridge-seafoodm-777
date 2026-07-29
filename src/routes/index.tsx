@@ -114,7 +114,7 @@ function Index() {
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/40 via-[#121212]/70 to-[#121212]" />
         </div>
-        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-28 pt-40 w-full">
+        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-28 pt-40 w-full shadow-ambient-marine">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -163,7 +163,7 @@ function Index() {
             transition={{ duration: 0.7, delay: 0.55 }}
             className="mt-12 flex flex-wrap items-center gap-6"
           >
-            <Link to="/contact" className="btn-primary group">
+            <Link to="/contact" className="btn-primary group shadow-ambient-marine">
               Request a Buyer Consultation
               <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
             </Link>
@@ -219,10 +219,10 @@ function Index() {
             {VALUE_PROPS.map((c, i) => (
               <motion.div
                 key={c.n}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: (i % 2) * 0.08 }}
+                transition={{ duration: 0.5, delay: (i % 2) * 0.1, ease: [0.19, 1, 0.22, 1] }}
                 className="bg-background p-10 border-t-2 border-transparent hover:border-brand-marine transition-colors"
               >
                 <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
@@ -268,11 +268,11 @@ function Index() {
             {CATEGORIES.map((c, i) => (
               <motion.div
                 key={c.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.94, rotate: -1 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: i * 0.08 }}
-                className="card-lift border border-border bg-card overflow-hidden group"
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
+                className="card-lift border border-border bg-card overflow-hidden group shadow-ambient-ocean"
               >
                 <div className="aspect-[4/3] overflow-hidden bg-brand-black">
                   <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.label_en} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -308,8 +308,8 @@ function Index() {
               {MARKETS.map((g, i) => (
                 <motion.div
                   key={g.region}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, filter: "blur(4px)", y: 8 }}
+                  whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
                   className="py-6 grid md:grid-cols-[220px_1fr] gap-6 items-start"
@@ -392,7 +392,7 @@ function Index() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.55, delay: (i % 3) * 0.08 }}
-                className="card-lift border border-dashed border-border/40 bg-card/50 p-10 flex flex-col items-center justify-center text-center min-h-[200px]"
+                className="card-lift border border-dashed border-border/40 bg-card/50 p-10 flex flex-col items-center justify-center text-center min-h-[200px] shadow-ambient-ocean"
               >
                 <span className="text-3xl mb-4">{v.icon}</span>
                 <p className="font-display text-base text-white/60 leading-relaxed">{v.title}</p>
@@ -415,7 +415,7 @@ function Index() {
             Sourcing Oman-origin seafood?
           </motion.h2>
           <p className="mt-6 lede max-w-lg mx-auto text-sm">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
-          <Link to="/contact" className="btn-primary mt-12 group">
+          <Link to="/contact" className="btn-primary mt-12 group shadow-ambient-marine">
             Initiate Buyer Inquiry <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
           </Link>
         </div>

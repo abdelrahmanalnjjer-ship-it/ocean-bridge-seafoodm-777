@@ -166,7 +166,7 @@ function renderMonthIndicator(start: string, end: string) {
 
 function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: string; categoryLabel: string; image: string; t: (k: string) => string }) {
   return (
-    <div className="group relative h-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_56%,rgba(30,41,59,0.98))] shadow-[0_20px_80px_rgba(2,6,23,0.35)] transition-transform duration-300 hover:-translate-y-1">
+    <div className="group relative h-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_56%,rgba(30,41,59,0.98))] shadow-ambient-ocean transition-transform duration-300 hover:-translate-y-1">
       <div className="relative overflow-hidden border-b border-white/10">
         <div className="aspect-[4/3] overflow-hidden bg-brand-black">
           <img

@@ -98,7 +98,7 @@ function AboutPage() {
               <motion.div
                 key={b.t}
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: i * 0.07 }}
-                className="card-lift border border-border bg-card p-8"
+                className="card-lift border border-border bg-card p-8 shadow-ambient-ocean"
               >
                 <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-4">0{i + 1}</div>
                 <div className="font-display text-xl text-white mb-3">{b.t}</div>
@@ -149,7 +149,7 @@ function AboutPage() {
 
       <section className="border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[21/9]">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[21/9] shadow-ambient-olive">
             <img src={PORT_CRANES_IMAGE} alt="Port export infrastructure" className="h-full w-full object-cover object-[50%_35%]" />
           </motion.div>
         </div>
@@ -166,7 +166,7 @@ function AboutPage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-              className="media-frame aspect-[4/3]"
+              className="media-frame aspect-[4/3] shadow-ambient-sand"
             >
               <img src={HARBOR_DUSK_IMAGE} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
             </motion.div>
@@ -175,7 +175,7 @@ function AboutPage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-              className="media-frame aspect-[4/3]"
+              className="media-frame aspect-[4/3] shadow-ambient-sand"
             >
               <img src={DHOW_DETAIL_IMAGE} alt="Traditional Omani dhow" className="h-full w-full object-cover" />
             </motion.div>
