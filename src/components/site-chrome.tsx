@@ -4,6 +4,10 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
+/* LOGO_IMAGE — placeholder until the real approved brand logo is uploaded.
+ * The current /logos/logo.png is an unapproved AI-generated variant.
+ * Once the final logo file(s) are added to public/logo/ or public/logos/,
+ * update this path to point to the correct one. */
 const LOGO_IMAGE = "/logos/logo.png";
 
 function LocaleSwitcher() {
@@ -113,12 +117,12 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
           <img src={LOGO_IMAGE} alt="Ocean Bridge Trade" className="h-12 w-auto brightness-0 invert mb-4" />
-          <p className="mt-3 text-sm text-white/70 max-w-sm">
+          <p className="mt-3 text-sm text-white/70 max-w-sm leading-[1.8]">
             {t("brand.tagline")} Verified Oman-origin seafood, engineered for international processors and importers.
           </p>
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-[0.25em] text-white/50 mb-4">Navigate</div>
+          <div className="eyebrow-muted mb-4">Navigate</div>
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="hover:text-white text-white/70 transition-colors">{t("nav.home")}</Link></li>
             <li><Link to="/products" className="hover:text-white text-white/70 transition-colors">{t("nav.products")}</Link></li>
@@ -127,7 +131,7 @@ export function SiteFooter() {
           </ul>
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-[0.25em] text-white/50 mb-4">Contact</div>
+          <div className="eyebrow-muted mb-4">Contact</div>
           <ul className="space-y-2 text-sm text-white/70">
             <li>Muscat, Sultanate of Oman</li>
             <li>info@oceanbridge-trade.com</li>

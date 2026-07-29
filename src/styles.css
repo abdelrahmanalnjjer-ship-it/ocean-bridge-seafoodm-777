@@ -62,6 +62,8 @@
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --color-brand-marine: var(--brand-marine);
+  --color-brand-ocean-raw: var(--brand-ocean);
   --color-brand-accent: #2F4F67;   /* Deep Marine Blue - primary interactive */
   --color-brand-ocean: #4A6F8F;    /* Ocean Blue - secondary interactive */
   --color-brand-navy: #06142e;     /* Original navy - sparing accent */
@@ -77,6 +79,8 @@
 :root {
   --radius: 0.625rem;
   /* Ocean Bridge Trade — Premium Marine Industrial */
+  --brand-marine: #6F93B5;         /* Deep Marine Blue, brightened for text on dark */
+  --brand-ocean: #93B4CE;          /* Ocean Blue, brightened for text on dark */
   --background: oklch(0.19 0 0);             /* #121212 deep ocean black */
   --foreground: oklch(0.94 0 0);             /* #E6E6E6 body */
   --card: oklch(0.26 0 0);                   /* #232323 slate black */
@@ -157,7 +161,79 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-optical-sizing: auto;
   }
+}
+
+/* ---------- Type system ---------- */
+
+/* Editorial eyebrow label — the brand's signature micro-label. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: var(--color-brand-marine);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  flex-shrink: 0;
+  background-color: var(--color-brand-accent);
+}
+.eyebrow-bare { display: inline; }
+.eyebrow-bare::before { content: none; }
+
+/* Small light-on-dark secondary label (footer, contact side rails). */
+.eyebrow-muted {
+  display: block;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgb(255 255 255 / 0.5);
+}
+
+/* Display headline scale with editorial leading. */
+.h-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.04;
+  color: #fff;
+}
+.h-display-xl { font-size: clamp(2.625rem, 5.6vw, 4.75rem); }
+.h-display-lg { font-size: clamp(2.25rem, 4.2vw, 3.625rem); }
+.h-display-md { font-size: clamp(1.875rem, 3.4vw, 3rem); }
+
+/* Marcellus ships without italics — stop browsers from faking it. */
+.font-display em,
+.font-display i {
+  font-style: normal;
+  letter-spacing: 0.02em;
+  color: var(--color-brand-ocean-raw);
+}
+
+/* Reading-length body copy. */
+.lede {
+  font-size: 1rem;
+  line-height: 1.85;
+  letter-spacing: 0.008em;
+  color: var(--color-muted-foreground);
+}
+
+/* Hairline rule used as a quiet section divider / accent. */
+.rule-brand {
+  display: block;
+  height: 1px;
+  width: 3rem;
+  background-color: var(--color-brand-accent);
 }
 
 /* Alternating dark sections: a slightly lighter slate against #121212. */
@@ -171,10 +247,90 @@
 .bg-brand-navy   { background-color: var(--color-brand-navy); }
 .bg-brand-black  { background-color: var(--color-brand-black); }
 .bg-brand-slate  { background-color: var(--color-brand-slate); }
-.text-brand-marine { color: var(--color-brand-accent); }
-.text-brand-ocean  { color: var(--color-brand-ocean); }
+.text-brand-marine { color: var(--color-brand-marine); }
+.text-brand-ocean  { color: var(--color-brand-ocean-raw); }
 .text-brand-sand   { color: var(--color-brand-sand); }
 .border-brand-marine { border-color: var(--color-brand-accent); }
+.bg-brand-marine   { background-color: var(--color-brand-accent); }
+
+/* ---------- Brand-framed media ---------- */
+/* Hairline brand frame around photography; corners instead of radius/shadows. */
+.media-frame {
+  position: relative;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background-color: var(--color-brand-black);
+}
+.media-frame img,
+.media-frame video { display: block; }
+.media-frame::before,
+.media-frame::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  z-index: 1;
+  pointer-events: none;
+}
+.media-frame::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--color-brand-ocean);
+  border-left: 1px solid var(--color-brand-ocean);
+}
+.media-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--color-brand-ocean);
+  border-right: 1px solid var(--color-brand-ocean);
+}
+
+/* ---------- Buttons ---------- */
+/* Hairline ghost link that sweeps to a marine fill on hover. */
+.btn-ghost {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-brand-marine);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  padding: 0.8rem 1.5rem;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 250ms ease, border-color 250ms ease;
+}
+.btn-ghost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-brand-accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.btn-ghost:hover { color: #fff; border-color: var(--color-brand-accent); }
+.btn-ghost:hover::before { transform: scaleX(1); transform-origin: left; }
+.btn-ghost:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
+
+/* Text link with animated underline. */
+.link-underline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-brand-marine);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--color-brand-accent);
+  transition: color 200ms ease, border-color 200ms ease;
+}
+.link-underline:hover { color: #fff; border-color: rgb(255 255 255 / 0.6); }
 
 /* Premium primary CTA — Deep Marine Blue with smooth hover shift. */
 .btn-primary {
@@ -207,9 +363,9 @@
 .btn-outline:hover { border-color: var(--color-brand-ocean); color: #fff; background-color: rgba(74,111,143,0.08); }
 .btn-outline:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
 
-/* Card lift on hover for product/category tiles. */
-.card-lift { transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease; }
-.card-lift:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6); border-color: var(--color-brand-accent); }
+/* Card lift on hover — hairline highlight instead of a drop shadow. */
+.card-lift { transition: transform 300ms ease, border-color 300ms ease; }
+.card-lift:hover { transform: translateY(-4px); border-color: rgb(111 147 181 / 0.55); }
 
 /* Nav link underline animation. */
 .nav-link { position: relative; padding-bottom: 4px; }

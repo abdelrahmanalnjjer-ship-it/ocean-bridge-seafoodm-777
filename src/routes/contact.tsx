@@ -24,16 +24,16 @@ function ContactPage() {
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-border/60">
         <div className="absolute inset-0">
-          <img src={HARBOR_DUSK_IMAGE} alt="" className="h-full w-full object-cover opacity-30" />
+          <img src={HARBOR_DUSK_IMAGE} alt="" className="h-full w-full object-cover object-[50%_38%] opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/60 via-[#121212]/80 to-[#121212]" />
         </div>
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-32 pb-20">
-          <div className="text-[11px] uppercase tracking-[0.35em] text-brand-marine mb-6">Buyer Desk</div>
+          <div className="eyebrow mb-6">Buyer Desk</div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="font-display text-5xl md:text-6xl lg:text-7xl leading-[1.05] max-w-3xl text-white"
+            className="h-display h-display-xl max-w-3xl"
           >
             Initiate a buyer inquiry.
           </motion.h1>
@@ -41,7 +41,7 @@ function ContactPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.9, delay: 0.25 }}
-            className="mt-8 max-w-xl text-muted-foreground"
+            className="mt-8 max-w-xl lede"
           >
             For international processors, importers, and distributors sourcing Oman-origin seafood. All inquiries are confidential and reviewed within 48 business hours.
           </motion.p>
@@ -78,7 +78,7 @@ function ContactPage() {
                 <Field label="Product Requirements" name="species" required placeholder="Species, grade, size, packaging" />
                 <Field label="Preferred Incoterms" name="incoterms" placeholder="e.g. FOB Salalah, CFR Qingdao" />
                 <div>
-                  <label className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Additional Context</label>
+                  <label className="eyebrow-muted">Additional Context</label>
                   <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--color-brand-ocean)] outline-none py-2 text-sm resize-none transition-colors" />
                 </div>
                 <button type="submit" className="btn-primary group">
@@ -96,7 +96,7 @@ function ContactPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="border border-border bg-card p-8 md:p-10 self-start"
           >
-            <div className="text-[11px] uppercase tracking-[0.3em] text-brand-marine mb-6">Contact</div>
+            <div className="eyebrow mb-6">Contact</div>
             <div className="flex items-start gap-3 mb-8">
               <MapPin className="size-4 mt-1 text-muted-foreground" />
               <div>
@@ -113,7 +113,7 @@ function ContactPage() {
             </ul>
 
             <div className="mt-10 pt-8 border-t border-border">
-              <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-3">Response SLA</div>
+              <div className="eyebrow-muted mb-3">Response SLA</div>
               <div className="font-display text-2xl text-white">48 business hours</div>
             </div>
           </motion.aside>
@@ -126,7 +126,7 @@ function ContactPage() {
 function Field({ label, name, required, placeholder }: { label: string; name: string; required?: boolean; placeholder?: string }) {
   return (
     <div>
-      <label htmlFor={name} className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{label}</label>
+      <label htmlFor={name} className="eyebrow-muted">{label}</label>
       <input
         id={name}
         name={name}

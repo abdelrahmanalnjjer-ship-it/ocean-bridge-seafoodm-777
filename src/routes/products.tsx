@@ -35,10 +35,10 @@ function ProductsPage() {
           <div className="inline-flex items-center gap-3 border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.35em] text-white/70 backdrop-blur-md">
             Catalogue · 35 SKU
           </div>
-          <h1 className="mt-8 font-display text-4xl md:text-6xl lg:text-7xl leading-[1.03] max-w-4xl text-white">
+          <h1 className="mt-8 h-display h-display-xl max-w-4xl">
             {t("products.title")}
           </h1>
-          <p className="mt-7 max-w-2xl text-sm md:text-base text-slate-300/90">
+          <p className="mt-7 max-w-2xl text-sm md:text-base text-white/70">
             {t("products.sub")}
           </p>
 
@@ -67,7 +67,7 @@ function ProductsPage() {
                 className={`px-4 py-2 text-xs uppercase tracking-[0.22em] transition-all border ${
                   category === c.id
                     ? "border-[color:var(--color-brand-accent)] text-white bg-[color:var(--color-brand-accent)]/12"
-                    : "border-transparent text-slate-400 hover:text-white"
+                    : "border-transparent text-white/50 hover:text-white"
                 }`}
                 style={category === c.id ? { borderColor: "var(--color-brand-accent)" } : undefined}
               >
@@ -75,7 +75,7 @@ function ProductsPage() {
               </button>
             ))}
           </div>
-          <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">
+          <div className="text-[10px] uppercase tracking-[0.28em] text-white/50">
             {filtered.length} items shown
           </div>
         </div>
@@ -142,7 +142,7 @@ function renderMonthIndicator(start: string, end: string) {
         <span
           key={i}
           className={`block h-2.5 w-[6px] rounded-sm transition-colors ${
-            active.has(i) ? "bg-sky-600" : "bg-slate-600/40"
+            active.has(i) ? "bg-brand-marine" : "bg-white/20"
           }`}
         />
       ))}
@@ -154,7 +154,7 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
   return (
     <div className="group relative h-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_56%,rgba(30,41,59,0.98))] shadow-[0_20px_80px_rgba(2,6,23,0.35)] transition-transform duration-300 hover:-translate-y-1">
       <div className="relative overflow-hidden border-b border-white/10">
-        <div className="aspect-[4/3] overflow-hidden bg-slate-950">
+        <div className="aspect-[4/3] overflow-hidden bg-brand-black">
           <img
             src={image}
             alt={name}
@@ -162,7 +162,7 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
-        <div className="absolute left-4 top-4 flex items-center gap-1.5 border border-white/12 bg-slate-950/70 px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-white/80 backdrop-blur-md" aria-label={`Available ${s.season_start}–${s.season_end}`}>
+        <div className="absolute left-4 top-4 flex items-center gap-1.5 border border-white/12 bg-brand-black/70 px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-white/80 backdrop-blur-md" aria-label={`Available ${s.season_start}–${s.season_end}`}>
           {renderMonthIndicator(s.season_start, s.season_end)}
         </div>
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.9))]" />
@@ -171,11 +171,11 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
       <div className="p-6 lg:p-7">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.28em] text-slate-400">{categoryLabel}</div>
+            <div className="text-[10px] uppercase tracking-[0.28em] text-white/50">{categoryLabel}</div>
             <div className="mt-2 font-display text-2xl text-white leading-tight">{name}</div>
-            <div className="mt-1 text-[11px] italic text-slate-400">{s.scientific}</div>
+            <div className="mt-1 text-[11px] italic text-white/50">{s.scientific}</div>
           </div>
-          <div className="text-right text-[10px] uppercase tracking-[0.22em] text-slate-400">
+          <div className="text-right text-[10px] uppercase tracking-[0.22em] text-white/50">
             #{String(s.id).padStart(2, "0")}
           </div>
         </div>
@@ -185,7 +185,7 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
           <SpecTag label={t("products.grade")} value={s.grade} />
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">
+        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-white/50">
           <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.sizes.split(",")[0].trim()}</span>
         </div>
 
@@ -206,7 +206,7 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
 function SpecTag({ label, value }: { label: string; value: string }) {
   return (
     <div className="border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">
-      <div className="text-[9px] uppercase tracking-[0.26em] text-slate-400">{label}</div>
+      <div className="text-[9px] uppercase tracking-[0.26em] text-white/50">{label}</div>
       <div className="mt-1 text-[12px] text-white truncate">{value}</div>
     </div>
   );
