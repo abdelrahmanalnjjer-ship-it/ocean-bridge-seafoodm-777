@@ -32,7 +32,7 @@ const CATEGORY_IMAGES = [
   "/product-images/pelagic.png",
   "/product-images/demersal.png",
   "/product-images/cephalopods.png",
-  "/product-images/Crustaceans.png",
+  "/product-images/seafood-02-yellowfin-tuna.jpg",
 ];
 /* Fix 4: Replace stock photo VLOG_CARDS with "Coming soon" placeholder entries */
 const VLOG_PLACEHOLDERS = [
