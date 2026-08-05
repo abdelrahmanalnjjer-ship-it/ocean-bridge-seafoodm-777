@@ -1,36 +1,48 @@
-# Plan
+# Visual Redesign — Navy & Ice
 
-## 1. Revert last two updates
-- Delete `src/routes/vlog.tsx` and `src/routes/vlog.$slug.tsx`.
-- Delete `src/data/vlog.ts`.
-- Remove the `Vlog` nav link from header and footer in `src/components/site-chrome.tsx`.
-- Remove i18n keys for the vlog listing/detail page (keep only the home "Vlog" section label).
-- On the home page, restore the inline vlog rail (5 hardcoded cards) using the earlier harbor/mosque/coast imagery — not `home-1..home-9`.
-- Delete unused CDN assets `src/assets/home-1..home-9.jpg.asset.json` (via `lovable-assets delete`).
+The current site is a near-flat black page: almost no tonal contrast, one thin blue accent, and everything sits at the same visual weight. This replaces the palette, typography and section rhythm site-wide.
 
-## 2. New hero video (single looping)
-- Upload `Untitled_design.mp4` via `lovable-assets` as `src/assets/hero-video.mp4.asset.json`.
-- Replace the `HeroVideos` cross-fade component in `src/routes/index.tsx` with a single `<video autoplay muted loop playsInline>` background using the new asset. Keep the dhow poster fallback and navy gradient overlay.
-- Remove the manual indicator dots and the 8s rotation logic.
-- Delete `src/assets/vlog-1.mp4.asset.json` and `src/assets/vlog-2.mp4.asset.json` (no longer referenced).
+## 1. New color system
 
-## 3. Product category images
-Upload the 4 uploaded PNGs as CDN assets and wire them into the 4 category cards on `src/routes/products.tsx` (and the home teaser cards if used):
-- Pelagic → `Large_Pelagics.png`
-- Demersal & Reef → `Demersal_Reef_Fish.png`
-- Cephalopods → `Small_fishes.png`
-- Crustaceans → `Crustaceans.png`
+Replace the Deep Ocean Black theme with a two-tone navy/ice system so the page alternates dark and light instead of one continuous black slab.
 
-## 4. About & Connect imagery
-- Reuse 5 of the existing vlog-section images (harbor-boats, harbor-dusk, fishermen, port-cranes, dhow-detail — the ones already used in the home Vlog rail).
-- About page (`src/routes/about.tsx`): place 3 as editorial figures alongside the manifesto / capabilities / regulatory sections with fade-up scroll animations.
-- Connect page (`src/routes/contact.tsx`): place 2 as a hero banner and a sidebar figure next to the contact info column.
+- Dark base `#0f1b3d` (nav, hero, footer, feature bands)
+- Mid navy `#1e3a5f` (elevated cards, borders, dark section variation)
+- Ocean accent `#3b6fa0` (links, active states, hairlines, buttons)
+- Ice `#e8edf3` (light section background, light-mode text on dark)
+- Near-black ink `#0b1220` for type on ice sections
 
-## 5. Verify
-- Run `bun run build`; fix any dangling imports from removed vlog files.
-- Restart dev server after asset deletes.
+Every value goes into `src/styles.css` as semantic tokens (`--background`, `--card`, `--primary`, `--accent`, plus `.section-ice` / `.section-navy` band classes). No hardcoded colors in components.
+
+## 2. Typography
+
+- Display: **Instrument Serif** (hero, section headlines) — high-contrast editorial
+- Body/UI: **Work Sans** (paragraphs, labels, nav, data tables)
+- Loaded via `<link>` in the root route head, mapped in `@theme`
+- Tighter display leading, wider eyebrow tracking, clearer size steps between H1/H2/body
+
+## 3. Layout — full-width bands
+
+Each page becomes a sequence of full-width sections that alternate navy → ice → navy, so contrast does the structural work.
+
+- **Home**: hero (navy, video) → manifesto (ice) → capabilities (navy) → category teasers (ice) → vlog rail (navy) → regulatory strip (ice) → CTA (navy)
+- **Products**: navy header band → ice band holding category tabs + grid; terminal/data view keeps a dark band for the mono table
+- **About**: alternating bands, editorial figures full-bleed inside their band
+- **Connect**: navy hero band → ice form band → navy contact/footer
+
+Wider gutters, larger vertical padding, fewer competing elements per band.
+
+## 4. Animation pass
+
+- Section content fades up with a small stagger on viewport entry (framer-motion, ~24px, 0.6s, ease-out)
+- Headlines get a slight clip/mask reveal; images scale from 1.04 → 1 on entry
+- Card hover: 4px lift, border highlight, 1.05 image zoom
+- Nav underline sweep, smooth mobile menu transitions
+- All wrapped in `prefers-reduced-motion` guards
 
 ## Technical notes
-- Home Vlog section keeps its section label + cards but cards become non-linking (no detail page). No routing to `/vlog/*`.
-- i18n dictionary keeps `section.vlog` / `section.vlog.sub` / `nav.*` minus `nav.vlog`.
-- All new images imported as `@/assets/*.asset.json` pointer JSON, referenced via `.url`.
+
+- `src/styles.css`: rewrite `:root` token values, `@theme inline` color map, add `.section-ice` / `.section-navy` band utilities, update `.btn-primary`, `.btn-ghost`, `.card-lift`, `.eyebrow`, `.media-frame` for use on both light and dark bands.
+- `src/routes/__root.tsx`: swap font `<link>`s to Instrument Serif + Work Sans.
+- `src/components/site-chrome.tsx`, `index.tsx`, `products.tsx`, `about.tsx`, `contact.tsx`: reband sections, swap any leftover literal colors for tokens, apply the animation variants.
+- No content, data, or routing changes — copy and the 35-species dataset stay as-is.
