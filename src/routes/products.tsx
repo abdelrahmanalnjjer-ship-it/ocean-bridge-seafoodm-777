@@ -27,18 +27,18 @@ function ProductsPage() {
     locale === "ar" ? s.name_ar : locale === "zh" ? s.name_zh : s.name_en;
 
   return (
-    <div className="bg-[radial-gradient(circle_at_top,rgba(30,41,59,0.44),transparent_42%),linear-gradient(180deg,rgba(2,6,23,0.08),transparent_12%)]">
-      <section className="relative overflow-hidden border-b border-border/60">
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_48%,rgba(30,41,59,0.92))]" />
-        <div className="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_20%_10%,rgba(51,65,85,0.45),transparent_28%),radial-gradient(circle_at_80%_0%,rgba(2,132,199,0.18),transparent_22%)]" />
+    <div>
+      <section className="section-navy-deep relative overflow-hidden border-b border-border/60">
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#0a1229,#0f1b3d_52%,#16264d)]" />
+        <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_20%_10%,rgba(59,111,160,0.30),transparent_34%),radial-gradient(circle_at_80%_0%,rgba(59,111,160,0.16),transparent_26%)]" />
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-28 pb-18 lg:pb-24">
-          <div className="inline-flex items-center gap-3 border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.35em] text-white/70 backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 border border-foreground/10 bg-foreground/5 px-4 py-2 text-[10px] uppercase tracking-[0.35em] text-foreground/70 backdrop-blur-md">
             Catalogue · 35 SKU
           </div>
           <h1 className="mt-8 h-display h-display-xl max-w-4xl">
             {t("products.title")}
           </h1>
-          <p className="mt-7 max-w-2xl text-sm md:text-base text-white/70">
+          <p className="mt-7 max-w-2xl text-sm md:text-base text-foreground/70">
             {t("products.sub")}
           </p>
 
@@ -48,16 +48,16 @@ function ProductsPage() {
               { k: "Premium format", v: "Local product imagery" },
               { k: "Direct action", v: "B2B inquiry button" },
             ].map((item) => (
-              <div key={item.k} className="border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-md">
-                <div className="text-[10px] uppercase tracking-[0.25em] text-white/55">{item.k}</div>
-                <div className="mt-2 text-sm text-white">{item.v}</div>
+              <div key={item.k} className="border border-foreground/10 bg-foreground/5 px-4 py-4 backdrop-blur-md">
+                <div className="text-[10px] uppercase tracking-[0.25em] text-foreground/55">{item.k}</div>
+                <div className="mt-2 text-sm text-foreground">{item.v}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="sticky top-16 z-40 border-b border-border/60 bg-[#0f172a]/80 backdrop-blur-xl">
+      <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#0f1b3d]/85 backdrop-blur-xl">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-1 flex-wrap">
             {CATEGORIES.map((c) => (
@@ -66,22 +66,22 @@ function ProductsPage() {
                 onClick={() => setCategory(c.id)}
                 className={`px-4 py-2 text-xs uppercase tracking-[0.22em] transition-all border ${
                   category === c.id
-                    ? "border-[color:var(--color-brand-accent)] text-white bg-[color:var(--color-brand-accent)]/12"
-                    : "border-transparent text-white/50 hover:text-white"
+                    ? "border-[color:var(--brand-accent)] text-foreground bg-[color:var(--brand-accent)]/12"
+                    : "border-transparent text-foreground/50 hover:text-foreground"
                 }`}
-                style={category === c.id ? { borderColor: "var(--color-brand-accent)" } : undefined}
+                style={category === c.id ? { borderColor: "var(--brand-accent)" } : undefined}
               >
                 {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}
               </button>
             ))}
           </div>
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+          <div className="text-[10px] uppercase tracking-[0.28em] text-foreground/50">
             {filtered.length} items shown
           </div>
         </div>
       </section>
 
-      <section>
+      <section className="section-ice">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 lg:py-20">
           <motion.div
             key={category}
@@ -137,23 +137,23 @@ function renderMonthIndicator(start: string, end: string) {
   return (
     <div className="flex flex-col gap-1.5" role="img" aria-label={`Available ${start}–${end}${isYearRound ? " (Year-Round)" : ""}`}>
       <div className="flex items-center justify-between">
-        <span className="text-[9px] uppercase tracking-[0.22em] text-white/50">
+        <span className="text-[9px] uppercase tracking-[0.22em] text-foreground/50">
           {isYearRound ? "Year-Round" : `Season: ${start} – ${end}`}
         </span>
-        <span className="text-[9px] uppercase tracking-[0.22em] text-white/30">
+        <span className="text-[9px] uppercase tracking-[0.22em] text-foreground/30">
           {isYearRound ? "All months" : `${active.size} months`}
         </span>
       </div>
-      <div className="flex items-center gap-[2px] bg-white/5 rounded-sm px-2 py-1.5">
+      <div className="flex items-center gap-[2px] bg-foreground/5 rounded-sm px-2 py-1.5">
         {Array.from({ length: 12 }, (_, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-0.5 min-w-0">
             <span
               className={`block h-3 w-full rounded-[1px] transition-colors ${
-                active.has(i) ? "bg-[color:var(--color-brand-accent)]" : "bg-white/8"
+                active.has(i) ? "bg-[color:var(--brand-accent)]" : "bg-foreground/8"
               }`}
             />
             <span className={`text-[7px] leading-tight font-medium ${
-              active.has(i) ? "text-white/70" : "text-white/25"
+              active.has(i) ? "text-foreground/70" : "text-foreground/25"
             }`}>
               {MONTHS_SHORT[i]}
             </span>
@@ -166,8 +166,8 @@ function renderMonthIndicator(start: string, end: string) {
 
 function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: string; categoryLabel: string; image: string; t: (k: string) => string }) {
   return (
-    <div className="group relative h-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.88)_56%,rgba(30,41,59,0.98))] shadow-ambient-ocean transition-transform duration-300 hover:-translate-y-1">
-      <div className="relative overflow-hidden border-b border-white/10">
+    <div className="card-lift group relative h-full overflow-hidden border border-border bg-card">
+      <div className="relative overflow-hidden border-b border-border">
         <div className="aspect-[4/3] overflow-hidden bg-brand-black">
           <img
             src={image}
@@ -176,21 +176,21 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.9))]" />
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(180deg,transparent,rgba(10,18,41,0.55))]" />
       </div>
 
-      <div className="border-t border-white/10 px-6 lg:px-7 py-3">
+      <div className="border-t border-border px-6 lg:px-7 py-3">
         {renderMonthIndicator(s.season_start, s.season_end)}
       </div>
 
       <div className="p-6 lg:p-7 pt-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.28em] text-white/50">{categoryLabel}</div>
-            <div className="mt-2 font-display text-2xl text-white leading-tight">{name}</div>
-            <div className="mt-1 text-[11px] italic text-white/50">{s.scientific}</div>
+            <div className="text-[10px] uppercase tracking-[0.28em] text-foreground/50">{categoryLabel}</div>
+            <div className="mt-2 font-display text-2xl text-foreground leading-tight">{name}</div>
+            <div className="mt-1 text-[11px] italic text-foreground/50">{s.scientific}</div>
           </div>
-          <div className="text-right text-[10px] uppercase tracking-[0.22em] text-white/50">
+          <div className="text-right text-[10px] uppercase tracking-[0.22em] text-foreground/50">
             #{String(s.id).padStart(2, "0")}
           </div>
         </div>
@@ -200,29 +200,28 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
           <SpecTag label={t("products.grade")} value={s.grade} />
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-white/50">
-          <span className="border border-white/10 bg-white/5 px-2.5 py-1">{s.sizes.split(",")[0].trim()}</span>
+        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-foreground/50">
+          <span className="border border-foreground/10 bg-foreground/5 px-2.5 py-1">{s.sizes.split(",")[0].trim()}</span>
         </div>
 
         <Link
           to="/contact"
           aria-label={`B2B inquiry for ${name}`}
-          className="group mt-6 inline-flex w-full items-center justify-center gap-2 border border-[color:var(--color-brand-accent)]/55 bg-[color:var(--color-brand-accent)]/12 px-4 py-3 text-xs uppercase tracking-[0.24em] text-white transition-colors hover:bg-[color:var(--color-brand-accent)]/20"
+          className="group mt-6 inline-flex w-full items-center justify-center gap-2 border border-[color:var(--brand-accent)]/55 bg-[color:var(--brand-accent)]/12 px-4 py-3 text-xs uppercase tracking-[0.24em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/20"
         >
           {t("products.initiate")} <ArrowUpRight className="size-3.5 transition-transform group-hover:rotate-45" />
         </Link>
       </div>
 
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_40%)]" />
     </div>
   );
 }
 
 function SpecTag({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">
-      <div className="text-[9px] uppercase tracking-[0.26em] text-white/50">{label}</div>
-      <div className="mt-1 text-[12px] text-white truncate">{value}</div>
+    <div className="border border-border bg-foreground/[0.04] px-3 py-2">
+      <div className="text-[9px] uppercase tracking-[0.26em] text-foreground/50">{label}</div>
+      <div className="mt-1 text-[12px] text-foreground truncate">{value}</div>
     </div>
   );
 }

@@ -32,7 +32,7 @@ const CATEGORY_IMAGES = [
   "/product-images/pelagic.png",
   "/product-images/demersal.png",
   "/product-images/cephalopods.png",
-  "/product-images/crustaceans.png",
+  "/product-images/seafood-02-yellowfin-tuna.jpg",
 ];
 /* Fix 4: Replace stock photo VLOG_CARDS with "Coming soon" placeholder entries */
 const VLOG_PLACEHOLDERS = [
@@ -90,7 +90,7 @@ function Index() {
   return (
     <div>
       {/* HERO — rotating origin footage with captions synced to each cut */}
-      <section className="relative min-h-[92vh] flex items-end overflow-hidden bg-brand-black">
+      <section className="section-navy-deep relative min-h-[92vh] flex items-end overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <AnimatePresence initial={false}>
             <motion.div
@@ -112,14 +112,14 @@ function Index() {
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/40 via-[#121212]/70 to-[#121212]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/35 via-[#0a1229]/70 to-[#0a1229]" />
         </div>
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-28 pt-40 w-full shadow-ambient-marine">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.35em] text-white/70 mb-10"
+            className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.35em] text-foreground/70 mb-10"
           >
             <span className="h-px w-8 shrink-0 bg-brand-marine" />
             Ocean Bridge Trade · Muscat, Sultanate of Oman
@@ -136,7 +136,7 @@ function Index() {
                 transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
               >
                 <div className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-brand-marine">
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-white/50">
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">
                     {String(slide + 1).padStart(2, "0")} / {String(HERO_SLIDES.length).padStart(2, "0")}
                   </span>
                   <span className="h-px w-6 bg-brand-marine" />
@@ -153,7 +153,7 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.35 }}
-            className="mt-8 max-w-xl text-base md:text-lg text-white/70 leading-[1.8]"
+            className="mt-8 max-w-xl text-base md:text-lg text-foreground/70 leading-[1.8]"
           >
             Verified supply. Regulatory pre-clearance. Reliable, repeatable supply chains from Oman's coast to international processors and importers.
           </motion.p>
@@ -177,7 +177,7 @@ function Index() {
                   aria-label={`Play segment ${i + 1}: ${s.kicker}`}
                   onClick={() => goTo(i)}
                   className={`h-px transition-all duration-500 ${
-                    i === slide ? "w-12 bg-brand-marine" : "w-6 bg-white/30 hover:bg-white/60"
+                    i === slide ? "w-12 bg-brand-marine" : "w-6 bg-foreground/30 hover:bg-foreground/60"
                   }`}
                 />
               ))}
@@ -187,7 +187,7 @@ function Index() {
       </section>
 
       {/* MANIFESTO */}
-      <section className="section-slate">
+      <section className="section-ice">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 md:py-40">
           <motion.div
             initial={{ opacity: 0, width: 0 }}
@@ -195,14 +195,14 @@ function Index() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="h-[2px] mb-10"
-            style={{ backgroundColor: "var(--color-brand-accent)" }}
+            style={{ backgroundColor: "var(--brand-accent)" }}
           />
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1 }}
-            className="font-display text-3xl md:text-5xl leading-[1.15] max-w-5xl text-white"
+            className="font-display text-3xl md:text-5xl leading-[1.15] max-w-5xl text-foreground"
           >
             We don't just connect buyers and sellers.
             <span className="text-muted-foreground"> We engineer reliable, compliant, repeatable supply chains from Oman to the world — bringing corporate-grade structure to a trade that has historically operated informally.</span>
@@ -211,7 +211,7 @@ function Index() {
       </section>
 
       {/* BUYER VALUE PROPOSITION */}
-      <section className="border-t border-border/60">
+      <section className="section-navy border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="eyebrow mb-5">Buyer Proposition</div>
           <h2 className="h-display h-display-md max-w-3xl mb-20">Four disciplines a global buyer receives on every transaction.</h2>
@@ -226,7 +226,7 @@ function Index() {
                 className="bg-background p-10 border-t-2 border-transparent hover:border-brand-marine transition-colors"
               >
                 <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
-                <div className="font-display text-2xl mb-5 text-white">{c.title}</div>
+                <div className="font-display text-2xl mb-5 text-foreground">{c.title}</div>
                 <p className="text-sm text-muted-foreground leading-[1.8] max-w-md">{c.body}</p>
               </motion.div>
             ))}
@@ -235,7 +235,7 @@ function Index() {
       </section>
 
       {/* STATS strip — small, calm */}
-      <section className="section-slate border-t border-border">
+      <section className="section-navy-deep border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           {STATS.map((s, i) => (
             <motion.div
@@ -245,7 +245,7 @@ function Index() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.06 }}
             >
-              <div className="font-display text-4xl md:text-5xl text-white">{s.k}</div>
+              <div className="font-display text-4xl md:text-5xl text-foreground">{s.k}</div>
               <div className="mt-3 eyebrow-muted">{s.v}</div>
             </motion.div>
           ))}
@@ -253,7 +253,7 @@ function Index() {
       </section>
 
       {/* PORTFOLIO teaser */}
-      <section className="border-t border-border/60">
+      <section className="section-ice border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
             <div>
@@ -279,8 +279,8 @@ function Index() {
                 </div>
                 <div className="p-6">
                   <div className="font-mono text-xs text-muted-foreground mb-3">0{i + 1}</div>
-                  <div className="font-display text-xl text-white mb-4">{c.label_en}</div>
-                  <div className="h-px w-8 group-hover:w-16 transition-all" style={{ backgroundColor: "var(--color-brand-accent)" }} />
+                  <div className="font-display text-xl text-foreground mb-4">{c.label_en}</div>
+                  <div className="h-px w-8 group-hover:w-16 transition-all" style={{ backgroundColor: "var(--brand-accent)" }} />
                 </div>
               </motion.div>
             ))}
@@ -289,7 +289,7 @@ function Index() {
       </section>
 
       {/* MARKETS & COMPLIANCE */}
-      <section className="section-slate border-t border-border">
+      <section className="section-navy border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-16">
             <motion.div
@@ -314,7 +314,7 @@ function Index() {
                   transition={{ duration: 0.5, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
                   className="py-6 grid md:grid-cols-[220px_1fr] gap-6 items-start"
                 >
-                  <div className="font-display text-xl text-white">{g.region}</div>
+                  <div className="font-display text-xl text-foreground">{g.region}</div>
                   <div className="text-sm text-muted-foreground leading-[1.8]">{g.body}</div>
                 </motion.div>
               ))}
@@ -324,7 +324,7 @@ function Index() {
       </section>
 
       {/* CERTIFICATION TICKER — auto-scrolling compliance badges */}
-      <section className="border-t border-border/60 bg-brand-black">
+      <section className="section-navy-deep border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -336,7 +336,7 @@ function Index() {
             <div className="eyebrow-bare text-[10px] uppercase tracking-[0.32em] text-brand-marine font-semibold whitespace-nowrap">
               Certifications & Compliance
             </div>
-            <span className="h-px flex-1 bg-white/10" />
+            <span className="h-px flex-1 bg-foreground/10" />
           </motion.div>
           <div className="marquee-track">
             <div className="marquee-content">
@@ -346,12 +346,12 @@ function Index() {
                   key={b.label}
                   className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/80">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[10px] font-bold uppercase tracking-wider text-foreground/80">
                     {b.label.slice(0, 3)}
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-white whitespace-nowrap">{b.label}</div>
-                    <div className="text-[10px] text-white/50 whitespace-nowrap">{b.full}</div>
+                    <div className="text-sm font-semibold text-foreground whitespace-nowrap">{b.label}</div>
+                    <div className="text-[10px] text-foreground/50 whitespace-nowrap">{b.full}</div>
                   </div>
                 </div>
               ))}
@@ -361,12 +361,12 @@ function Index() {
                   key={`dup-${b.label}`}
                   className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/80">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[10px] font-bold uppercase tracking-wider text-foreground/80">
                     {b.label.slice(0, 3)}
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-white whitespace-nowrap">{b.label}</div>
-                    <div className="text-[10px] text-white/50 whitespace-nowrap">{b.full}</div>
+                    <div className="text-sm font-semibold text-foreground whitespace-nowrap">{b.label}</div>
+                    <div className="text-[10px] text-foreground/50 whitespace-nowrap">{b.full}</div>
                   </div>
                 </div>
               ))}
@@ -376,7 +376,7 @@ function Index() {
       </section>
 
       {/* VLOG — placeholder cards until real content is published */}
-      <section className="border-t border-border/60">
+      <section className="section-ice border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
           <div className="flex items-end justify-between mb-14 gap-6 flex-wrap">
             <div>
@@ -395,7 +395,7 @@ function Index() {
                 className="card-lift border border-dashed border-border/40 bg-card/50 p-10 flex flex-col items-center justify-center text-center min-h-[200px] shadow-ambient-ocean"
               >
                 <span className="text-3xl mb-4">{v.icon}</span>
-                <p className="font-display text-base text-white/60 leading-relaxed">{v.title}</p>
+                <p className="font-display text-base text-foreground/60 leading-relaxed">{v.title}</p>
               </motion.div>
             ))}
           </div>
@@ -403,7 +403,7 @@ function Index() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border/60">
+      <section className="section-navy-deep border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}

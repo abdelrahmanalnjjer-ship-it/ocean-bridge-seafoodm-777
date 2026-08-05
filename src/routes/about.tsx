@@ -44,7 +44,7 @@ const STATS = [
 function AboutPage() {
   return (
     <div>
-      <section className="border-b border-border/60">
+      <section className="section-navy-deep border-b border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 pt-24 pb-20">
           <div className="eyebrow mb-6">About Ocean Bridge Trade</div>
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 items-end">
@@ -61,35 +61,35 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="section-slate border-t border-border">
+      <section className="section-ice border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28 grid md:grid-cols-2 gap-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
             <div className="eyebrow mb-6">Our Mission</div>
-            <p className="font-display text-2xl md:text-3xl leading-snug text-white">
+            <p className="font-display text-2xl md:text-3xl leading-snug text-foreground">
               To elevate and professionalize the Omani fish export industry — becoming the most trusted, corporate-grade representative of Oman-origin seafood for international buyers.
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}>
             <div className="eyebrow mb-6">What We Actually Do</div>
-            <p className="font-display text-2xl md:text-3xl leading-snug text-white">
+            <p className="font-display text-2xl md:text-3xl leading-snug text-foreground">
               We don't just connect buyers and sellers. We engineer reliable, compliant, repeatable supply chains from Oman to the world.
             </p>
           </motion.div>
         </div>
       </section>
 
-      <section className="border-t border-border/60">
+      <section className="section-navy border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           {STATS.map((s, i) => (
             <motion.div key={s.v} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.06 }}>
-              <div className="font-display text-3xl md:text-4xl text-white">{s.k}</div>
+              <div className="font-display text-3xl md:text-4xl text-foreground">{s.k}</div>
               <div className="mt-3 eyebrow-muted">{s.v}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      <section className="section-slate border-t border-border">
+      <section className="section-ice border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
           <div className="eyebrow mb-5">Core Beliefs</div>
           <h2 className="h-display h-display-md max-w-3xl mb-16">Principles that govern every transaction we touch.</h2>
@@ -101,7 +101,7 @@ function AboutPage() {
                 className="card-lift border border-border bg-card p-8 shadow-ambient-ocean"
               >
                 <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-4">0{i + 1}</div>
-                <div className="font-display text-xl text-white mb-3">{b.t}</div>
+                <div className="font-display text-xl text-foreground mb-3">{b.t}</div>
                 <p className="text-sm text-muted-foreground leading-[1.8]">{b.b}</p>
               </motion.div>
             ))}
@@ -109,7 +109,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-border/60">
+      <section className="section-navy border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
           <div className="grid md:grid-cols-[1fr_1fr] gap-12 items-center">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
@@ -126,7 +126,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="section-slate border-t border-border">
+      <section className="section-navy-deep border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28 grid md:grid-cols-[1fr_1.4fr] gap-12">
           <div>
             <div className="eyebrow mb-5">Our Discipline</div>
@@ -140,14 +140,14 @@ function AboutPage() {
                 className="flex gap-6 border-b border-border pb-6"
               >
                 <span className="font-mono text-xs text-brand-marine shrink-0 pt-1">0{i + 1}</span>
-                <span className="text-white/85">{n}</span>
+                <span className="text-foreground/85">{n}</span>
               </motion.li>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="border-t border-border/60">
+      <section className="section-ice border-t border-border/60">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[21/9] shadow-ambient-olive">
             <img src={PORT_CRANES_IMAGE} alt="Port export infrastructure" className="h-full w-full object-cover object-[50%_35%]" />
@@ -156,7 +156,7 @@ function AboutPage() {
       </section>
 
       {/* Additional Oman imagery — harbor dusk and dhow detail */}
-      <section className="section-slate border-t border-border">
+      <section className="section-navy border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
           <div className="eyebrow mb-5">Oman's Coast</div>
           <h2 className="h-display h-display-md max-w-3xl mb-16">The waters and vessels that define our origin.</h2>
