@@ -64,42 +64,44 @@
   --font-mono: var(--font-mono);
   --color-brand-marine: var(--brand-marine);
   --color-brand-ocean-raw: var(--brand-ocean);
-  --color-brand-accent: #2F4F67;   /* Deep Marine Blue - primary interactive */
-  --color-brand-ocean: #4A6F8F;    /* Ocean Blue - secondary interactive */
-  --color-brand-navy: #06142e;     /* Original navy - sparing accent */
-  --color-brand-teal: #14b8a6;     /* Original teal - sparing accent */
-  --color-brand-olive: #6B7456;    /* Natural olive - category indicator */
-  --color-brand-dill: #5F8B5A;     /* Fresh dill green - success only */
-  --color-brand-sand: #C7B299;     /* Sand beige - premium badge */
-  --color-brand-graphite: #3C3C3C; /* Borders, dividers */
-  --color-brand-slate: #232323;    /* Cards */
-  --color-brand-black: #121212;    /* Deep ocean black */
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-ocean: var(--brand-ocean);
+  --color-brand-navy: #0f1b3d;     /* Navy base band */
+  --color-brand-deep: #0a1229;     /* Deepest navy — nav, footer, hero */
+  --color-brand-mid: #1e3a5f;      /* Mid navy — elevated cards */
+  --color-brand-ice: #e8edf3;      /* Ice — light bands */
+  --color-brand-ink: #0b1220;      /* Ink — type on light bands */
+  --color-brand-olive: #6B7456;
+  --color-brand-sand: #C7B299;
+  --color-brand-slate: #16244a;
+  --color-brand-black: #0a1229;
 }
 
 :root {
   --radius: 0.625rem;
-  /* Ocean Bridge Trade — Premium Marine Industrial */
-  --brand-marine: #6F93B5;         /* Deep Marine Blue, brightened for text on dark */
-  --brand-ocean: #93B4CE;          /* Ocean Blue, brightened for text on dark */
-  --background: oklch(0.19 0 0);             /* #121212 deep ocean black */
-  --foreground: oklch(0.94 0 0);             /* #E6E6E6 body */
-  --card: oklch(0.26 0 0);                   /* #232323 slate black */
-  --card-foreground: oklch(0.94 0 0);
-  --popover: oklch(0.24 0 0);
-  --popover-foreground: oklch(0.94 0 0);
-  --primary: oklch(0.46 0.04 235);           /* #2F4F67 deep marine */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.26 0 0);
-  --secondary-foreground: oklch(0.94 0 0);
-  --muted: oklch(0.26 0 0);
-  --muted-foreground: oklch(0.72 0 0);       /* #A5A5A5 */
-  --accent: oklch(0.55 0.05 240);            /* #4A6F8F ocean blue */
-  --accent-foreground: oklch(1 0 0);
+  /* Ocean Bridge Trade — Navy & Ice */
+  --brand-accent: #3b6fa0;         /* Ocean accent — links, active, buttons */
+  --brand-marine: #8fb4d6;         /* Accent brightened for text on navy */
+  --brand-ocean: #a9c6de;
+  --background: #0f1b3d;
+  --foreground: #f2f6fa;
+  --card: #16264d;
+  --card-foreground: #f2f6fa;
+  --popover: #16264d;
+  --popover-foreground: #f2f6fa;
+  --primary: #3b6fa0;
+  --primary-foreground: #ffffff;
+  --secondary: #1e3a5f;
+  --secondary-foreground: #f2f6fa;
+  --muted: #1e3a5f;
+  --muted-foreground: #9db0c8;
+  --accent: #3b6fa0;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(1 0 0 / 0.08);             /* subtle white line */
-  --input: oklch(1 0 0 / 0.12);
-  --ring: oklch(0.55 0.05 240);
+  --border: rgb(255 255 255 / 0.12);
+  --input: rgb(255 255 255 / 0.16);
+  --ring: #3b6fa0;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -113,8 +115,8 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 240);
   --sidebar-border: oklch(0.95 0.01 240 / 0.12);
   --sidebar-ring: oklch(0.56 0.09 245);
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-sans: "Mulish", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", "Georgia", serif;
+  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -155,12 +157,12 @@
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    border-color: var(--border);
   }
 
   body {
     background-color: var(--color-background);
-    color: var(--color-foreground);
+    color: var(--foreground);
     font-optical-sizing: auto;
   }
 }
@@ -177,14 +179,14 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.32em;
-  color: var(--color-brand-marine);
+  color: var(--brand-marine);
 }
 .eyebrow::before {
   content: "";
   width: 1.75rem;
   height: 1px;
   flex-shrink: 0;
-  background-color: var(--color-brand-accent);
+  background-color: var(--brand-accent);
 }
 .eyebrow-bare { display: inline; }
 .eyebrow-bare::before { content: none; }
@@ -197,17 +199,16 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.28em;
-  color: rgb(255 255 255 / 0.5);
+  color: var(--muted-foreground);
 }
 
 /* Display headline scale with editorial leading. */
 .h-display {
   font-family: var(--font-display);
-  font-weight: 300;
-  font-variation-settings: "opsz" 72;
-  letter-spacing: 0.005em;
-  line-height: 1.04;
-  color: #fff;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.06;
+  color: var(--foreground);
 }
 .h-display-xl { font-size: clamp(2.625rem, 5.6vw, 4.75rem); }
 .h-display-lg { font-size: clamp(2.25rem, 4.2vw, 3.625rem); }
@@ -219,7 +220,7 @@
   font-size: 1rem;
   line-height: 1.85;
   letter-spacing: 0.008em;
-  color: var(--color-muted-foreground);
+  color: var(--muted-foreground);
 }
 
 /* Hairline rule used as a quiet section divider / accent. */
@@ -227,32 +228,78 @@
   display: block;
   height: 1px;
   width: 3rem;
-  background-color: var(--color-brand-accent);
+  background-color: var(--brand-accent);
 }
 
-/* Alternating dark sections: a slightly lighter slate against #121212. */
-.section-slate {
-  --background: oklch(0.23 0 0);             /* #1c1c1c */
-  --card: oklch(0.28 0 0);                   /* #2a2a2a */
+/* ---------- Full-width bands ----------
+ * Each band redefines the local token scope, so tokenised components
+ * automatically flip between the navy and ice treatments. */
+.section-navy,
+.section-navy-deep,
+.section-slate,
+.section-ice,
+.section-paper {
   background-color: var(--background);
   color: var(--foreground);
 }
 
+.section-navy {
+  --background: #0f1b3d;
+  --card: #16264d;
+  --foreground: #f2f6fa;
+  --muted-foreground: #9db0c8;
+  --border: rgb(255 255 255 / 0.12);
+  --brand-marine: #8fb4d6;
+  --brand-ocean: #a9c6de;
+  --brand-accent: #3b6fa0;
+}
+.section-navy-deep,
+.section-slate {
+  --background: #0a1229;
+  --card: #14213f;
+  --foreground: #f2f6fa;
+  --muted-foreground: #93a7c0;
+  --border: rgb(255 255 255 / 0.10);
+  --brand-marine: #8fb4d6;
+  --brand-ocean: #a9c6de;
+  --brand-accent: #3b6fa0;
+}
+.section-ice {
+  --background: #e8edf3;
+  --card: #ffffff;
+  --foreground: #0b1220;
+  --muted-foreground: #4d5f77;
+  --border: rgb(11 18 32 / 0.12);
+  --brand-marine: #1e3a5f;
+  --brand-ocean: #3b6fa0;
+  --brand-accent: #1e3a5f;
+}
+.section-paper {
+  --background: #f4f7fa;
+  --card: #ffffff;
+  --foreground: #0b1220;
+  --muted-foreground: #4d5f77;
+  --border: rgb(11 18 32 / 0.12);
+  --brand-marine: #1e3a5f;
+  --brand-ocean: #3b6fa0;
+  --brand-accent: #1e3a5f;
+}
+
 .bg-brand-navy   { background-color: var(--color-brand-navy); }
-.bg-brand-black  { background-color: var(--color-brand-black); }
+.bg-brand-black  { background-color: var(--color-brand-deep); }
 .bg-brand-slate  { background-color: var(--color-brand-slate); }
-.text-brand-marine { color: var(--color-brand-marine); }
+.text-brand-marine { color: var(--brand-marine); }
 .text-brand-ocean  { color: var(--color-brand-ocean-raw); }
 .text-brand-sand   { color: var(--color-brand-sand); }
-.border-brand-marine { border-color: var(--color-brand-accent); }
-.bg-brand-marine   { background-color: var(--color-brand-accent); }
+.border-brand-marine { border-color: var(--brand-accent); }
+.bg-brand-marine   { background-color: var(--brand-accent); }
 
 /* ---------- Brand-framed media ---------- */
 /* Hairline brand frame around photography; corners instead of radius/shadows. */
 .media-frame {
   position: relative;
-  border: 1px solid rgb(255 255 255 / 0.14);
-  background-color: var(--color-brand-black);
+  border: 1px solid var(--border);
+  background-color: var(--color-brand-deep);
 }
 .media-frame img,
 .media-frame video { display: block; }
@@ -268,14 +315,14 @@
 .media-frame::before {
   top: -1px;
   left: -1px;
-  border-top: 1px solid var(--color-brand-ocean);
-  border-left: 1px solid var(--color-brand-ocean);
+  border-top: 1px solid var(--brand-ocean);
+  border-left: 1px solid var(--brand-ocean);
 }
 .media-frame::after {
   bottom: -1px;
   right: -1px;
-  border-bottom: 1px solid var(--color-brand-ocean);
-  border-right: 1px solid var(--color-brand-ocean);
+  border-bottom: 1px solid var(--brand-ocean);
+  border-right: 1px solid var(--brand-ocean);
 }
 
 /* ---------- Buttons ---------- */
@@ -289,8 +336,8 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-brand-marine);
-  border: 1px solid rgb(255 255 255 / 0.18);
+  color: var(--brand-marine);
+  border: 1px solid var(--border);
   padding: 0.8rem 1.5rem;
   overflow: hidden;
   isolation: isolate;
@@ -301,14 +348,14 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: var(--color-brand-accent);
+  background-color: var(--brand-accent);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
 }
-.btn-ghost:hover { color: #fff; border-color: var(--color-brand-accent); }
+.btn-ghost:hover { color: var(--primary-foreground); border-color: var(--brand-accent); }
 .btn-ghost:hover::before { transform: scaleX(1); transform-origin: left; }
-.btn-ghost:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
+.btn-ghost:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
 
 /* Text link with animated underline. */
 .link-underline {
@@ -319,47 +366,53 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-brand-marine);
+  color: var(--brand-marine);
   padding-bottom: 0.35rem;
-  border-bottom: 1px solid var(--color-brand-accent);
+  border-bottom: 1px solid var(--brand-accent);
   transition: color 200ms ease, border-color 200ms ease;
 }
-.link-underline:hover { color: #fff; border-color: rgb(255 255 255 / 0.6); }
+.link-underline:hover { color: var(--foreground); border-color: var(--foreground); }
 
 /* Premium primary CTA — Deep Marine Blue with smooth hover shift. */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background-color: var(--color-brand-accent);
+  background-color: var(--primary);
   color: #fff;
   padding: 1rem 2rem;
   font-size: 0.8125rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
   transition: background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
 }
-.btn-primary:hover { background-color: var(--color-brand-ocean); transform: translateY(-1px); box-shadow: 0 10px 30px -12px rgba(74,111,143,0.5); }
-.btn-primary:active { transform: translateY(0); background-color: #26445a; }
-.btn-primary:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
+.btn-primary:hover { background-color: #4d84b8; transform: translateY(-2px); box-shadow: 0 14px 34px -14px rgba(59,111,160,0.7); }
+.btn-primary:active { transform: translateY(0); background-color: #2f5a83; }
+.btn-primary:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
 .btn-primary:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; box-shadow: none; transform: none; }
 
 .btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  border: 1px solid rgba(255,255,255,0.35);
-  color: rgba(255,255,255,0.85);
+  border: 1px solid var(--border);
+  color: var(--foreground);
   padding: 1rem 2rem;
   font-size: 0.8125rem;
   letter-spacing: 0.05em;
   transition: border-color 250ms ease, color 250ms ease, background-color 250ms ease;
 }
-.btn-outline:hover { border-color: var(--color-brand-ocean); color: #fff; background-color: rgba(74,111,143,0.08); }
-.btn-outline:focus-visible { outline: 2px solid var(--color-brand-ocean); outline-offset: 2px; }
+.btn-outline:hover { border-color: var(--brand-ocean); background-color: rgba(59,111,160,0.10); }
+.btn-outline:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
 
 /* Card lift on hover — hairline highlight instead of a drop shadow. */
-.card-lift { transition: transform 300ms ease, border-color 300ms ease; }
-.card-lift:hover { transform: translateY(-4px); border-color: rgb(111 147 181 / 0.55); }
+.card-lift { transition: transform 300ms cubic-bezier(0.19,1,0.22,1), border-color 300ms ease, box-shadow 300ms ease; }
+.card-lift:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in oklab, var(--brand-accent) 55%, transparent);
+  box-shadow: 0 22px 50px -22px rgba(11, 18, 32, 0.55);
+}
 
 /* Nav link underline animation. */
 .nav-link { position: relative; padding-bottom: 4px; }
@@ -368,7 +421,7 @@
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 1px;
-  background-color: var(--color-brand-ocean);
+  background-color: var(--brand-ocean);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 300ms ease;

@@ -22,10 +22,10 @@ function ContactPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-border/60">
+      <section className="section-navy-deep relative overflow-hidden border-b border-border/60">
         <div className="absolute inset-0">
           <img src={HARBOR_DUSK_IMAGE} alt="" className="h-full w-full object-cover object-[50%_38%] opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#121212]/60 via-[#121212]/80 to-[#121212]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/55 via-[#0a1229]/80 to-[#0a1229]" />
         </div>
         <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-32 pb-20">
           <div className="eyebrow mb-6">Buyer Desk</div>
@@ -49,7 +49,7 @@ function ContactPage() {
       </section>
 
       {/* Two-column: form + info */}
-      <section>
+      <section className="section-ice">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24 grid md:grid-cols-[1.4fr_1fr] gap-12">
           {/* Form */}
           <motion.div
@@ -61,7 +61,7 @@ function ContactPage() {
           >
             {sent ? (
               <div className="min-h-[400px] flex flex-col items-center justify-center text-center">
-                <div className="font-display text-3xl mb-4 text-white">Inquiry received.</div>
+                <div className="font-display text-3xl mb-4 text-foreground">Inquiry received.</div>
                 <p className="text-muted-foreground max-w-sm">A member of our commercial desk will respond within 48 business hours.</p>
               </div>
             ) : (
@@ -79,7 +79,7 @@ function ContactPage() {
                 <Field label="Preferred Incoterms" name="incoterms" placeholder="e.g. FOB Salalah, CFR Qingdao" />
                 <div>
                   <label className="eyebrow-muted">Additional Context</label>
-                  <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--color-brand-ocean)] outline-none py-2 text-sm resize-none transition-colors" />
+                  <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--brand-ocean)] outline-none py-2 text-sm resize-none transition-colors" />
                 </div>
                 <button type="submit" className="btn-primary group">
                   Submit Buyer Inquiry <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
@@ -100,7 +100,7 @@ function ContactPage() {
             <div className="flex items-start gap-3 mb-8">
               <MapPin className="size-4 mt-1 text-muted-foreground" />
               <div>
-                <div className="font-display text-xl text-white">Muscat</div>
+                <div className="font-display text-xl text-foreground">Muscat</div>
                 <div className="text-sm text-muted-foreground">Sultanate of Oman</div>
               </div>
             </div>
@@ -108,13 +108,13 @@ function ContactPage() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+968 77 62 1857</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">Oman</span></li>
               <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+971 50 485 0309</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">WhatsApp</span></li>
-              <li className="flex items-center gap-3"><Mail className="size-4 text-muted-foreground" /><a href="mailto:info@oceanbridge-trade.com" className="hover:text-white transition-colors">info@oceanbridge-trade.com</a></li>
-              <li className="flex items-center gap-3"><Linkedin className="size-4 text-muted-foreground" /><a href="https://www.linkedin.com/company/oceanbridge-trade" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">/company/oceanbridge-trade</a></li>
+              <li className="flex items-center gap-3"><Mail className="size-4 text-muted-foreground" /><a href="mailto:info@oceanbridge-trade.com" className="hover:text-foreground transition-colors">info@oceanbridge-trade.com</a></li>
+              <li className="flex items-center gap-3"><Linkedin className="size-4 text-muted-foreground" /><a href="https://www.linkedin.com/company/oceanbridge-trade" target="_blank" rel="noreferrer" className="hover:text-foreground transition-colors">/company/oceanbridge-trade</a></li>
             </ul>
 
             <div className="mt-10 pt-8 border-t border-border">
               <div className="eyebrow-muted mb-3">Response SLA</div>
-              <div className="font-display text-2xl text-white">48 business hours</div>
+              <div className="font-display text-2xl text-foreground">48 business hours</div>
             </div>
           </motion.aside>
         </div>
@@ -132,7 +132,7 @@ function Field({ label, name, required, placeholder }: { label: string; name: st
         name={name}
         required={required}
         placeholder={placeholder}
-        className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--color-brand-ocean)] outline-none py-2 text-sm transition-colors"
+        className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--brand-ocean)] outline-none py-2 text-sm transition-colors"
       />
     </div>
   );
