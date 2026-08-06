@@ -266,8 +266,12 @@ function Index() {
                 transition={{ duration: 0.6, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
                 className="card-lift border border-border bg-card overflow-hidden group shadow-ambient-ocean"
               >
-                <div className="aspect-[4/3] overflow-hidden bg-brand-black">
-                  <img src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]} alt={c.label_en} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div className="h-44 flex items-center justify-center overflow-hidden bg-brand-black p-3">
+                  <img
+                    src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]}
+                    alt={c.label_en}
+                    className="max-h-full max-w-full object-contain group-hover:scale-[1.03] transition-transform duration-700"
+                  />
                 </div>
                 <div className="p-6">
                   <div className="font-mono text-xs text-muted-foreground mb-3">0{i + 1}</div>
