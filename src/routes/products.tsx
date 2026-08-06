@@ -168,15 +168,14 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
   return (
     <div className="card-lift group relative h-full overflow-hidden border border-border bg-card">
       <div className="relative overflow-hidden border-b border-border">
-        <div className="aspect-[4/3] overflow-hidden bg-brand-black">
+        <div className="h-48 flex items-center justify-center overflow-hidden bg-brand-black p-3">
           <img
             src={image}
             alt={name}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
           />
         </div>
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(180deg,transparent,rgba(10,18,41,0.55))]" />
       </div>
 
       <div className="border-t border-border px-6 lg:px-7 py-3">
