@@ -69,6 +69,7 @@ export function SiteHeader() {
             src={LOGO_HORIZONTAL}
             alt="Ocean Bridge Trade"
             className={`w-auto transition-all duration-500 ${scrolled ? "h-9" : "h-11"}`}
+            style={{ filter: "brightness(1.9) saturate(1.1)" }}
           />
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-[13px] tracking-wide">
@@ -136,7 +137,12 @@ export function SiteFooter() {
     <footer className="section-navy-deep mt-32 text-foreground border-t border-foreground/10">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
-          <img src={LOGO_VERTICAL} alt="Ocean Bridge Trade" className="h-32 w-auto mb-4" />
+          <img
+            src={LOGO_VERTICAL}
+            alt="Ocean Bridge Trade"
+            className="h-36 w-auto mb-4"
+            style={{ filter: "brightness(1.9) saturate(1.1)" }}
+          />
           <p className="mt-3 text-sm text-foreground/70 max-w-sm leading-[1.8]">
             {t("brand.tagline")} Verified Oman-origin seafood, engineered for international processors and importers.
           </p>
