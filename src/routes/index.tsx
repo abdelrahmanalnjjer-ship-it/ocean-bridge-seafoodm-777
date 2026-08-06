@@ -411,8 +411,8 @@ function Index() {
             Sourcing Oman-origin seafood?
           </motion.h2>
           <p className="mt-6 lede max-w-lg mx-auto text-sm">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
-          <Link to="/contact" className="btn-primary mt-12 group shadow-ambient-marine">
-            Initiate Buyer Inquiry <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
+          <Link to="/contact" className="btn-pill mt-12">
+            Initiate Buyer Inquiry <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
           </Link>
         </div>
       </section>
