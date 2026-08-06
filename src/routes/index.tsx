@@ -89,8 +89,8 @@ function Index() {
 
   return (
     <div>
-      {/* HERO — rotating origin footage with captions synced to each cut */}
-      <section className="section-navy-deep relative min-h-[92vh] flex items-end overflow-hidden">
+      {/* HERO — full-bleed rotating footage, chrome floating over it */}
+      <section className="section-navy-deep relative -mt-16 min-h-screen flex items-end overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <AnimatePresence initial={false}>
             <motion.div
@@ -104,7 +104,7 @@ function Index() {
               <video
                 ref={videoRef}
                 src={active.src}
-                className={`h-full w-full opacity-70 ${active.pos === "object-contain" ? "object-contain bg-brand-black" : "object-cover"}`}
+                className={`h-full w-full ${active.pos === "object-contain" ? "object-contain bg-brand-black" : "object-cover"}`}
                 autoPlay
                 muted
                 playsInline
@@ -112,21 +112,11 @@ function Index() {
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/35 via-[#0a1229]/70 to-[#0a1229]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/45 via-transparent to-[#0a1229]/85" />
         </div>
-        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-28 pt-40 w-full shadow-ambient-marine">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.35em] text-foreground/70 mb-10"
-          >
-            <span className="h-px w-8 shrink-0 bg-brand-marine" />
-            Ocean Bridge Trade · Muscat, Sultanate of Oman
-          </motion.div>
-
+        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
           {/* Caption keyed to the active video — fades and drifts on change */}
-          <div className="min-h-[9.5rem] md:min-h-[13rem] lg:min-h-[15rem]">
+          <div className="max-w-2xl">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={slide}
@@ -135,14 +125,11 @@ function Index() {
                 exit={{ opacity: 0, y: -18 }}
                 transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
               >
-                <div className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-brand-marine">
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-foreground/50">
-                    {String(slide + 1).padStart(2, "0")} / {String(HERO_SLIDES.length).padStart(2, "0")}
-                  </span>
-                  <span className="h-px w-6 bg-brand-marine" />
+                <div className="mb-5 flex items-center justify-end gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-brand-marine">
                   {active.kicker}
+                  <span className="h-px w-6 bg-brand-marine" />
                 </div>
-                <h1 className="h-display h-display-xl max-w-4xl">
+                <h1 className="h-display h-display-lg">
                   {active.headline}
                 </h1>
               </motion.div>
@@ -153,36 +140,41 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.35 }}
-            className="mt-8 max-w-xl text-base md:text-lg text-foreground/70 leading-[1.8]"
+            className="mt-6 max-w-md text-sm md:text-base text-foreground/75 leading-[1.8]"
           >
-            Verified supply. Regulatory pre-clearance. Reliable, repeatable supply chains from Oman's coast to international processors and importers.
+            Verified supply and regulatory pre-clearance, from Oman's coast to international processors and importers.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-12 flex flex-wrap items-center gap-6"
+            className="mt-9"
           >
-            <Link to="/contact" className="btn-primary group shadow-ambient-marine">
+            <Link to="/contact" className="btn-pill">
               Request a Buyer Consultation
-              <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
+              <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
             </Link>
-            {/* Sequence indicators — click to jump between cuts */}
-            <div className="flex items-center gap-2" role="tablist" aria-label="Hero footage selector">
-              {HERO_SLIDES.map((s, i) => (
-                <button
-                  key={s.src}
-                  role="tab"
-                  aria-selected={i === slide}
-                  aria-label={`Play segment ${i + 1}: ${s.kicker}`}
-                  onClick={() => goTo(i)}
-                  className={`h-px transition-all duration-500 ${
-                    i === slide ? "w-12 bg-brand-marine" : "w-6 bg-foreground/30 hover:bg-foreground/60"
-                  }`}
-                />
-              ))}
-            </div>
           </motion.div>
+        </div>
+
+        {/* Minimal sequence dots, bottom-left */}
+        <div
+          className="absolute bottom-10 left-6 lg:left-12 flex items-center gap-3"
+          role="tablist"
+          aria-label="Hero footage selector"
+        >
+          {HERO_SLIDES.map((s, i) => (
+            <button
+              key={s.src}
+              role="tab"
+              aria-selected={i === slide}
+              aria-label={`Play segment ${i + 1}: ${s.kicker}`}
+              onClick={() => goTo(i)}
+              className={`size-2 rounded-full transition-all duration-500 ${
+                i === slide ? "bg-foreground scale-125" : "bg-foreground/35 hover:bg-foreground/70"
+              }`}
+            />
+          ))}
         </div>
       </section>
 
