@@ -395,7 +395,7 @@
   font-weight: 600;
   transition: background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
 }
-.btn-primary:hover { background-color: #4d84b8; transform: translateY(-2px); box-shadow: 0 14px 34px -14px rgba(59,111,160,0.7); }
+.btn-primary:hover { background-color: #3E5741; transform: translateY(-2px); box-shadow: 0 14px 34px -14px rgba(44,62,45,0.75); }
 .btn-primary:active { transform: translateY(0); background-color: #24321f; }
 .btn-primary:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
 .btn-primary:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; box-shadow: none; transform: none; }
@@ -459,7 +459,7 @@
   letter-spacing: 0.05em;
   transition: border-color 250ms ease, color 250ms ease, background-color 250ms ease;
 }
-.btn-outline:hover { border-color: var(--brand-ocean); background-color: rgba(59,111,160,0.10); }
+.btn-outline:hover { border-color: var(--brand-ocean); background-color: rgba(74,107,78,0.12); }
 .btn-outline:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
 
 /* Card lift on hover — hairline highlight instead of a drop shadow. */
@@ -467,7 +467,7 @@
 .card-lift:hover {
   transform: translateY(-5px);
   border-color: color-mix(in oklab, var(--brand-accent) 55%, transparent);
-  box-shadow: 0 22px 50px -22px rgba(11, 18, 32, 0.55);
+  box-shadow: 0 22px 50px -22px rgba(6, 18, 22, 0.55);
 }
 
 /* Nav link underline animation. */
@@ -486,40 +486,40 @@
 
 /* ---------- Brand ambient shadows — colored, layered depth ---------- */
 .shadow-marine {
-  box-shadow: 0 8px 32px -6px rgba(47, 79, 103, 0.35),
-              0 2px 8px -4px rgba(47, 79, 103, 0.15);
+  box-shadow: 0 8px 32px -6px rgba(28, 54, 60, 0.35),
+              0 2px 8px -4px rgba(28, 54, 60, 0.15);
 }
 .shadow-ocean {
-  box-shadow: 0 8px 32px -6px rgba(74, 111, 143, 0.30),
-              0 2px 8px -4px rgba(74, 111, 143, 0.12);
+  box-shadow: 0 8px 32px -6px rgba(74, 107, 78, 0.30),
+              0 2px 8px -4px rgba(74, 107, 78, 0.12);
 }
 .shadow-olive {
-  box-shadow: 0 8px 28px -6px rgba(107, 116, 86, 0.25);
+  box-shadow: 0 8px 28px -6px rgba(44, 62, 45, 0.25);
 }
 .shadow-sand {
-  box-shadow: 0 8px 28px -6px rgba(199, 178, 153, 0.20);
+  box-shadow: 0 8px 28px -6px rgba(185, 195, 180, 0.20);
 }
 .shadow-card {
-  box-shadow: 0 20px 60px -12px rgba(2, 6, 23, 0.50),
-              0 4px 18px -8px rgba(47, 79, 103, 0.12);
+  box-shadow: 0 20px 60px -12px rgba(6, 18, 22, 0.50),
+              0 4px 18px -8px rgba(28, 54, 60, 0.12);
 }
 .shadow-hero {
-  box-shadow: 0 30px 80px -20px rgba(47, 79, 103, 0.25);
+  box-shadow: 0 30px 80px -20px rgba(28, 54, 60, 0.25);
 }
 /* Colored ambient shadow variants for depth on dark backgrounds */
 .shadow-ambient-marine {
-  box-shadow: 0 24px 64px -16px rgba(47, 79, 103, 0.40),
-              0 8px 20px -12px rgba(47, 79, 103, 0.18);
+  box-shadow: 0 24px 64px -16px rgba(28, 54, 60, 0.40),
+              0 8px 20px -12px rgba(28, 54, 60, 0.18);
 }
 .shadow-ambient-ocean {
-  box-shadow: 0 24px 64px -16px rgba(74, 111, 143, 0.35),
-              0 8px 20px -12px rgba(74, 111, 143, 0.15);
+  box-shadow: 0 24px 64px -16px rgba(74, 107, 78, 0.35),
+              0 8px 20px -12px rgba(74, 107, 78, 0.15);
 }
 .shadow-ambient-olive {
-  box-shadow: 0 20px 56px -14px rgba(107, 116, 86, 0.30);
+  box-shadow: 0 20px 56px -14px rgba(44, 62, 45, 0.30);
 }
 .shadow-ambient-sand {
-  box-shadow: 0 20px 56px -14px rgba(199, 178, 153, 0.22);
+  box-shadow: 0 20px 56px -14px rgba(185, 195, 180, 0.22);
 }
 
 /* ---------- Varied entrance animations — each section gets a distinct feel ---------- */
