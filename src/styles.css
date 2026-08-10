@@ -66,42 +66,42 @@
   --color-brand-ocean-raw: var(--brand-ocean);
   --color-brand-accent: var(--brand-accent);
   --color-brand-ocean: var(--brand-ocean);
-  --color-brand-navy: #0f1b3d;     /* Navy base band */
-  --color-brand-deep: #0a1229;     /* Deepest navy — nav, footer, hero */
-  --color-brand-mid: #1e3a5f;      /* Mid navy — elevated cards */
-  --color-brand-ice: #e8edf3;      /* Ice — light bands */
-  --color-brand-ink: #0b1220;      /* Ink — type on light bands */
-  --color-brand-olive: #6B7456;
-  --color-brand-sand: #C7B299;
-  --color-brand-slate: #16244a;
-  --color-brand-black: #0a1229;
+  --color-brand-navy: #10222B;     /* Deep ocean teal — base band */
+  --color-brand-deep: #0B1A21;     /* Deepest teal — nav, footer, hero */
+  --color-brand-mid: #1A2E35;      /* Elevated surface */
+  --color-brand-ice: #FFFFFF;      /* Mist white — light bands */
+  --color-brand-ink: #12242C;      /* Ink — type on light bands */
+  --color-brand-olive: #2C3E2D;    /* Forest moss */
+  --color-brand-sand: #B9C3B4;
+  --color-brand-slate: #16303A;
+  --color-brand-black: #0B1A21;
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Ocean Bridge Trade — Navy & Ice */
-  --brand-accent: #3b6fa0;         /* Ocean accent — links, active, buttons */
-  --brand-marine: #8fb4d6;         /* Accent brightened for text on navy */
-  --brand-ocean: #a9c6de;
-  --background: #0f1b3d;
-  --foreground: #f2f6fa;
-  --card: #16264d;
-  --card-foreground: #f2f6fa;
-  --popover: #16264d;
-  --popover-foreground: #f2f6fa;
-  --primary: #3b6fa0;
+  --radius: 0.25rem;
+  /* Ocean Bridge Trade — Deep Ocean Teal & Forest Moss */
+  --brand-accent: #4A6B4E;         /* Moss accent — links, active, buttons */
+  --brand-marine: #9CB89A;         /* Moss brightened for text on teal */
+  --brand-ocean: #C3D2BF;
+  --background: #10222B;
+  --foreground: #F4F6F3;
+  --card: #1A2E35;
+  --card-foreground: #F4F6F3;
+  --popover: #1A2E35;
+  --popover-foreground: #F4F6F3;
+  --primary: #2C3E2D;
   --primary-foreground: #ffffff;
-  --secondary: #1e3a5f;
-  --secondary-foreground: #f2f6fa;
-  --muted: #1e3a5f;
-  --muted-foreground: #9db0c8;
-  --accent: #3b6fa0;
+  --secondary: #1A2E35;
+  --secondary-foreground: #F4F6F3;
+  --muted: #1A2E35;
+  --muted-foreground: #A2B2B4;
+  --accent: #4A6B4E;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: rgb(255 255 255 / 0.12);
-  --input: rgb(255 255 255 / 0.16);
-  --ring: #3b6fa0;
+  --border: rgb(196 214 199 / 0.16);
+  --input: rgb(196 214 199 / 0.20);
+  --ring: #4A6B4E;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -115,8 +115,8 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 240);
   --sidebar-border: oklch(0.95 0.01 240 / 0.12);
   --sidebar-ring: oklch(0.56 0.09 245);
-  --font-display: "Instrument Serif", "Georgia", serif;
-  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
