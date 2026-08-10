@@ -65,13 +65,13 @@ function AboutPage() {
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20 grid md:grid-cols-2 gap-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
             <div className="eyebrow mb-6">Our Mission</div>
-            <p className="font-display text-2xl md:text-3xl leading-snug text-foreground">
+            <p className="font-display text-xl md:text-2xl leading-snug text-foreground">
               To elevate and professionalize the Omani fish export industry — becoming the most trusted, corporate-grade representative of Oman-origin seafood for international buyers.
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}>
             <div className="eyebrow mb-6">What We Actually Do</div>
-            <p className="font-display text-2xl md:text-3xl leading-snug text-foreground">
+            <p className="font-display text-xl md:text-2xl leading-snug text-foreground">
               We don't just connect buyers and sellers. We engineer reliable, compliant, repeatable supply chains from Oman to the world.
             </p>
           </motion.div>
@@ -82,7 +82,7 @@ function AboutPage() {
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           {STATS.map((s, i) => (
             <motion.div key={s.v} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.06 }}>
-              <div className="font-display text-3xl md:text-4xl text-foreground">{s.k}</div>
+              <div className="font-display text-2xl md:text-3xl text-foreground">{s.k}</div>
               <div className="mt-3 eyebrow-muted">{s.v}</div>
             </motion.div>
           ))}

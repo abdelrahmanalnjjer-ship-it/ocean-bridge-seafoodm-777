@@ -156,7 +156,7 @@ function Index() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-9"
+            className="mt-7"
           >
             <Link to="/contact" className="btn-pill">
               Request a Buyer Consultation
@@ -202,7 +202,7 @@ function Index() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1 }}
-            className="font-display text-3xl md:text-5xl leading-[1.15] max-w-5xl text-foreground"
+            className="font-display text-2xl md:text-4xl leading-[1.2] max-w-4xl text-foreground"
           >
             We don't just connect buyers and sellers.
             <span className="text-muted-foreground"> We engineer reliable, compliant, repeatable supply chains from Oman to the world — bringing corporate-grade structure to a trade that has historically operated informally.</span>
@@ -223,10 +223,10 @@ function Index() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: (i % 2) * 0.1, ease: [0.19, 1, 0.22, 1] }}
-                className="bg-background p-10 border-t-2 border-transparent hover:border-brand-marine transition-colors"
+                className="bg-background p-8 border-t-2 border-transparent hover:border-brand-marine transition-colors"
               >
                 <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
-                <div className="font-display text-2xl mb-5 text-foreground">{c.title}</div>
+                <div className="font-display text-xl mb-3 text-foreground">{c.title}</div>
                 <p className="text-sm text-muted-foreground leading-[1.7] max-w-md">{c.body}</p>
               </motion.div>
             ))}
@@ -245,7 +245,7 @@ function Index() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.06 }}
             >
-              <div className="font-display text-4xl md:text-5xl text-foreground">{s.k}</div>
+              <div className="font-display text-3xl md:text-4xl text-foreground">{s.k}</div>
               <div className="mt-3 eyebrow-muted">{s.v}</div>
             </motion.div>
           ))}
@@ -436,11 +436,11 @@ function Index() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="h-display h-display-lg max-w-3xl mx-auto"
+            className="h-display h-display-md max-w-2xl mx-auto"
           >
             Sourcing Oman-origin seafood?
           </motion.h2>
-          <p className="mt-6 lede max-w-lg mx-auto text-sm">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
+          <p className="mt-4 lede max-w-lg mx-auto">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
           <Link to="/contact" className="btn-pill mt-12">
             Initiate Buyer Inquiry <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
           </Link>
