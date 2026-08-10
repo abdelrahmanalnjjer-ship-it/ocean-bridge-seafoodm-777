@@ -86,6 +86,14 @@ function Index() {
     setSlide(((next % HERO_SLIDES.length) + HERO_SLIDES.length) % HERO_SLIDES.length);
   };
 
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setSlide((s) => (s + 1) % HERO_SLIDES.length),
+      HERO_INTERVAL,
+    );
+    return () => window.clearInterval(id);
+  }, [slide]);
+
   return (
     <div>
       {/* HERO — full-bleed rotating footage, chrome floating over it */}
@@ -103,11 +111,12 @@ function Index() {
               <video
                 ref={videoRef}
                 src={active.src}
-                className={`h-full w-full ${active.pos === "object-contain" ? "object-contain bg-brand-black" : "object-cover"}`}
+                className="h-full w-full object-cover"
                 autoPlay
+                loop
                 muted
                 playsInline
-                onEnded={() => goTo(slide + 1)}
+                preload="auto"
               />
             </motion.div>
           </AnimatePresence>
