@@ -57,7 +57,7 @@ function ProductsPage() {
         </div>
       </section>
 
-      <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#0f1b3d]/85 backdrop-blur-xl">
+      <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#10222B]/88 backdrop-blur-xl">
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-1 flex-wrap">
             {CATEGORIES.map((c) => (
