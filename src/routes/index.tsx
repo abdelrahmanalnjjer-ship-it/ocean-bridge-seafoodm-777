@@ -120,7 +120,7 @@ function Index() {
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/45 via-transparent to-[#0a1229]/85" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/45 via-transparent to-[#0B1A21]/85" />
         </div>
         <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
           {/* Caption keyed to the active video — fades and drifts on change */}
