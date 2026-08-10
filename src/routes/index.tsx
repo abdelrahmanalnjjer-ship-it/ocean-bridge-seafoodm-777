@@ -148,7 +148,7 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.35 }}
-            className="mt-6 max-w-md text-sm md:text-base text-foreground/75 leading-[1.7]"
+            className="mt-5 max-w-md text-sm text-foreground/75 leading-[1.7]"
           >
             Verified supply and regulatory pre-clearance, from Oman's coast to international processors and importers.
           </motion.p>
