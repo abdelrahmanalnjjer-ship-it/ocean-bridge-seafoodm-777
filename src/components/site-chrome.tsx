@@ -59,11 +59,11 @@ export function SiteHeader() {
     <header
       className={`section-navy-deep fixed top-0 inset-x-0 z-50 text-foreground transition-all duration-500 ${
         scrolled || open
-          ? "border-b border-foreground/10 bg-[#0a1229]/92 backdrop-blur-xl"
+          ? "border-b border-foreground/10 bg-[#0B1A21]/92 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-16 flex items-center justify-between">
+      <div className="mx-auto max-w-[1240px] px-6 lg:px-12 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
           <img
             src={LOGO_HORIZONTAL}
@@ -101,7 +101,7 @@ export function SiteHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="md:hidden border-t border-foreground/10 bg-[#0a1229] px-6 py-6 space-y-4"
+            className="md:hidden border-t border-foreground/10 bg-[#0B1A21] px-6 py-6 space-y-4"
           >
             <img src={LOGO_SUBMARK} alt="" aria-hidden className="h-10 w-auto mb-2" />
             {links.map((l, i) => (
@@ -134,8 +134,8 @@ export function SiteFooter() {
     "Regulatory Disclosures",
   ];
   return (
-    <footer className="section-navy-deep mt-32 text-foreground border-t border-foreground/10">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
+    <footer className="section-navy-deep mt-20 text-foreground border-t border-foreground/10">
+      <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
           <img
             src={LOGO_VERTICAL}
@@ -143,7 +143,7 @@ export function SiteFooter() {
             className="h-36 w-auto mb-4"
             style={{ filter: "brightness(1.9) saturate(1.1)" }}
           />
-          <p className="mt-3 text-sm text-foreground/70 max-w-sm leading-[1.8]">
+          <p className="mt-3 text-sm text-foreground/70 max-w-sm leading-[1.7]">
             {t("brand.tagline")} Verified Oman-origin seafood, engineered for international processors and importers.
           </p>
         </div>
@@ -167,7 +167,7 @@ export function SiteFooter() {
       </div>
       {/* Legal / regulatory sub-menu */}
       <div className="border-t border-foreground/10">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px] tracking-wide text-foreground/60">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px] tracking-wide text-foreground/60">
           {legal.map((label) => (
             <a key={label} href="#" className="hover:text-foreground transition-colors">
               {label}
@@ -176,7 +176,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-foreground/10">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-5 flex justify-between items-center text-[11px] tracking-widest uppercase text-foreground/50">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex justify-between items-center text-[11px] tracking-widest uppercase text-foreground/50">
           <span>© {new Date().getFullYear()} Ocean Bridge Trade</span>
           <span>Bridging Origin. Verifying Supply.</span>
         </div>

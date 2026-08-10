@@ -29,9 +29,9 @@ function ProductsPage() {
   return (
     <div>
       <section className="section-navy-deep relative overflow-hidden border-b border-border/60">
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,#0a1229,#0f1b3d_52%,#16264d)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#0B1A21,#10222B_52%,#1A2E35)]" />
         <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_20%_10%,rgba(59,111,160,0.30),transparent_34%),radial-gradient(circle_at_80%_0%,rgba(59,111,160,0.16),transparent_26%)]" />
-        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-28 pb-18 lg:pb-24">
+        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pt-28 pb-18 lg:pb-24">
           <div className="inline-flex items-center gap-3 border border-foreground/10 bg-foreground/5 px-4 py-2 text-[10px] uppercase tracking-[0.35em] text-foreground/70 backdrop-blur-md">
             Catalogue · 35 SKU
           </div>
@@ -57,8 +57,8 @@ function ProductsPage() {
         </div>
       </section>
 
-      <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#0f1b3d]/85 backdrop-blur-xl">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
+      <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#10222B]/88 backdrop-blur-xl">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-1 flex-wrap">
             {CATEGORIES.map((c) => (
               <button
@@ -82,7 +82,7 @@ function ProductsPage() {
       </section>
 
       <section className="section-ice">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 lg:py-20">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 lg:py-20">
           <motion.div
             key={category}
             initial={{ opacity: 0, y: 12 }}

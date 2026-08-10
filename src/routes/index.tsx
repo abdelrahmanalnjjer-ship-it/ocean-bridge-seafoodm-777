@@ -1,32 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/data/species";
+import terminalNight from "@/assets/terminal-night.jpg.asset.json";
+import marketChina from "@/assets/market-china.jpg.asset.json";
+import marketEu from "@/assets/market-eu.jpg.asset.json";
+import marketGcc from "@/assets/market-gcc.jpg.asset.json";
+import marketUsa from "@/assets/market-usa.jpg.asset.json";
 
-/* Hero rotation — the three real uploaded cuts, in sequence.
- * NOTE: "9831955-uhd_3840_2160_30fps (online-video-cutter.com) (1).mp4" is a
- * byte-identical duplicate of the first video and is intentionally excluded. */
+/* Hero rotation — widescreen cuts only. The portrait 720x1280 flag clip is
+ * used on the About page, where a vertical frame suits it. Each clip loops and
+ * rotation runs on a fixed timer so short cuts still get full screen time. */
 const HERO_SLIDES = [
   {
     src: "/videos/9031955-uhd_3840_2160_30fps.mp4",
     kicker: "Origin · Muscat Coastline",
     headline: "Oman-origin seafood, engineered for global buyers.",
-    pos: "object-cover",
   },
   {
     src: "/videos/6618035-uhd_3840_2160_24fps(1) (online-video-cutter.com) (2).mp4",
     kicker: "Compliance · Regulatory Pre-Clearance",
     headline: "Every shipment cleared before it leaves the dock.",
-    pos: "object-cover",
-  },
-  {
-    src: "/videos/Untitled design.mp4",
-    kicker: "Logistics · Cold-Chain Integrity",
-    headline: "From Oman's coast to your processing line — verified.",
-    pos: "object-contain",
   },
 ];
+
+const HERO_INTERVAL = 7000;
 
 const CATEGORY_IMAGES = [
   "/product-images/pelagic.png",
@@ -53,10 +52,10 @@ const VALUE_PROPS = [
 ];
 
 const MARKETS = [
-  { region: "China", body: "GACC Decree 248 / CIFER facility registration, accurate Field 519 declarations." },
-  { region: "European Union", body: "TRACES documentation, IUU Catch Certificates, third-country establishment listing." },
-  { region: "Gulf Cooperation Council", body: "SFDA / ESMA / GSO standards, halal certification oversight, FASAH clearance." },
-  { region: "United States", body: "FDA Seafood HACCP (21 CFR 123) and Foreign Supplier Verification Program compliance." },
+  { region: "China", body: "GACC Decree 248 / CIFER facility registration, accurate Field 519 declarations.", img: marketChina.url, alt: "Container terminal at the Port of Shanghai, Yangshan deep-water zone" },
+  { region: "European Union", body: "TRACES documentation, IUU Catch Certificates, third-country establishment listing.", img: marketEu.url, alt: "Container terminal in the Port of Rotterdam" },
+  { region: "Gulf Cooperation Council", body: "SFDA / ESMA / GSO standards, halal certification oversight, FASAH clearance.", img: marketGcc.url, alt: "Container yard at Jebel Ali free zone" },
+  { region: "United States", body: "FDA Seafood HACCP (21 CFR 123) and Foreign Supplier Verification Program compliance.", img: marketUsa.url, alt: "Container cranes at a United States port terminal" },
 ];
 
 /* Fix 5: Certification badges for the scrolling ticker */
@@ -87,6 +86,14 @@ function Index() {
     setSlide(((next % HERO_SLIDES.length) + HERO_SLIDES.length) % HERO_SLIDES.length);
   };
 
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setSlide((s) => (s + 1) % HERO_SLIDES.length),
+      HERO_INTERVAL,
+    );
+    return () => window.clearInterval(id);
+  }, [slide]);
+
   return (
     <div>
       {/* HERO — full-bleed rotating footage, chrome floating over it */}
@@ -104,17 +111,18 @@ function Index() {
               <video
                 ref={videoRef}
                 src={active.src}
-                className={`h-full w-full ${active.pos === "object-contain" ? "object-contain bg-brand-black" : "object-cover"}`}
+                className="h-full w-full object-cover"
                 autoPlay
+                loop
                 muted
                 playsInline
-                onEnded={() => goTo(slide + 1)}
+                preload="auto"
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/45 via-transparent to-[#0a1229]/85" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/45 via-transparent to-[#0B1A21]/85" />
         </div>
-        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
+        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
           {/* Caption keyed to the active video — fades and drifts on change */}
           <div className="max-w-2xl">
             <AnimatePresence mode="wait" initial={false}>
@@ -140,7 +148,7 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.35 }}
-            className="mt-6 max-w-md text-sm md:text-base text-foreground/75 leading-[1.8]"
+            className="mt-5 max-w-md text-sm text-foreground/75 leading-[1.7]"
           >
             Verified supply and regulatory pre-clearance, from Oman's coast to international processors and importers.
           </motion.p>
@@ -148,7 +156,7 @@ function Index() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-9"
+            className="mt-7"
           >
             <Link to="/contact" className="btn-pill">
               Request a Buyer Consultation
@@ -180,7 +188,7 @@ function Index() {
 
       {/* MANIFESTO */}
       <section className="section-ice">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 md:py-40">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-20 md:py-14 md:py-20">
           <motion.div
             initial={{ opacity: 0, width: 0 }}
             whileInView={{ opacity: 1, width: "3rem" }}
@@ -194,7 +202,7 @@ function Index() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1 }}
-            className="font-display text-3xl md:text-5xl leading-[1.15] max-w-5xl text-foreground"
+            className="font-display text-2xl md:text-4xl leading-[1.2] max-w-4xl text-foreground"
           >
             We don't just connect buyers and sellers.
             <span className="text-muted-foreground"> We engineer reliable, compliant, repeatable supply chains from Oman to the world — bringing corporate-grade structure to a trade that has historically operated informally.</span>
@@ -204,9 +212,9 @@ function Index() {
 
       {/* BUYER VALUE PROPOSITION */}
       <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
           <div className="eyebrow mb-5">Buyer Proposition</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-20">Four disciplines a global buyer receives on every transaction.</h2>
+          <h2 className="h-display h-display-md max-w-3xl mb-10">Four disciplines a global buyer receives on every transaction.</h2>
           <div className="grid md:grid-cols-2 gap-px bg-border/60">
             {VALUE_PROPS.map((c, i) => (
               <motion.div
@@ -215,11 +223,11 @@ function Index() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: (i % 2) * 0.1, ease: [0.19, 1, 0.22, 1] }}
-                className="bg-background p-10 border-t-2 border-transparent hover:border-brand-marine transition-colors"
+                className="bg-background p-8 border-t-2 border-transparent hover:border-brand-marine transition-colors"
               >
                 <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
-                <div className="font-display text-2xl mb-5 text-foreground">{c.title}</div>
-                <p className="text-sm text-muted-foreground leading-[1.8] max-w-md">{c.body}</p>
+                <div className="font-display text-xl mb-3 text-foreground">{c.title}</div>
+                <p className="text-sm text-muted-foreground leading-[1.7] max-w-md">{c.body}</p>
               </motion.div>
             ))}
           </div>
@@ -228,7 +236,7 @@ function Index() {
 
       {/* STATS strip — small, calm */}
       <section className="section-navy-deep border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           {STATS.map((s, i) => (
             <motion.div
               key={s.k}
@@ -237,7 +245,7 @@ function Index() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.06 }}
             >
-              <div className="font-display text-4xl md:text-5xl text-foreground">{s.k}</div>
+              <div className="font-display text-3xl md:text-4xl text-foreground">{s.k}</div>
               <div className="mt-3 eyebrow-muted">{s.v}</div>
             </motion.div>
           ))}
@@ -246,8 +254,8 @@ function Index() {
 
       {/* PORTFOLIO teaser */}
       <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
+          <div className="flex items-end justify-between mb-10 flex-wrap gap-6">
             <div>
               <div className="eyebrow mb-5">Product Scope</div>
               <h2 className="h-display h-display-md max-w-3xl">Verified Oman-origin species, ready to source.</h2>
@@ -286,34 +294,56 @@ function Index() {
 
       {/* MARKETS & COMPLIANCE */}
       <section className="section-navy border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="grid md:grid-cols-[1fr_1.4fr] gap-16">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
+          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-start">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+              className="lg:sticky lg:top-24"
             >
-              <div className="eyebrow mb-5">Markets & Compliance</div>
+              <div className="eyebrow mb-4">Markets &amp; Compliance</div>
               <h2 className="h-display h-display-md">We've already cleared the compliance maze.</h2>
-              <p className="mt-6 lede max-w-md text-sm">
+              <p className="mt-4 lede max-w-md">
                 Buyers should never worry about detained or rejected cargo. Regulatory pre-clearance is the baseline, not a service tier.
               </p>
+              <div className="media-frame mt-8 aspect-[4/3]">
+                <img
+                  src={terminalNight.url}
+                  alt="Container terminal working under floodlights at night"
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
             </motion.div>
             <div className="divide-y divide-border/60">
               {MARKETS.map((g, i) => (
                 <motion.div
                   key={g.region}
-                  initial={{ opacity: 0, filter: "blur(4px)", y: 8 }}
-                  whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
-                  className="py-6 grid md:grid-cols-[220px_1fr] gap-6 items-start"
+                  transition={{ duration: 0.5, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
+                  className="py-5 grid grid-cols-[92px_1fr] gap-5 items-center group"
                 >
-                  <div className="font-display text-xl text-foreground">{g.region}</div>
-                  <div className="text-sm text-muted-foreground leading-[1.8]">{g.body}</div>
+                  <div className="aspect-[4/3] overflow-hidden border border-border">
+                    <img
+                      src={g.img}
+                      alt={g.alt}
+                      loading="lazy"
+                      className="h-full w-full object-cover grayscale-[35%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                    />
+                  </div>
+                  <div>
+                    <div className="font-display text-xl text-foreground">{g.region}</div>
+                    <div className="mt-1.5 text-sm text-muted-foreground leading-[1.65]">{g.body}</div>
+                  </div>
                 </motion.div>
               ))}
+              <p className="pt-5 text-[10px] text-muted-foreground/70 leading-relaxed">
+                Terminal photography via Wikimedia Commons — Hamburg Altenwerder (CC0), Yangshan (public domain), Rotterdam &amp; Seattle (CC BY 2.0), Jebel Ali (CC BY-SA 3.0).
+              </p>
             </div>
           </div>
         </div>
@@ -321,7 +351,7 @@ function Index() {
 
       {/* CERTIFICATION TICKER — auto-scrolling compliance badges */}
       <section className="section-navy-deep border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -373,8 +403,8 @@ function Index() {
 
       {/* VLOG — placeholder cards until real content is published */}
       <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="flex items-end justify-between mb-14 gap-6 flex-wrap">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
+          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
             <div>
               <div className="eyebrow mb-5">Vlog · Field Notes</div>
               <h2 className="h-display h-display-md">News from the origin desk.</h2>
@@ -400,17 +430,17 @@ function Index() {
 
       {/* CTA */}
       <section className="section-navy-deep border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 text-center">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="h-display h-display-lg max-w-3xl mx-auto"
+            className="h-display h-display-md max-w-2xl mx-auto"
           >
             Sourcing Oman-origin seafood?
           </motion.h2>
-          <p className="mt-6 lede max-w-lg mx-auto text-sm">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
+          <p className="mt-4 lede max-w-lg mx-auto">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
           <Link to="/contact" className="btn-pill mt-12">
             Initiate Buyer Inquiry <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
           </Link>
