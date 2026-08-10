@@ -244,45 +244,45 @@
 }
 
 .section-navy {
-  --background: #0f1b3d;
-  --card: #16264d;
-  --foreground: #f2f6fa;
-  --muted-foreground: #9db0c8;
-  --border: rgb(255 255 255 / 0.12);
-  --brand-marine: #8fb4d6;
-  --brand-ocean: #a9c6de;
-  --brand-accent: #3b6fa0;
+  --background: #10222B;
+  --card: #1A2E35;
+  --foreground: #F4F6F3;
+  --muted-foreground: #A2B2B4;
+  --border: rgb(196 214 199 / 0.16);
+  --brand-marine: #9CB89A;
+  --brand-ocean: #C3D2BF;
+  --brand-accent: #4A6B4E;
 }
 .section-navy-deep,
 .section-slate {
-  --background: #0a1229;
-  --card: #14213f;
-  --foreground: #f2f6fa;
-  --muted-foreground: #93a7c0;
-  --border: rgb(255 255 255 / 0.10);
-  --brand-marine: #8fb4d6;
-  --brand-ocean: #a9c6de;
-  --brand-accent: #3b6fa0;
+  --background: #0B1A21;
+  --card: #16303A;
+  --foreground: #F4F6F3;
+  --muted-foreground: #97A8AA;
+  --border: rgb(196 214 199 / 0.13);
+  --brand-marine: #9CB89A;
+  --brand-ocean: #C3D2BF;
+  --brand-accent: #4A6B4E;
 }
 .section-ice {
-  --background: #e8edf3;
-  --card: #ffffff;
-  --foreground: #0b1220;
-  --muted-foreground: #4d5f77;
-  --border: rgb(11 18 32 / 0.12);
-  --brand-marine: #1e3a5f;
-  --brand-ocean: #3b6fa0;
-  --brand-accent: #1e3a5f;
+  --background: #FFFFFF;
+  --card: #F4F5F1;
+  --foreground: #12242C;
+  --muted-foreground: #55666A;
+  --border: rgb(18 36 44 / 0.13);
+  --brand-marine: #2C3E2D;
+  --brand-ocean: #4A6B4E;
+  --brand-accent: #2C3E2D;
 }
 .section-paper {
-  --background: #f4f7fa;
-  --card: #ffffff;
-  --foreground: #0b1220;
-  --muted-foreground: #4d5f77;
-  --border: rgb(11 18 32 / 0.12);
-  --brand-marine: #1e3a5f;
-  --brand-ocean: #3b6fa0;
-  --brand-accent: #1e3a5f;
+  --background: #F4F5F1;
+  --card: #FFFFFF;
+  --foreground: #12242C;
+  --muted-foreground: #55666A;
+  --border: rgb(18 36 44 / 0.13);
+  --brand-marine: #2C3E2D;
+  --brand-ocean: #4A6B4E;
+  --brand-accent: #2C3E2D;
 }
 
 .bg-brand-navy   { background-color: var(--color-brand-navy); }
