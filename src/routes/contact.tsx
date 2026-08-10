@@ -27,7 +27,7 @@ function ContactPage() {
           <img src={HARBOR_DUSK_IMAGE} alt="" className="h-full w-full object-cover object-[50%_38%] opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/55 via-[#0a1229]/80 to-[#0a1229]" />
         </div>
-        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pt-32 pb-20">
+        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pt-32 pb-20">
           <div className="eyebrow mb-6">Buyer Desk</div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -50,7 +50,7 @@ function ContactPage() {
 
       {/* Two-column: form + info */}
       <section className="section-ice">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24 grid md:grid-cols-[1.4fr_1fr] gap-12">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-24 grid md:grid-cols-[1.4fr_1fr] gap-12">
           {/* Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

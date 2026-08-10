@@ -45,7 +45,7 @@ function AboutPage() {
   return (
     <div>
       <section className="section-navy-deep border-b border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 pt-24 pb-20">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 pt-24 pb-20">
           <div className="eyebrow mb-6">About Ocean Bridge Trade</div>
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 items-end">
             <motion.h1
@@ -62,7 +62,7 @@ function AboutPage() {
       </section>
 
       <section className="section-ice border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28 grid md:grid-cols-2 gap-16">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20 grid md:grid-cols-2 gap-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
             <div className="eyebrow mb-6">Our Mission</div>
             <p className="font-display text-2xl md:text-3xl leading-snug text-foreground">
@@ -79,7 +79,7 @@ function AboutPage() {
       </section>
 
       <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           {STATS.map((s, i) => (
             <motion.div key={s.v} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.06 }}>
               <div className="font-display text-3xl md:text-4xl text-foreground">{s.k}</div>
@@ -90,9 +90,9 @@ function AboutPage() {
       </section>
 
       <section className="section-ice border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
           <div className="eyebrow mb-5">Core Beliefs</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-16">Principles that govern every transaction we touch.</h2>
+          <h2 className="h-display h-display-md max-w-3xl mb-10">Principles that govern every transaction we touch.</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {BELIEFS.map((b, i) => (
               <motion.div
@@ -102,7 +102,7 @@ function AboutPage() {
               >
                 <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-4">0{i + 1}</div>
                 <div className="font-display text-xl text-foreground mb-3">{b.t}</div>
-                <p className="text-sm text-muted-foreground leading-[1.8]">{b.b}</p>
+                <p className="text-sm text-muted-foreground leading-[1.7]">{b.b}</p>
               </motion.div>
             ))}
           </div>
@@ -110,7 +110,7 @@ function AboutPage() {
       </section>
 
       <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
           <div className="grid md:grid-cols-[1fr_1fr] gap-12 items-center">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
               <div className="eyebrow mb-5">Origin Infrastructure</div>
@@ -127,7 +127,7 @@ function AboutPage() {
       </section>
 
       <section className="section-navy-deep border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28 grid md:grid-cols-[1fr_1.4fr] gap-12">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20 grid md:grid-cols-[1fr_1.4fr] gap-12">
           <div>
             <div className="eyebrow mb-5">Our Discipline</div>
             <h2 className="h-display h-display-md">What we will never do.</h2>
@@ -148,7 +148,7 @@ function AboutPage() {
       </section>
 
       <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[21/9] shadow-ambient-olive">
             <img src={PORT_CRANES_IMAGE} alt="Port export infrastructure" className="h-full w-full object-cover object-[50%_35%]" />
           </motion.div>
@@ -157,9 +157,9 @@ function AboutPage() {
 
       {/* Additional Oman imagery — harbor dusk and dhow detail */}
       <section className="section-navy border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-28">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
           <div className="eyebrow mb-5">Oman's Coast</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-16">The waters and vessels that define our origin.</h2>
+          <h2 className="h-display h-display-md max-w-3xl mb-10">The waters and vessels that define our origin.</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}

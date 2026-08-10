@@ -114,7 +114,7 @@ function Index() {
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a1229]/45 via-transparent to-[#0a1229]/85" />
         </div>
-        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
+        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
           {/* Caption keyed to the active video — fades and drifts on change */}
           <div className="max-w-2xl">
             <AnimatePresence mode="wait" initial={false}>
@@ -140,7 +140,7 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.35 }}
-            className="mt-6 max-w-md text-sm md:text-base text-foreground/75 leading-[1.8]"
+            className="mt-6 max-w-md text-sm md:text-base text-foreground/75 leading-[1.7]"
           >
             Verified supply and regulatory pre-clearance, from Oman's coast to international processors and importers.
           </motion.p>
@@ -180,7 +180,7 @@ function Index() {
 
       {/* MANIFESTO */}
       <section className="section-ice">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 md:py-40">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-20 md:py-14 md:py-20">
           <motion.div
             initial={{ opacity: 0, width: 0 }}
             whileInView={{ opacity: 1, width: "3rem" }}
@@ -204,9 +204,9 @@ function Index() {
 
       {/* BUYER VALUE PROPOSITION */}
       <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
           <div className="eyebrow mb-5">Buyer Proposition</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-20">Four disciplines a global buyer receives on every transaction.</h2>
+          <h2 className="h-display h-display-md max-w-3xl mb-10">Four disciplines a global buyer receives on every transaction.</h2>
           <div className="grid md:grid-cols-2 gap-px bg-border/60">
             {VALUE_PROPS.map((c, i) => (
               <motion.div
@@ -219,7 +219,7 @@ function Index() {
               >
                 <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
                 <div className="font-display text-2xl mb-5 text-foreground">{c.title}</div>
-                <p className="text-sm text-muted-foreground leading-[1.8] max-w-md">{c.body}</p>
+                <p className="text-sm text-muted-foreground leading-[1.7] max-w-md">{c.body}</p>
               </motion.div>
             ))}
           </div>
@@ -228,7 +228,7 @@ function Index() {
 
       {/* STATS strip — small, calm */}
       <section className="section-navy-deep border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           {STATS.map((s, i) => (
             <motion.div
               key={s.k}
@@ -246,8 +246,8 @@ function Index() {
 
       {/* PORTFOLIO teaser */}
       <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
+          <div className="flex items-end justify-between mb-10 flex-wrap gap-6">
             <div>
               <div className="eyebrow mb-5">Product Scope</div>
               <h2 className="h-display h-display-md max-w-3xl">Verified Oman-origin species, ready to source.</h2>
@@ -286,8 +286,8 @@ function Index() {
 
       {/* MARKETS & COMPLIANCE */}
       <section className="section-navy border-t border-border">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="grid md:grid-cols-[1fr_1.4fr] gap-16">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
+          <div className="grid md:grid-cols-[1fr_1.4fr] gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -311,7 +311,7 @@ function Index() {
                   className="py-6 grid md:grid-cols-[220px_1fr] gap-6 items-start"
                 >
                   <div className="font-display text-xl text-foreground">{g.region}</div>
-                  <div className="text-sm text-muted-foreground leading-[1.8]">{g.body}</div>
+                  <div className="text-sm text-muted-foreground leading-[1.7]">{g.body}</div>
                 </motion.div>
               ))}
             </div>
@@ -321,7 +321,7 @@ function Index() {
 
       {/* CERTIFICATION TICKER — auto-scrolling compliance badges */}
       <section className="section-navy-deep border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -373,8 +373,8 @@ function Index() {
 
       {/* VLOG — placeholder cards until real content is published */}
       <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32">
-          <div className="flex items-end justify-between mb-14 gap-6 flex-wrap">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
+          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
             <div>
               <div className="eyebrow mb-5">Vlog · Field Notes</div>
               <h2 className="h-display h-display-md">News from the origin desk.</h2>
@@ -400,7 +400,7 @@ function Index() {
 
       {/* CTA */}
       <section className="section-navy-deep border-t border-border/60">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-32 text-center">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
