@@ -1,32 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/data/species";
+import terminalNight from "@/assets/terminal-night.jpg.asset.json";
+import marketChina from "@/assets/market-china.jpg.asset.json";
+import marketEu from "@/assets/market-eu.jpg.asset.json";
+import marketGcc from "@/assets/market-gcc.jpg.asset.json";
+import marketUsa from "@/assets/market-usa.jpg.asset.json";
 
-/* Hero rotation — the three real uploaded cuts, in sequence.
- * NOTE: "9831955-uhd_3840_2160_30fps (online-video-cutter.com) (1).mp4" is a
- * byte-identical duplicate of the first video and is intentionally excluded. */
+/* Hero rotation — widescreen cuts only. The portrait 720x1280 flag clip is
+ * used on the About page, where a vertical frame suits it. Each clip loops and
+ * rotation runs on a fixed timer so short cuts still get full screen time. */
 const HERO_SLIDES = [
   {
     src: "/videos/9031955-uhd_3840_2160_30fps.mp4",
     kicker: "Origin · Muscat Coastline",
     headline: "Oman-origin seafood, engineered for global buyers.",
-    pos: "object-cover",
   },
   {
     src: "/videos/6618035-uhd_3840_2160_24fps(1) (online-video-cutter.com) (2).mp4",
     kicker: "Compliance · Regulatory Pre-Clearance",
     headline: "Every shipment cleared before it leaves the dock.",
-    pos: "object-cover",
-  },
-  {
-    src: "/videos/Untitled design.mp4",
-    kicker: "Logistics · Cold-Chain Integrity",
-    headline: "From Oman's coast to your processing line — verified.",
-    pos: "object-contain",
   },
 ];
+
+const HERO_INTERVAL = 7000;
 
 const CATEGORY_IMAGES = [
   "/product-images/pelagic.png",
@@ -53,10 +52,10 @@ const VALUE_PROPS = [
 ];
 
 const MARKETS = [
-  { region: "China", body: "GACC Decree 248 / CIFER facility registration, accurate Field 519 declarations." },
-  { region: "European Union", body: "TRACES documentation, IUU Catch Certificates, third-country establishment listing." },
-  { region: "Gulf Cooperation Council", body: "SFDA / ESMA / GSO standards, halal certification oversight, FASAH clearance." },
-  { region: "United States", body: "FDA Seafood HACCP (21 CFR 123) and Foreign Supplier Verification Program compliance." },
+  { region: "China", body: "GACC Decree 248 / CIFER facility registration, accurate Field 519 declarations.", img: marketChina.url, alt: "Container terminal at the Port of Shanghai, Yangshan deep-water zone" },
+  { region: "European Union", body: "TRACES documentation, IUU Catch Certificates, third-country establishment listing.", img: marketEu.url, alt: "Container terminal in the Port of Rotterdam" },
+  { region: "Gulf Cooperation Council", body: "SFDA / ESMA / GSO standards, halal certification oversight, FASAH clearance.", img: marketGcc.url, alt: "Container yard at Jebel Ali free zone" },
+  { region: "United States", body: "FDA Seafood HACCP (21 CFR 123) and Foreign Supplier Verification Program compliance.", img: marketUsa.url, alt: "Container cranes at a United States port terminal" },
 ];
 
 /* Fix 5: Certification badges for the scrolling ticker */
