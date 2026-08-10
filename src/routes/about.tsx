@@ -160,7 +160,7 @@ function AboutPage() {
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
           <div className="eyebrow mb-5">Oman's Coast</div>
           <h2 className="h-display h-display-md max-w-3xl mb-10">The waters and vessels that define our origin.</h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-[1fr_1fr_0.62fr] gap-6 items-stretch">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -178,6 +178,22 @@ function AboutPage() {
               className="media-frame aspect-[4/3] shadow-ambient-sand"
             >
               <img src={DHOW_DETAIL_IMAGE} alt="Traditional Omani dhow" className="h-full w-full object-cover" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.18, ease: [0.19, 1, 0.22, 1] }}
+              className="media-frame aspect-[9/16] md:aspect-auto"
+            >
+              <video
+                src="/videos/Untitled design.mp4"
+                className="h-full w-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
             </motion.div>
           </div>
         </div>
