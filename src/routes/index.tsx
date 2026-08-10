@@ -295,33 +295,55 @@ function Index() {
       {/* MARKETS & COMPLIANCE */}
       <section className="section-navy border-t border-border">
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <div className="grid md:grid-cols-[1fr_1.4fr] gap-12">
+          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-start">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+              className="lg:sticky lg:top-24"
             >
-              <div className="eyebrow mb-5">Markets & Compliance</div>
+              <div className="eyebrow mb-4">Markets &amp; Compliance</div>
               <h2 className="h-display h-display-md">We've already cleared the compliance maze.</h2>
-              <p className="mt-6 lede max-w-md text-sm">
+              <p className="mt-4 lede max-w-md">
                 Buyers should never worry about detained or rejected cargo. Regulatory pre-clearance is the baseline, not a service tier.
               </p>
+              <div className="media-frame mt-8 aspect-[4/3]">
+                <img
+                  src={terminalNight.url}
+                  alt="Container terminal working under floodlights at night"
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
             </motion.div>
             <div className="divide-y divide-border/60">
               {MARKETS.map((g, i) => (
                 <motion.div
                   key={g.region}
-                  initial={{ opacity: 0, filter: "blur(4px)", y: 8 }}
-                  whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
-                  className="py-6 grid md:grid-cols-[220px_1fr] gap-6 items-start"
+                  transition={{ duration: 0.5, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
+                  className="py-5 grid grid-cols-[92px_1fr] gap-5 items-center group"
                 >
-                  <div className="font-display text-xl text-foreground">{g.region}</div>
-                  <div className="text-sm text-muted-foreground leading-[1.7]">{g.body}</div>
+                  <div className="aspect-[4/3] overflow-hidden border border-border">
+                    <img
+                      src={g.img}
+                      alt={g.alt}
+                      loading="lazy"
+                      className="h-full w-full object-cover grayscale-[35%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                    />
+                  </div>
+                  <div>
+                    <div className="font-display text-xl text-foreground">{g.region}</div>
+                    <div className="mt-1.5 text-sm text-muted-foreground leading-[1.65]">{g.body}</div>
+                  </div>
                 </motion.div>
               ))}
+              <p className="pt-5 text-[10px] text-muted-foreground/70 leading-relaxed">
+                Terminal photography via Wikimedia Commons — Hamburg Altenwerder (CC0), Yangshan (public domain), Rotterdam &amp; Seattle (CC BY 2.0), Jebel Ali (CC BY-SA 3.0).
+              </p>
             </div>
           </div>
         </div>
