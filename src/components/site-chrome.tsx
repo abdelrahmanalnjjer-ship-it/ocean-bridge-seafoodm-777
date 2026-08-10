@@ -59,7 +59,7 @@ export function SiteHeader() {
     <header
       className={`section-navy-deep fixed top-0 inset-x-0 z-50 text-foreground transition-all duration-500 ${
         scrolled || open
-          ? "border-b border-foreground/10 bg-[#0a1229]/92 backdrop-blur-xl"
+          ? "border-b border-foreground/10 bg-[#0B1A21]/92 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -101,7 +101,7 @@ export function SiteHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="md:hidden border-t border-foreground/10 bg-[#0a1229] px-6 py-6 space-y-4"
+            className="md:hidden border-t border-foreground/10 bg-[#0B1A21] px-6 py-6 space-y-4"
           >
             <img src={LOGO_SUBMARK} alt="" aria-hidden className="h-10 w-auto mb-2" />
             {links.map((l, i) => (
