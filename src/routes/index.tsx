@@ -392,30 +392,10 @@ function Index() {
         </div>
       </section>
 
-      {/* VLOG — placeholder cards until real content is published */}
+      {/* MARKET UPDATES — one signup module instead of empty placeholder cards */}
       <section className="section-ice border-t border-border/60">
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
-            <div>
-              <div className="eyebrow mb-5">Vlog · Field Notes</div>
-              <h2 className="h-display h-display-md">News from the origin desk.</h2>
-            </div>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {VLOG_PLACEHOLDERS.map((v, i) => (
-              <motion.div
-                key={v.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: (i % 3) * 0.08 }}
-                className="card-lift border border-dashed border-border/40 bg-card/50 p-10 flex flex-col items-center justify-center text-center min-h-[200px] shadow-ambient-ocean"
-              >
-                <span className="text-3xl mb-4">{v.icon}</span>
-                <p className="font-display text-base text-foreground/60 leading-relaxed">{v.title}</p>
-              </motion.div>
-            ))}
-          </div>
+          <NewsletterSignup />
         </div>
       </section>
 
