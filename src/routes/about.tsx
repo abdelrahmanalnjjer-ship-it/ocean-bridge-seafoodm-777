@@ -187,7 +187,7 @@ function AboutPage() {
               className="media-frame aspect-[9/16] md:aspect-auto"
             >
               <video
-                src="/videos/Untitled design.mp4"
+                src="/videos/oman-flag.mp4"
                 className="h-full w-full object-cover"
                 autoPlay
                 loop
