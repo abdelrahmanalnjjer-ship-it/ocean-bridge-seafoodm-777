@@ -23,6 +23,15 @@ function ProductsPage() {
 
   const filtered = useMemo(() => SPECIES.filter((s) => s.category === category), [category]);
 
+  const counts = useMemo(
+    () =>
+      SPECIES.reduce<Record<string, number>>((acc, s) => {
+        acc[s.category] = (acc[s.category] ?? 0) + 1;
+        return acc;
+      }, {}),
+    [],
+  );
+
   const nameFor = (s: Species) =>
     locale === "ar" ? s.name_ar : locale === "zh" ? s.name_zh : s.name_en;
 
@@ -58,25 +67,34 @@ function ProductsPage() {
       </section>
 
       <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#10222B]/88 backdrop-blur-xl">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
-          <div className="flex items-center gap-1 flex-wrap">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-4 flex items-center justify-between gap-4 md:gap-6 flex-wrap">
+          <div className="-mx-1 flex items-center gap-1 overflow-x-auto md:flex-wrap md:overflow-visible px-1">
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setCategory(c.id)}
-                className={`px-4 py-2 text-xs uppercase tracking-[0.22em] transition-all border ${
+                className={`shrink-0 whitespace-nowrap px-3 md:px-4 py-2 text-[11px] md:text-xs uppercase tracking-[0.18em] md:tracking-[0.22em] transition-all border ${
                   category === c.id
                     ? "border-[color:var(--brand-accent)] text-foreground bg-[color:var(--brand-accent)]/12"
                     : "border-transparent text-foreground/50 hover:text-foreground"
                 }`}
                 style={category === c.id ? { borderColor: "var(--brand-accent)" } : undefined}
               >
-                {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}
+                {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}{" "}
+                <span className="text-foreground/40">({counts[c.id] ?? 0})</span>
               </button>
             ))}
           </div>
-          <div className="text-[10px] uppercase tracking-[0.28em] text-foreground/50">
-            {filtered.length} items shown
+          <div className="flex items-center gap-4 md:gap-6 flex-wrap text-[10px] uppercase tracking-[0.22em] text-foreground/50">
+            <span className="flex items-center gap-2">
+              <span className="h-2.5 w-4 rounded-[1px]" style={{ backgroundColor: "var(--brand-accent)" }} />
+              In season
+              <span className="ml-2 h-2.5 w-4 rounded-[1px] bg-foreground/15" />
+              Out of season
+            </span>
+            <span className="tracking-[0.28em]">
+              {filtered.length} of {SPECIES.length} shown
+            </span>
           </div>
         </div>
       </section>
