@@ -9,21 +9,23 @@ import marketEu from "@/assets/market-eu.jpg.asset.json";
 import marketGcc from "@/assets/market-gcc.jpg.asset.json";
 import marketUsa from "@/assets/market-usa.jpg.asset.json";
 
-/* Hero rotation — widescreen cuts only. The portrait 720x1280 flag clip is
- * used on the About page, where a vertical frame suits it. Each clip loops and
- * rotation runs on a fixed timer so short cuts still get full screen time. */
+/* Hero rotation — widescreen cuts only, re-encoded to 1080p faststart. Every
+ * clip stays mounted and crossfades on opacity, so switching never re-downloads
+ * the file or flashes a black frame. The portrait flag clip lives on About. */
 const HERO_SLIDES = [
   {
-    src: "/videos/9031955-uhd_3840_2160_30fps.mp4",
+    src: "/videos/hero-1.mp4",
     kicker: "Origin · Muscat Coastline",
-    headline: "Oman-origin seafood, engineered for global buyers.",
   },
   {
-    src: "/videos/6618035-uhd_3840_2160_24fps(1) (online-video-cutter.com) (2).mp4",
+    src: "/videos/hero-2.mp4",
     kicker: "Compliance · Regulatory Pre-Clearance",
-    headline: "Every shipment cleared before it leaves the dock.",
   },
 ];
+
+const HERO_POSTER = "/videos/hero-poster.jpg";
+const HERO_HEADLINE =
+  "We don't just connect buyers and sellers. We engineer reliable, compliant, repeatable supply chains from Oman to the world.";
 
 const HERO_INTERVAL = 7000;
 
@@ -33,13 +35,6 @@ const CATEGORY_IMAGES = [
   "/product-images/cephalopods.png",
   "/product-images/seafood-02-yellowfin-tuna.jpg",
 ];
-/* Fix 4: Replace stock photo VLOG_CARDS with "Coming soon" placeholder entries */
-const VLOG_PLACEHOLDERS = [
-  { title: "Coming soon — origin stories, market updates, and field dispatches.", icon: "📝" },
-  { title: "Real content being prepared for Q3 2026.", icon: "🎬" },
-  { title: "Subscribe to be notified when new posts publish.", icon: "🔔" },
-];
-
 export const Route = createFileRoute("/")({
   component: Index,
 });
@@ -79,7 +74,6 @@ const STATS = [
 
 function Index() {
   const [slide, setSlide] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const active = HERO_SLIDES[slide];
 
   const goTo = (next: number) => {
@@ -97,52 +91,48 @@ function Index() {
   return (
     <div>
       {/* HERO — full-bleed rotating footage, chrome floating over it */}
-      <section className="section-navy-deep relative -mt-16 min-h-screen flex items-end overflow-hidden">
+      <section className="section-navy-deep relative -mt-16 min-h-[600px] h-[78vh] md:h-[80vh] flex items-end overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <AnimatePresence initial={false}>
+          {HERO_SLIDES.map((s, i) => (
+            <video
+              key={s.src}
+              src={s.src}
+              poster={HERO_POSTER}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out"
+              style={{ opacity: i === slide ? 1 : 0 }}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/55 via-[#0B1A21]/25 to-[#0B1A21]/90" />
+        </div>
+        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-14 md:pb-16 pt-28 md:pt-36 w-full flex flex-col items-start md:items-end text-left md:text-right">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              key={active.src}
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.1, ease: "easeInOut" }}
+              key={slide}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              className="mb-4 flex items-center gap-3 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.28em] md:tracking-[0.32em] text-brand-marine"
             >
-              <video
-                ref={videoRef}
-                src={active.src}
-                className="h-full w-full object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-              />
+              {active.kicker}
+              <span className="h-px w-6 bg-brand-marine" />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/45 via-transparent to-[#0B1A21]/85" />
-        </div>
-        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
-          {/* Caption keyed to the active video — fades and drifts on change */}
-          <div className="max-w-2xl">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={slide}
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              >
-                <div className="mb-5 flex items-center justify-end gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-brand-marine">
-                  {active.kicker}
-                  <span className="h-px w-6 bg-brand-marine" />
-                </div>
-                <h1 className="h-display h-display-lg">
-                  {active.headline}
-                </h1>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
+            className="h-display h-display-lg max-w-3xl"
+          >
+            {HERO_HEADLINE}
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -167,7 +157,7 @@ function Index() {
 
         {/* Minimal sequence dots, bottom-left */}
         <div
-          className="absolute bottom-10 left-6 lg:left-12 flex items-center gap-3"
+          className="absolute bottom-6 md:bottom-10 left-6 lg:left-12 flex items-center gap-3"
           role="tablist"
           aria-label="Hero footage selector"
         >
