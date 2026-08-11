@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { SPECIES } from "@/data/species";
 import { CATEGORIES } from "@/data/species";
 import terminalNight from "@/assets/terminal-night.jpg.asset.json";
 import marketChina from "@/assets/market-china.jpg.asset.json";
@@ -194,8 +195,8 @@ function Index() {
             transition={{ duration: 1 }}
             className="font-display text-2xl md:text-4xl leading-[1.2] max-w-4xl text-foreground"
           >
-            We don't just connect buyers and sellers.
-            <span className="text-muted-foreground"> We engineer reliable, compliant, repeatable supply chains from Oman to the world — bringing corporate-grade structure to a trade that has historically operated informally.</span>
+            Corporate-grade structure for a trade that has historically operated informally.
+            <span className="text-muted-foreground"> Documented specifications, verified establishments, and destination-market compliance settled before an offer is issued — so buyers receive certainty, not promises.</span>
           </motion.p>
         </div>
       </section>
