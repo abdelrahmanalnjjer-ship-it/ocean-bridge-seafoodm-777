@@ -32,7 +32,7 @@ const en: Dict = {
   "products.status": "Status",
   "products.hs": "HS",
   "products.pack": "Packaging",
-  "products.initiate": "B2B Inquiry",
+  "products.initiate": "Inquire about this species",
   "about.title": "About Ocean Bridge Trade",
   "contact.title": "The Global Trade Desk",
 };
@@ -65,7 +65,7 @@ const ar: Dict = {
   "products.status": "الحالة",
   "products.hs": "رمز جمركي",
   "products.pack": "التعبئة",
-  "products.initiate": "استفسار B2B",
+  "products.initiate": "استفسر عن هذا النوع",
   "about.title": "عن أوشن بريدج تريد",
   "contact.title": "مكتب التجارة العالمي",
 };
