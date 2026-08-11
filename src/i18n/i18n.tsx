@@ -124,7 +124,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? window.localStorage.getItem("obt.locale") : null;
-    if (stored === "en" || stored === "ar" || stored === "zh") setLocaleState(stored);
+    // zh is not user-selectable yet; ignore any previously stored value.
+    if (stored === "en" || stored === "ar") setLocaleState(stored);
   }, []);
 
   useEffect(() => {
