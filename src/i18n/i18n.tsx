@@ -32,7 +32,7 @@ const en: Dict = {
   "products.status": "Status",
   "products.hs": "HS",
   "products.pack": "Packaging",
-  "products.initiate": "B2B Inquiry",
+  "products.initiate": "Inquire about this species",
   "about.title": "About Ocean Bridge Trade",
   "contact.title": "The Global Trade Desk",
 };
@@ -65,7 +65,7 @@ const ar: Dict = {
   "products.status": "الحالة",
   "products.hs": "رمز جمركي",
   "products.pack": "التعبئة",
-  "products.initiate": "استفسار B2B",
+  "products.initiate": "استفسر عن هذا النوع",
   "about.title": "عن أوشن بريدج تريد",
   "contact.title": "مكتب التجارة العالمي",
 };
@@ -124,7 +124,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? window.localStorage.getItem("obt.locale") : null;
-    if (stored === "en" || stored === "ar" || stored === "zh") setLocaleState(stored);
+    // zh is not user-selectable yet; ignore any previously stored value.
+    if (stored === "en" || stored === "ar") setLocaleState(stored);
   }, []);
 
   useEffect(() => {

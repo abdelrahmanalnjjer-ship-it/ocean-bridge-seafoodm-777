@@ -23,6 +23,15 @@ function ProductsPage() {
 
   const filtered = useMemo(() => SPECIES.filter((s) => s.category === category), [category]);
 
+  const counts = useMemo(
+    () =>
+      SPECIES.reduce<Record<string, number>>((acc, s) => {
+        acc[s.category] = (acc[s.category] ?? 0) + 1;
+        return acc;
+      }, {}),
+    [],
+  );
+
   const nameFor = (s: Species) =>
     locale === "ar" ? s.name_ar : locale === "zh" ? s.name_zh : s.name_en;
 
@@ -58,25 +67,34 @@ function ProductsPage() {
       </section>
 
       <section className="section-navy sticky top-16 z-40 border-b border-border/60 bg-[#10222B]/88 backdrop-blur-xl">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-4 flex items-center justify-between gap-6 flex-wrap">
-          <div className="flex items-center gap-1 flex-wrap">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-4 flex items-center justify-between gap-4 md:gap-6 flex-wrap">
+          <div className="-mx-1 flex items-center gap-1 overflow-x-auto md:flex-wrap md:overflow-visible px-1">
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setCategory(c.id)}
-                className={`px-4 py-2 text-xs uppercase tracking-[0.22em] transition-all border ${
+                className={`shrink-0 whitespace-nowrap px-3 md:px-4 py-2 text-[11px] md:text-xs uppercase tracking-[0.18em] md:tracking-[0.22em] transition-all border ${
                   category === c.id
                     ? "border-[color:var(--brand-accent)] text-foreground bg-[color:var(--brand-accent)]/12"
                     : "border-transparent text-foreground/50 hover:text-foreground"
                 }`}
                 style={category === c.id ? { borderColor: "var(--brand-accent)" } : undefined}
               >
-                {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}
+                {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}{" "}
+                <span className="text-foreground/40">({counts[c.id] ?? 0})</span>
               </button>
             ))}
           </div>
-          <div className="text-[10px] uppercase tracking-[0.28em] text-foreground/50">
-            {filtered.length} items shown
+          <div className="flex items-center gap-4 md:gap-6 flex-wrap text-[10px] uppercase tracking-[0.22em] text-foreground/50">
+            <span className="flex items-center gap-2">
+              <span className="h-2.5 w-4 rounded-[1px]" style={{ backgroundColor: "var(--brand-accent)" }} />
+              In season
+              <span className="ml-2 h-2.5 w-4 rounded-[1px] bg-foreground/15" />
+              Out of season
+            </span>
+            <span className="tracking-[0.28em]">
+              {filtered.length} of {SPECIES.length} shown
+            </span>
           </div>
         </div>
       </section>
@@ -166,8 +184,8 @@ function renderMonthIndicator(start: string, end: string) {
 
 function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: string; categoryLabel: string; image: string; t: (k: string) => string }) {
   return (
-    <div className="card-lift group relative h-full overflow-hidden border border-border bg-card">
-      <div className="relative overflow-hidden border-b border-border">
+    <div className="card-lift group relative flex h-full flex-col overflow-hidden border border-border bg-card">
+      <div className="relative shrink-0 overflow-hidden border-b border-border">
         <div className="h-48 flex items-center justify-center overflow-hidden bg-brand-black p-3">
           <img
             src={image}
@@ -178,18 +196,18 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
         </div>
       </div>
 
-      <div className="border-t border-border px-6 lg:px-7 py-3">
+      <div className="shrink-0 border-t border-border px-6 lg:px-7 py-3">
         {renderMonthIndicator(s.season_start, s.season_end)}
       </div>
 
-      <div className="p-6 lg:p-7 pt-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
+      <div className="flex flex-1 flex-col p-6 lg:p-7 pt-4">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
+          <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-[0.28em] text-foreground/50">{categoryLabel}</div>
-            <div className="mt-2 font-display text-2xl text-foreground leading-tight">{name}</div>
-            <div className="mt-1 text-[11px] italic text-foreground/50">{s.scientific}</div>
+            <div className="mt-2 font-display text-xl md:text-2xl text-foreground leading-tight break-words hyphens-auto">{name}</div>
+            <div className="mt-1 text-[11px] italic text-foreground/50 break-words">{s.scientific}</div>
           </div>
-          <div className="text-right text-[10px] uppercase tracking-[0.22em] text-foreground/50">
+          <div className="shrink-0 text-right text-[10px] uppercase tracking-[0.22em] text-foreground/50">
             #{String(s.id).padStart(2, "0")}
           </div>
         </div>
@@ -205,10 +223,12 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
 
         <Link
           to="/contact"
-          aria-label={`B2B inquiry for ${name}`}
-          className="group mt-6 inline-flex w-full items-center justify-center gap-2 border border-[color:var(--brand-accent)]/55 bg-[color:var(--brand-accent)]/12 px-4 py-3 text-xs uppercase tracking-[0.24em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/20"
+          aria-label={`Inquire about ${name}`}
+          className="group mt-auto pt-6 inline-flex w-full items-center justify-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground"
         >
-          {t("products.initiate")} <ArrowUpRight className="size-3.5 transition-transform group-hover:rotate-45" />
+          <span className="inline-flex w-full items-center justify-center gap-2 border border-[color:var(--brand-accent)]/55 bg-[color:var(--brand-accent)]/12 px-4 py-3 transition-colors group-hover:bg-[color:var(--brand-accent)]/20">
+            {t("products.initiate")} <ArrowUpRight className="size-3.5 transition-transform group-hover:rotate-45" />
+          </span>
         </Link>
       </div>
 

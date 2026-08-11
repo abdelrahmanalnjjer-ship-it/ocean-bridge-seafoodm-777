@@ -1,29 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CATEGORIES } from "@/data/species";
+import { supabase } from "@/integrations/supabase/client";
 import terminalNight from "@/assets/terminal-night.jpg.asset.json";
 import marketChina from "@/assets/market-china.jpg.asset.json";
 import marketEu from "@/assets/market-eu.jpg.asset.json";
 import marketGcc from "@/assets/market-gcc.jpg.asset.json";
 import marketUsa from "@/assets/market-usa.jpg.asset.json";
 
-/* Hero rotation — widescreen cuts only. The portrait 720x1280 flag clip is
- * used on the About page, where a vertical frame suits it. Each clip loops and
- * rotation runs on a fixed timer so short cuts still get full screen time. */
+/* Hero rotation — widescreen cuts only, re-encoded to 1080p faststart. Every
+ * clip stays mounted and crossfades on opacity, so switching never re-downloads
+ * the file or flashes a black frame. The portrait flag clip lives on About. */
 const HERO_SLIDES = [
   {
-    src: "/videos/9031955-uhd_3840_2160_30fps.mp4",
+    src: "/videos/hero-1.mp4",
     kicker: "Origin · Muscat Coastline",
-    headline: "Oman-origin seafood, engineered for global buyers.",
   },
   {
-    src: "/videos/6618035-uhd_3840_2160_24fps(1) (online-video-cutter.com) (2).mp4",
+    src: "/videos/hero-2.mp4",
     kicker: "Compliance · Regulatory Pre-Clearance",
-    headline: "Every shipment cleared before it leaves the dock.",
   },
 ];
+
+const HERO_POSTER = "/videos/hero-poster.jpg";
+const HERO_HEADLINE =
+  "We don't just connect buyers and sellers. We engineer reliable, compliant, repeatable supply chains from Oman to the world.";
 
 const HERO_INTERVAL = 7000;
 
@@ -33,13 +36,6 @@ const CATEGORY_IMAGES = [
   "/product-images/cephalopods.png",
   "/product-images/seafood-02-yellowfin-tuna.jpg",
 ];
-/* Fix 4: Replace stock photo VLOG_CARDS with "Coming soon" placeholder entries */
-const VLOG_PLACEHOLDERS = [
-  { title: "Coming soon — origin stories, market updates, and field dispatches.", icon: "📝" },
-  { title: "Real content being prepared for Q3 2026.", icon: "🎬" },
-  { title: "Subscribe to be notified when new posts publish.", icon: "🔔" },
-];
-
 export const Route = createFileRoute("/")({
   component: Index,
 });
@@ -79,7 +75,6 @@ const STATS = [
 
 function Index() {
   const [slide, setSlide] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const active = HERO_SLIDES[slide];
 
   const goTo = (next: number) => {
@@ -97,52 +92,48 @@ function Index() {
   return (
     <div>
       {/* HERO — full-bleed rotating footage, chrome floating over it */}
-      <section className="section-navy-deep relative -mt-16 min-h-screen flex items-end overflow-hidden">
+      <section className="section-navy-deep relative -mt-16 min-h-[600px] h-[78vh] md:h-[80vh] flex items-end overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <AnimatePresence initial={false}>
+          {HERO_SLIDES.map((s, i) => (
+            <video
+              key={s.src}
+              src={s.src}
+              poster={HERO_POSTER}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out"
+              style={{ opacity: i === slide ? 1 : 0 }}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/55 via-[#0B1A21]/25 to-[#0B1A21]/90" />
+        </div>
+        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-14 md:pb-16 pt-28 md:pt-36 w-full flex flex-col items-start md:items-end text-left md:text-right">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              key={active.src}
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.1, ease: "easeInOut" }}
+              key={slide}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              className="mb-4 flex items-center gap-3 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.28em] md:tracking-[0.32em] text-brand-marine"
             >
-              <video
-                ref={videoRef}
-                src={active.src}
-                className="h-full w-full object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-              />
+              {active.kicker}
+              <span className="h-px w-6 bg-brand-marine" />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/45 via-transparent to-[#0B1A21]/85" />
-        </div>
-        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-16 pt-40 w-full flex flex-col items-end text-right">
-          {/* Caption keyed to the active video — fades and drifts on change */}
-          <div className="max-w-2xl">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={slide}
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              >
-                <div className="mb-5 flex items-center justify-end gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-brand-marine">
-                  {active.kicker}
-                  <span className="h-px w-6 bg-brand-marine" />
-                </div>
-                <h1 className="h-display h-display-lg">
-                  {active.headline}
-                </h1>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
+            className="h-display h-display-lg max-w-3xl"
+          >
+            {HERO_HEADLINE}
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -167,7 +158,7 @@ function Index() {
 
         {/* Minimal sequence dots, bottom-left */}
         <div
-          className="absolute bottom-10 left-6 lg:left-12 flex items-center gap-3"
+          className="absolute bottom-6 md:bottom-10 left-6 lg:left-12 flex items-center gap-3"
           role="tablist"
           aria-label="Hero footage selector"
         >
@@ -204,8 +195,8 @@ function Index() {
             transition={{ duration: 1 }}
             className="font-display text-2xl md:text-4xl leading-[1.2] max-w-4xl text-foreground"
           >
-            We don't just connect buyers and sellers.
-            <span className="text-muted-foreground"> We engineer reliable, compliant, repeatable supply chains from Oman to the world — bringing corporate-grade structure to a trade that has historically operated informally.</span>
+            Corporate-grade structure for a trade that has historically operated informally.
+            <span className="text-muted-foreground"> Documented specifications, verified establishments, and destination-market compliance settled before an offer is issued — so buyers receive certainty, not promises.</span>
           </motion.p>
         </div>
       </section>
@@ -342,7 +333,7 @@ function Index() {
                 </motion.div>
               ))}
               <p className="pt-5 text-[10px] text-muted-foreground/70 leading-relaxed">
-                Terminal photography via Wikimedia Commons — Hamburg Altenwerder (CC0), Yangshan (public domain), Rotterdam &amp; Seattle (CC BY 2.0), Jebel Ali (CC BY-SA 3.0).
+                Terminal photography via Wikimedia Commons — China: Yangshan, Shanghai (public domain) · European Union: Rotterdam (CC BY 2.0) · GCC: Jebel Ali, UAE (CC BY-SA 3.0) · United States: Seattle (CC BY 2.0). Section image: Hamburg Altenwerder (CC0).
               </p>
             </div>
           </div>
@@ -401,30 +392,10 @@ function Index() {
         </div>
       </section>
 
-      {/* VLOG — placeholder cards until real content is published */}
+      {/* MARKET UPDATES — one signup module instead of empty placeholder cards */}
       <section className="section-ice border-t border-border/60">
         <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
-            <div>
-              <div className="eyebrow mb-5">Vlog · Field Notes</div>
-              <h2 className="h-display h-display-md">News from the origin desk.</h2>
-            </div>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {VLOG_PLACEHOLDERS.map((v, i) => (
-              <motion.div
-                key={v.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: (i % 3) * 0.08 }}
-                className="card-lift border border-dashed border-border/40 bg-card/50 p-10 flex flex-col items-center justify-center text-center min-h-[200px] shadow-ambient-ocean"
-              >
-                <span className="text-3xl mb-4">{v.icon}</span>
-                <p className="font-display text-base text-foreground/60 leading-relaxed">{v.title}</p>
-              </motion.div>
-            ))}
-          </div>
+          <NewsletterSignup />
         </div>
       </section>
 
@@ -442,10 +413,88 @@ function Index() {
           </motion.h2>
           <p className="mt-4 lede max-w-lg mx-auto">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
           <Link to="/contact" className="btn-pill mt-12">
-            Initiate Buyer Inquiry <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
+            Request a Buyer Consultation <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
           </Link>
         </div>
       </section>
     </div>
+  );
+}
+
+function NewsletterSignup() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "saving" | "done" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state === "saving") return;
+    setState("saving");
+    const { error } = await supabase
+      .from("newsletter_signups")
+      .insert({ email: email.trim().toLowerCase(), source: "home" });
+
+    if (error) {
+      // A duplicate address is a success from the visitor's point of view.
+      if (error.code === "23505") {
+        setState("done");
+        setMessage("You're already on the list — we'll be in touch.");
+        return;
+      }
+      setState("error");
+      setMessage("That didn't go through. Please check the address and try again.");
+      return;
+    }
+    setState("done");
+    setMessage("You're on the list. Market updates will land in your inbox.");
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      className="border border-border bg-card p-8 md:p-12 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center"
+    >
+      <div>
+        <div className="eyebrow mb-4">Market Updates</div>
+        <h2 className="h-display h-display-md">Get notified when we publish market updates and field dispatches.</h2>
+        <p className="mt-4 text-sm text-muted-foreground leading-[1.7] max-w-md">
+          Origin pricing signals, season shifts, and regulatory changes across China, the EU, GCC, and the US — sent only when there is something worth reading.
+        </p>
+      </div>
+
+      {state === "done" ? (
+        <p className="text-sm text-foreground border-l-2 pl-4" style={{ borderColor: "var(--brand-accent)" }}>
+          {message}
+        </p>
+      ) : (
+        <form onSubmit={submit} className="w-full">
+          <label htmlFor="newsletter-email" className="eyebrow-muted block mb-3">
+            Work email
+          </label>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              id="newsletter-email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@company.com"
+              className="min-w-0 flex-1 border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-[color:var(--brand-accent)]"
+            />
+            <button
+              type="submit"
+              disabled={state === "saving"}
+              className="shrink-0 border border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)]/12 px-6 py-3 text-xs uppercase tracking-[0.24em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/22 disabled:opacity-60"
+            >
+              {state === "saving" ? "Sending…" : "Notify me"}
+            </button>
+          </div>
+          {state === "error" && <p className="mt-3 text-xs text-destructive">{message}</p>}
+        </form>
+      )}
+    </motion.div>
   );
 }

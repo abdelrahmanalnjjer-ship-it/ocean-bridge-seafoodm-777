@@ -15,18 +15,29 @@ const LOGO_SUBMARK = logoSubmark.url;
 
 function LocaleSwitcher() {
   const { locale, setLocale } = useI18n();
-  const items: { id: Locale; label: string }[] = [
+  /* zh is disabled until a full Chinese content pass ships — a switcher that
+   * leads to untranslated pages reads worse than no switcher at all. */
+  const items: { id: Locale; label: string; disabled?: boolean }[] = [
     { id: "en", label: "EN" },
     { id: "ar", label: "AR" },
-    { id: "zh", label: "中文" },
+    { id: "zh", label: "中文", disabled: true },
   ];
   return (
     <div className="flex items-center gap-1 text-[11px] tracking-widest font-mono">
       {items.map((i, idx) => (
         <span key={i.id} className="flex items-center gap-1">
           <button
-            onClick={() => setLocale(i.id)}
-            className={`transition-colors ${locale === i.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            onClick={() => !i.disabled && setLocale(i.id)}
+            disabled={i.disabled}
+            aria-disabled={i.disabled}
+            title={i.disabled ? "Chinese version coming soon" : undefined}
+            className={`transition-colors ${
+              i.disabled
+                ? "text-muted-foreground/35 cursor-not-allowed"
+                : locale === i.id
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+            }`}
           >
             {i.label}
           </button>
