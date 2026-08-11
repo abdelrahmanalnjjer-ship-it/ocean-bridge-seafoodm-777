@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { SPECIES } from "@/data/species";
 import { CATEGORIES } from "@/data/species";
+import { supabase } from "@/integrations/supabase/client";
 import terminalNight from "@/assets/terminal-night.jpg.asset.json";
 import marketChina from "@/assets/market-china.jpg.asset.json";
 import marketEu from "@/assets/market-eu.jpg.asset.json";
@@ -413,10 +414,88 @@ function Index() {
           </motion.h2>
           <p className="mt-4 lede max-w-lg mx-auto">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
           <Link to="/contact" className="btn-pill mt-12">
-            Initiate Buyer Inquiry <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
+            Request a Buyer Consultation <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
           </Link>
         </div>
       </section>
     </div>
+  );
+}
+
+function NewsletterSignup() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "saving" | "done" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state === "saving") return;
+    setState("saving");
+    const { error } = await supabase
+      .from("newsletter_signups")
+      .insert({ email: email.trim().toLowerCase(), source: "home" });
+
+    if (error) {
+      // A duplicate address is a success from the visitor's point of view.
+      if (error.code === "23505") {
+        setState("done");
+        setMessage("You're already on the list — we'll be in touch.");
+        return;
+      }
+      setState("error");
+      setMessage("That didn't go through. Please check the address and try again.");
+      return;
+    }
+    setState("done");
+    setMessage("You're on the list. Market updates will land in your inbox.");
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      className="border border-border bg-card p-8 md:p-12 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center"
+    >
+      <div>
+        <div className="eyebrow mb-4">Market Updates</div>
+        <h2 className="h-display h-display-md">Get notified when we publish market updates and field dispatches.</h2>
+        <p className="mt-4 text-sm text-muted-foreground leading-[1.7] max-w-md">
+          Origin pricing signals, season shifts, and regulatory changes across China, the EU, GCC, and the US — sent only when there is something worth reading.
+        </p>
+      </div>
+
+      {state === "done" ? (
+        <p className="text-sm text-foreground border-l-2 pl-4" style={{ borderColor: "var(--brand-accent)" }}>
+          {message}
+        </p>
+      ) : (
+        <form onSubmit={submit} className="w-full">
+          <label htmlFor="newsletter-email" className="eyebrow-muted block mb-3">
+            Work email
+          </label>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              id="newsletter-email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@company.com"
+              className="min-w-0 flex-1 border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-[color:var(--brand-accent)]"
+            />
+            <button
+              type="submit"
+              disabled={state === "saving"}
+              className="shrink-0 border border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)]/12 px-6 py-3 text-xs uppercase tracking-[0.24em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/22 disabled:opacity-60"
+            >
+              {state === "saving" ? "Sending…" : "Notify me"}
+            </button>
+          </div>
+          {state === "error" && <p className="mt-3 text-xs text-destructive">{message}</p>}
+        </form>
+      )}
+    </motion.div>
   );
 }
