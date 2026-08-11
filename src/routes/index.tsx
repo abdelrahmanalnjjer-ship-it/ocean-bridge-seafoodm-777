@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { SPECIES } from "@/data/species";
+import { useEffect, useState } from "react";
 import { CATEGORIES } from "@/data/species";
 import { supabase } from "@/integrations/supabase/client";
 import terminalNight from "@/assets/terminal-night.jpg.asset.json";
@@ -334,7 +333,7 @@ function Index() {
                 </motion.div>
               ))}
               <p className="pt-5 text-[10px] text-muted-foreground/70 leading-relaxed">
-                Terminal photography via Wikimedia Commons — Hamburg Altenwerder (CC0), Yangshan (public domain), Rotterdam &amp; Seattle (CC BY 2.0), Jebel Ali (CC BY-SA 3.0).
+                Terminal photography via Wikimedia Commons — China: Yangshan, Shanghai (public domain) · European Union: Rotterdam (CC BY 2.0) · GCC: Jebel Ali, UAE (CC BY-SA 3.0) · United States: Seattle (CC BY 2.0). Section image: Hamburg Altenwerder (CC0).
               </p>
             </div>
           </div>
