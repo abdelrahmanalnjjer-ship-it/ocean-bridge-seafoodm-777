@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CATEGORIES } from "@/data/species";
@@ -75,6 +75,12 @@ const STATS = [
 
 function Index() {
   const [slide, setSlide] = useState(0);
+  /* Only the first clip preloads. Previously every slide carried
+   * preload="auto", so a first-time visitor downloaded both 1080p files before
+   * the hero settled — the single biggest cost on the page. The rest stay cold
+   * until the hero has been on screen a moment. */
+  const [warm, setWarm] = useState(false);
+  const reduceMotion = useReducedMotion();
   const active = HERO_SLIDES[slide];
 
   const goTo = (next: number) => {
@@ -82,12 +88,20 @@ function Index() {
   };
 
   useEffect(() => {
+    const id = window.setTimeout(() => setWarm(true), 2500);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  /* Depends on reduceMotion only. Keying this on `slide` rebuilt the interval
+   * on every tick, so a manual dot click gave an inconsistent next interval. */
+  useEffect(() => {
+    if (reduceMotion) return;
     const id = window.setInterval(
       () => setSlide((s) => (s + 1) % HERO_SLIDES.length),
       HERO_INTERVAL,
     );
     return () => window.clearInterval(id);
-  }, [slide]);
+  }, [reduceMotion]);
 
   return (
     <div>
@@ -105,7 +119,7 @@ function Index() {
               loop
               muted
               playsInline
-              preload="auto"
+              preload={i === 0 || warm ? "auto" : "none"}
               aria-hidden
             />
           ))}
@@ -119,7 +133,7 @@ function Index() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              className="mb-4 flex items-center gap-3 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.28em] md:tracking-[0.32em] text-brand-marine"
+              className="mb-4 flex items-center gap-3 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.14em] md:tracking-[0.16em] text-brand-marine"
             >
               {active.kicker}
               <span className="h-px w-6 bg-brand-marine" />
@@ -139,7 +153,7 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.35 }}
-            className="mt-5 max-w-md text-sm text-foreground/75 leading-[1.7]"
+            className="mt-5 max-w-md text-base text-foreground/85 leading-[1.7]"
           >
             Verified supply and regulatory pre-clearance, from Oman's coast to international processors and importers.
           </motion.p>
@@ -158,28 +172,35 @@ function Index() {
 
         {/* Minimal sequence dots, bottom-left */}
         <div
-          className="absolute bottom-6 md:bottom-10 left-6 lg:left-12 flex items-center gap-3"
-          role="tablist"
+          className="absolute bottom-3 md:bottom-7 left-3 lg:left-9 flex items-center"
+          role="group"
           aria-label="Hero footage selector"
         >
+          {/* Was role="tablist" / role="tab" with no tabpanel and no
+            * aria-controls — an invalid tab pattern. These are just toggles. */}
           {HERO_SLIDES.map((s, i) => (
             <button
               key={s.src}
-              role="tab"
-              aria-selected={i === slide}
-              aria-label={`Play segment ${i + 1}: ${s.kicker}`}
+              type="button"
+              aria-pressed={i === slide}
+              aria-label={`Show segment ${i + 1}: ${s.kicker}`}
               onClick={() => goTo(i)}
-              className={`size-2 rounded-full transition-all duration-500 ${
-                i === slide ? "bg-foreground scale-125" : "bg-foreground/35 hover:bg-foreground/70"
-              }`}
-            />
+              className="grid place-items-center p-3"
+            >
+              {/* 8px dot, 44px hit area — the dot alone was an 8px target. */}
+              <span
+                className={`block size-2 rounded-full transition-all duration-500 ${
+                  i === slide ? "bg-foreground scale-125" : "bg-foreground/45 hover:bg-foreground/80"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </section>
 
       {/* MANIFESTO */}
       <section className="section-ice">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-20 md:py-14 md:py-20">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-20 md:py-28">
           <motion.div
             initial={{ opacity: 0, width: 0 }}
             whileInView={{ opacity: 1, width: "3rem" }}
@@ -218,7 +239,7 @@ function Index() {
               >
                 <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
                 <div className="font-display text-xl mb-3 text-foreground">{c.title}</div>
-                <p className="text-sm text-muted-foreground leading-[1.7] max-w-md">{c.body}</p>
+                <p className="text-[15px] text-muted-foreground leading-[1.7] max-w-md">{c.body}</p>
               </motion.div>
             ))}
           </div>
@@ -328,11 +349,11 @@ function Index() {
                   </div>
                   <div>
                     <div className="font-display text-xl text-foreground">{g.region}</div>
-                    <div className="mt-1.5 text-sm text-muted-foreground leading-[1.65]">{g.body}</div>
+                    <div className="mt-1.5 text-[15px] text-muted-foreground leading-[1.65]">{g.body}</div>
                   </div>
                 </motion.div>
               ))}
-              <p className="pt-5 text-[10px] text-muted-foreground/70 leading-relaxed">
+              <p className="pt-5 text-[12px] text-subtle leading-relaxed">
                 Terminal photography via Wikimedia Commons — China: Yangshan, Shanghai (public domain) · European Union: Rotterdam (CC BY 2.0) · GCC: Jebel Ali, UAE (CC BY-SA 3.0) · United States: Seattle (CC BY 2.0). Section image: Hamburg Altenwerder (CC0).
               </p>
             </div>
@@ -350,7 +371,7 @@ function Index() {
             transition={{ duration: 0.6 }}
             className="flex items-center gap-4 mb-8"
           >
-            <div className="eyebrow-bare text-[10px] uppercase tracking-[0.32em] text-brand-marine font-semibold whitespace-nowrap">
+            <div className="eyebrow-bare text-[11px] uppercase tracking-[0.14em] text-brand-marine font-semibold whitespace-nowrap">
               Certifications & Compliance
             </div>
             <span className="h-px flex-1 bg-foreground/10" />
@@ -363,12 +384,12 @@ function Index() {
                   key={b.label}
                   className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[10px] font-bold uppercase tracking-wider text-foreground/80">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[11px] font-bold uppercase tracking-[0.06em] text-foreground">
                     {b.label.slice(0, 3)}
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground whitespace-nowrap">{b.label}</div>
-                    <div className="text-[10px] text-foreground/50 whitespace-nowrap">{b.full}</div>
+                    <div className="text-[12px] text-subtle whitespace-nowrap">{b.full}</div>
                   </div>
                 </div>
               ))}
@@ -378,12 +399,12 @@ function Index() {
                   key={`dup-${b.label}`}
                   className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[10px] font-bold uppercase tracking-wider text-foreground/80">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[11px] font-bold uppercase tracking-[0.06em] text-foreground">
                     {b.label.slice(0, 3)}
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground whitespace-nowrap">{b.label}</div>
-                    <div className="text-[10px] text-foreground/50 whitespace-nowrap">{b.full}</div>
+                    <div className="text-[12px] text-subtle whitespace-nowrap">{b.full}</div>
                   </div>
                 </div>
               ))}
@@ -460,7 +481,7 @@ function NewsletterSignup() {
       <div>
         <div className="eyebrow mb-4">Market Updates</div>
         <h2 className="h-display h-display-md">Get notified when we publish market updates and field dispatches.</h2>
-        <p className="mt-4 text-sm text-muted-foreground leading-[1.7] max-w-md">
+        <p className="mt-4 text-[15px] text-muted-foreground leading-[1.7] max-w-md">
           Origin pricing signals, season shifts, and regulatory changes across China, the EU, GCC, and the US — sent only when there is something worth reading.
         </p>
       </div>
@@ -482,17 +503,17 @@ function NewsletterSignup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
-              className="min-w-0 flex-1 border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-[color:var(--brand-accent)]"
+              className="min-w-0 flex-1 border border-border bg-background px-4 py-3 text-[15px] text-foreground placeholder:text-subtle focus:outline-none focus:border-[color:var(--brand-accent)]"
             />
             <button
               type="submit"
               disabled={state === "saving"}
-              className="shrink-0 border border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)]/12 px-6 py-3 text-xs uppercase tracking-[0.24em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/22 disabled:opacity-60"
+              className="shrink-0 border border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)]/12 px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/22 disabled:opacity-60"
             >
               {state === "saving" ? "Sending…" : "Notify me"}
             </button>
           </div>
-          {state === "error" && <p className="mt-3 text-xs text-destructive">{message}</p>}
+          {state === "error" && <p className="mt-3 text-[13px] text-destructive">{message}</p>}
         </form>
       )}
     </motion.div>

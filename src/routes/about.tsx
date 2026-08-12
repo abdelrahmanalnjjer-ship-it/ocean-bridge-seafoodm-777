@@ -100,9 +100,9 @@ function AboutPage() {
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: i * 0.07 }}
                 className="card-lift border border-border bg-card p-8 shadow-ambient-ocean"
               >
-                <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-4">0{i + 1}</div>
+                <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground mb-4">0{i + 1}</div>
                 <div className="font-display text-xl text-foreground mb-3">{b.t}</div>
-                <p className="text-sm text-muted-foreground leading-[1.7]">{b.b}</p>
+                <p className="text-[15px] text-muted-foreground leading-[1.7]">{b.b}</p>
               </motion.div>
             ))}
           </div>
@@ -115,7 +115,7 @@ function AboutPage() {
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
               <div className="eyebrow mb-5">Origin Infrastructure</div>
               <h2 className="h-display h-display-md mb-6">Supply is already secured.</h2>
-              <p className="lede text-sm">
+              <p className="lede">
                 From our Muscat headquarters we operate a deep-rooted, Oman-based commercial partner network — landing sites, processors, cold-chain operators, and licensed exporters. Continuous on-the-ground market intelligence, physical facility audits, and end-to-end cold-chain oversight are the baseline standard, not a premium tier.
               </p>
             </motion.div>

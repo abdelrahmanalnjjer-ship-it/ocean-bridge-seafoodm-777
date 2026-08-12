@@ -41,13 +41,13 @@ function ProductsPage() {
         <div className="absolute inset-0 bg-[linear-gradient(135deg,#0B1A21,#10222B_52%,#1A2E35)]" />
         <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_20%_10%,rgba(59,111,160,0.30),transparent_34%),radial-gradient(circle_at_80%_0%,rgba(59,111,160,0.16),transparent_26%)]" />
         <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pt-28 pb-18 lg:pb-24">
-          <div className="inline-flex items-center gap-3 border border-foreground/10 bg-foreground/5 px-4 py-2 text-[10px] uppercase tracking-[0.35em] text-foreground/70 backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 border border-foreground/10 bg-foreground/5 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-md">
             Catalogue · 35 SKU
           </div>
           <h1 className="mt-8 h-display h-display-xl max-w-4xl">
             {t("products.title")}
           </h1>
-          <p className="mt-7 max-w-2xl text-sm md:text-base text-foreground/70">
+          <p className="mt-7 max-w-2xl text-base md:text-lg leading-[1.65] text-muted-foreground">
             {t("products.sub")}
           </p>
 
@@ -58,8 +58,8 @@ function ProductsPage() {
               { k: "Direct action", v: "B2B inquiry button" },
             ].map((item) => (
               <div key={item.k} className="border border-foreground/10 bg-foreground/5 px-4 py-4 backdrop-blur-md">
-                <div className="text-[10px] uppercase tracking-[0.25em] text-foreground/55">{item.k}</div>
-                <div className="mt-2 text-sm text-foreground">{item.v}</div>
+                <div className="label-caps">{item.k}</div>
+                <div className="mt-2 text-[15px] text-foreground">{item.v}</div>
               </div>
             ))}
           </div>
@@ -73,26 +73,26 @@ function ProductsPage() {
               <button
                 key={c.id}
                 onClick={() => setCategory(c.id)}
-                className={`shrink-0 whitespace-nowrap px-3 md:px-4 py-2 text-[11px] md:text-xs uppercase tracking-[0.18em] md:tracking-[0.22em] transition-all border ${
+                className={`shrink-0 whitespace-nowrap min-h-[40px] px-3 md:px-4 py-2 text-[12px] uppercase tracking-[0.1em] md:tracking-[0.12em] transition-all border ${
                   category === c.id
                     ? "border-[color:var(--brand-accent)] text-foreground bg-[color:var(--brand-accent)]/12"
-                    : "border-transparent text-foreground/50 hover:text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
                 }`}
                 style={category === c.id ? { borderColor: "var(--brand-accent)" } : undefined}
               >
                 {locale === "ar" ? c.label_ar : locale === "zh" ? c.label_zh : c.label_en}{" "}
-                <span className="text-foreground/40">({counts[c.id] ?? 0})</span>
+                <span className="text-subtle">({counts[c.id] ?? 0})</span>
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-4 md:gap-6 flex-wrap text-[10px] uppercase tracking-[0.22em] text-foreground/50">
+          <div className="flex items-center gap-4 md:gap-6 flex-wrap text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
             <span className="flex items-center gap-2">
               <span className="h-2.5 w-4 rounded-[1px]" style={{ backgroundColor: "var(--brand-accent)" }} />
               In season
-              <span className="ml-2 h-2.5 w-4 rounded-[1px] bg-foreground/15" />
+              <span className="ml-2 h-2.5 w-4 rounded-[1px] bg-track" />
               Out of season
             </span>
-            <span className="tracking-[0.28em]">
+            <span className="tracking-[0.12em]">
               {filtered.length} of {SPECIES.length} shown
             </span>
           </div>
@@ -153,29 +153,35 @@ function renderMonthIndicator(start: string, end: string) {
   }
 
   return (
-    <div className="flex flex-col gap-1.5" role="img" aria-label={`Available ${start}–${end}${isYearRound ? " (Year-Round)" : ""}`}>
-      <div className="flex items-center justify-between">
-        <span className="text-[9px] uppercase tracking-[0.22em] text-foreground/50">
-          {isYearRound ? "Year-Round" : `Season: ${start} – ${end}`}
+    <div
+      className="flex flex-col gap-2"
+      role="img"
+      aria-label={`Available ${start}–${end}${isYearRound ? " (year-round)" : ""}`}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <span className="label-caps">
+          {isYearRound ? "Year-round" : `Season ${start}–${end}`}
         </span>
-        <span className="text-[9px] uppercase tracking-[0.22em] text-foreground/30">
-          {isYearRound ? "All months" : `${active.size} months`}
+        <span className="label-caps">
+          {isYearRound ? "12 months" : `${active.size} months`}
         </span>
       </div>
-      <div className="flex items-center gap-[2px] bg-foreground/5 rounded-sm px-2 py-1.5">
+      <div className="flex items-center gap-[2px]">
         {Array.from({ length: 12 }, (_, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center gap-0.5 min-w-0">
-            <span
-              className={`block h-3 w-full rounded-[1px] transition-colors ${
-                active.has(i) ? "bg-[color:var(--brand-accent)]" : "bg-foreground/8"
-              }`}
-            />
-            <span className={`text-[7px] leading-tight font-medium ${
-              active.has(i) ? "text-foreground/70" : "text-foreground/25"
-            }`}>
-              {MONTHS_SHORT[i]}
-            </span>
-          </div>
+          <span
+            key={i}
+            className={`h-2 flex-1 rounded-[1px] transition-colors ${
+              active.has(i) ? "bg-[color:var(--brand-accent)]" : "bg-track"
+            }`}
+          />
+        ))}
+      </div>
+      {/* Quarter anchors, not twelve labels. The previous version set every
+        * month name at 7px, which is below any usable reading size — this
+        * gives the same orientation at 11px. */}
+      <div className="flex text-[11px] leading-none text-subtle">
+        {["Jan", "Apr", "Jul", "Oct"].map((m) => (
+          <span key={m} className="flex-1">{m}</span>
         ))}
       </div>
     </div>
@@ -203,11 +209,11 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
       <div className="flex flex-1 flex-col p-6 lg:p-7 pt-4">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
           <div className="min-w-0">
-            <div className="text-[10px] uppercase tracking-[0.28em] text-foreground/50">{categoryLabel}</div>
+            <div className="label-caps">{categoryLabel}</div>
             <div className="mt-2 font-display text-xl md:text-2xl text-foreground leading-tight break-words hyphens-auto">{name}</div>
-            <div className="mt-1 text-[11px] italic text-foreground/50 break-words">{s.scientific}</div>
+            <div className="mt-1 text-[13px] italic text-subtle break-words">{s.scientific}</div>
           </div>
-          <div className="shrink-0 text-right text-[10px] uppercase tracking-[0.22em] text-foreground/50">
+          <div className="shrink-0 text-right label-caps">
             #{String(s.id).padStart(2, "0")}
           </div>
         </div>
@@ -217,17 +223,25 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
           <SpecTag label={t("products.grade")} value={s.grade} />
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.22em] text-foreground/50">
-          <span className="border border-foreground/10 bg-foreground/5 px-2.5 py-1">{s.sizes.split(",")[0].trim()}</span>
+        {/* Every size, not just the first. `sizes.split(",")[0]` silently hid
+          * most of the range a buyer can actually order. */}
+        <div className="mt-6 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+          {s.sizes.split(",").map((size) => (
+            <span key={size} className="border border-border bg-foreground/5 px-2.5 py-1">
+              {size.trim()}
+            </span>
+          ))}
         </div>
 
+        {/* Named group: the card wrapper also uses `group`, and a nested plain
+          * `group` makes group-hover resolve against the wrong ancestor. */}
         <Link
           to="/contact"
           aria-label={`Inquire about ${name}`}
-          className="group mt-auto pt-6 inline-flex w-full items-center justify-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground"
+          className="group/cta mt-auto pt-6 inline-flex w-full items-center justify-center gap-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground"
         >
-          <span className="inline-flex w-full items-center justify-center gap-2 border border-[color:var(--brand-accent)]/55 bg-[color:var(--brand-accent)]/12 px-4 py-3 transition-colors group-hover:bg-[color:var(--brand-accent)]/20">
-            {t("products.initiate")} <ArrowUpRight className="size-3.5 transition-transform group-hover:rotate-45" />
+          <span className="inline-flex w-full items-center justify-center gap-2 border border-[color:var(--brand-accent)]/55 bg-[color:var(--brand-accent)]/12 px-4 py-3 transition-colors group-hover/cta:bg-[color:var(--brand-accent)]/20">
+            {t("products.initiate")} <ArrowUpRight className="size-4 transition-transform group-hover/cta:rotate-45" />
           </span>
         </Link>
       </div>
@@ -239,8 +253,8 @@ function SpeciesCard({ s, name, categoryLabel, image, t }: { s: Species; name: s
 function SpecTag({ label, value }: { label: string; value: string }) {
   return (
     <div className="border border-border bg-foreground/[0.04] px-3 py-2">
-      <div className="text-[9px] uppercase tracking-[0.26em] text-foreground/50">{label}</div>
-      <div className="mt-1 text-[12px] text-foreground truncate">{value}</div>
+      <div className="label-caps">{label}</div>
+      <div className="mt-1 text-[13px] text-foreground truncate">{value}</div>
     </div>
   );
 }

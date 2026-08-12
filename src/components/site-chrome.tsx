@@ -15,15 +15,15 @@ const LOGO_SUBMARK = logoSubmark.url;
 
 function LocaleSwitcher() {
   const { locale, setLocale } = useI18n();
-  /* zh is disabled until a full Chinese content pass ships — a switcher that
-   * leads to untranslated pages reads worse than no switcher at all. */
+  /* zh is omitted until a full Chinese content pass ships. A permanently
+   * disabled control is worse than no control — it advertises a dead end.
+   * Add { id: "zh", label: "中文" } back once the strings exist. */
   const items: { id: Locale; label: string; disabled?: boolean }[] = [
     { id: "en", label: "EN" },
     { id: "ar", label: "AR" },
-    { id: "zh", label: "中文", disabled: true },
   ];
   return (
-    <div className="flex items-center gap-1 text-[11px] tracking-widest font-mono">
+    <div className="flex items-center gap-1.5 text-[12px] tracking-[0.1em] font-mono">
       {items.map((i, idx) => (
         <span key={i.id} className="flex items-center gap-1">
           <button
@@ -33,7 +33,7 @@ function LocaleSwitcher() {
             title={i.disabled ? "Chinese version coming soon" : undefined}
             className={`transition-colors ${
               i.disabled
-                ? "text-muted-foreground/35 cursor-not-allowed"
+                ? "text-subtle cursor-not-allowed"
                 : locale === i.id
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground"
@@ -41,7 +41,7 @@ function LocaleSwitcher() {
           >
             {i.label}
           </button>
-          {idx < items.length - 1 && <span className="text-muted-foreground/40">/</span>}
+          {idx < items.length - 1 && <span className="text-subtle">/</span>}
         </span>
       ))}
     </div>
@@ -90,7 +90,7 @@ export function SiteHeader() {
               to={l.to}
               activeOptions={{ exact: l.to === "/" }}
               activeProps={{ className: "nav-link text-foreground", "data-active": "true" } as any}
-              inactiveProps={{ className: "nav-link text-foreground/70 hover:text-foreground transition-colors" }}
+              inactiveProps={{ className: "nav-link text-muted-foreground hover:text-foreground transition-colors" }}
             >
               {l.label}
             </Link>
@@ -122,7 +122,7 @@ export function SiteHeader() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.25, delay: 0.04 * i }}
               >
-                <Link to={l.to} onClick={() => setOpen(false)} className="block text-sm text-foreground/80 hover:text-foreground transition-colors">
+                <Link to={l.to} onClick={() => setOpen(false)} className="block py-1 text-[15px] text-foreground/90 hover:text-foreground transition-colors">
                   {l.label}
                 </Link>
               </motion.div>
@@ -154,31 +154,31 @@ export function SiteFooter() {
             className="h-36 w-auto mb-4"
             style={{ filter: "brightness(1.9) saturate(1.1)" }}
           />
-          <p className="mt-3 text-sm text-foreground/70 max-w-sm leading-[1.7]">
+          <p className="mt-3 text-[15px] text-muted-foreground max-w-sm leading-[1.7]">
             {t("brand.tagline")} Verified Oman-origin seafood, engineered for international processors and importers.
           </p>
         </div>
         <div>
           <div className="eyebrow-muted mb-4">Navigate</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:text-foreground text-foreground/70 transition-colors">{t("nav.home")}</Link></li>
-            <li><Link to="/products" className="hover:text-foreground text-foreground/70 transition-colors">{t("nav.products")}</Link></li>
-            <li><Link to="/about" className="hover:text-foreground text-foreground/70 transition-colors">{t("nav.about")}</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground text-foreground/70 transition-colors">{t("nav.contact")}</Link></li>
+            <li><Link to="/" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.home")}</Link></li>
+            <li><Link to="/products" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.products")}</Link></li>
+            <li><Link to="/about" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.about")}</Link></li>
+            <li><Link to="/contact" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.contact")}</Link></li>
           </ul>
         </div>
         <div>
           <div className="eyebrow-muted mb-4">Contact</div>
-          <ul className="space-y-2 text-sm text-foreground/70">
+          <ul className="space-y-2 text-sm text-muted-foreground">
             <li>Muscat, Sultanate of Oman</li>
             <li>info@oceanbridge-trade.com</li>
-            <li className="font-mono text-xs">+968 77 62 1857</li>
+            <li className="font-mono text-[13px]">+968 77 62 1857</li>
           </ul>
         </div>
       </div>
       {/* Legal / regulatory sub-menu */}
       <div className="border-t border-foreground/10">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px] tracking-wide text-foreground/60">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex flex-wrap gap-x-6 gap-y-2 text-[12px] tracking-[0.02em] text-subtle">
           {legal.map((label) => (
             <a key={label} href="#" className="hover:text-foreground transition-colors">
               {label}
@@ -187,7 +187,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-foreground/10">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex justify-between items-center text-[11px] tracking-widest uppercase text-foreground/50">
+        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex flex-wrap gap-3 justify-between items-center text-[11px] tracking-[0.12em] uppercase text-subtle">
           <span>© {new Date().getFullYear()} Ocean Bridge Trade</span>
           <span>Bridging Origin. Verifying Supply.</span>
         </div>
@@ -201,8 +201,8 @@ export function MediaSlot({ label, className, aspect = "aspect-video" }: { label
     <div className={`relative ${aspect} w-full overflow-hidden bg-card border border-border/60 flex items-center justify-center ${className ?? ""}`}>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,111,160,0.25),transparent_60%)]" />
       <div className="relative text-center">
-        <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Media Slot</div>
-        <div className="mt-1 font-mono text-xs text-foreground/70">{label}</div>
+        <div className="label-caps">Media Slot</div>
+        <div className="mt-1 font-mono text-[13px] text-muted-foreground">{label}</div>
       </div>
     </div>
   );

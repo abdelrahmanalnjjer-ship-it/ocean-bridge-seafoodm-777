@@ -79,7 +79,7 @@ function ContactPage() {
                 <Field label="Preferred Incoterms" name="incoterms" placeholder="e.g. FOB Salalah, CFR Qingdao" />
                 <div>
                   <label className="eyebrow-muted">Additional Context</label>
-                  <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--brand-ocean)] outline-none py-2 text-sm resize-none transition-colors" />
+                  <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--brand-ocean)] outline-none py-2 text-base resize-none transition-colors" />
                 </div>
                 <button type="submit" className="btn-primary group">
                   Submit Buyer Inquiry <ArrowUpRight className="size-4 group-hover:rotate-45 transition-transform" />
@@ -106,8 +106,8 @@ function ContactPage() {
             </div>
 
             <ul className="space-y-3 text-sm">
-              <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+968 77 62 1857</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">Oman</span></li>
-              <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+971 50 485 0309</span><span className="text-[10px] uppercase tracking-widest text-muted-foreground">WhatsApp</span></li>
+              <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+968 77 62 1857</span><span className="label-caps">Oman</span></li>
+              <li className="flex items-center gap-3"><Phone className="size-4 text-muted-foreground" /><span className="font-mono">+971 50 485 0309</span><span className="label-caps">WhatsApp</span></li>
               <li className="flex items-center gap-3"><Mail className="size-4 text-muted-foreground" /><a href="mailto:info@oceanbridge-trade.com" className="hover:text-foreground transition-colors">info@oceanbridge-trade.com</a></li>
               <li className="flex items-center gap-3"><Linkedin className="size-4 text-muted-foreground" /><a href="https://www.linkedin.com/company/oceanbridge-trade" target="_blank" rel="noreferrer" className="hover:text-foreground transition-colors">/company/oceanbridge-trade</a></li>
             </ul>
@@ -132,7 +132,7 @@ function Field({ label, name, required, placeholder }: { label: string; name: st
         name={name}
         required={required}
         placeholder={placeholder}
-        className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--brand-ocean)] outline-none py-2 text-sm transition-colors"
+        className="mt-2 w-full bg-transparent border-b border-border focus:border-[color:var(--brand-ocean)] outline-none py-2 text-base transition-colors"
       />
     </div>
   );
