@@ -12,6 +12,7 @@ const LOGO_VERTICAL = logoVertical.url;
 const NAV = [
   { to: "/", key: "nav.home" },
   { to: "/products", key: "nav.products" },
+  { to: "/insights", key: "nav.insights" },
   { to: "/about", key: "nav.about" },
   { to: "/contact", key: "nav.contact" },
 ] as const;
@@ -107,12 +108,20 @@ export function SiteHeader() {
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="shell flex h-16 items-center justify-between">
+      {/* The bar is tall and transparent over the hero so the wordmark can run
+        * large, then collapses to a conventional 64px bar once the page moves.
+        * The hero is full-bleed underneath either way, so changing this height
+        * does not shift any layout. */}
+      <div
+        className={`shell flex items-center justify-between transition-[height] duration-500 ${
+          solid ? "h-16" : "h-28"
+        }`}
+      >
         <Link to="/" aria-label="Ocean Bridge Trade — home" className="flex items-center">
           <img
             src={LOGO_HORIZONTAL}
             alt="Ocean Bridge Trade"
-            className={`w-auto transition-all duration-500 ${scrolled ? "h-8" : "h-10"}`}
+            className={solid ? "h-9 w-auto transition-all duration-500" : "wordmark-hero transition-all duration-500"}
             /* The mark is dark artwork, so it needs lifting only while it sits
              * over the hero footage. */
             style={solid ? undefined : { filter: "brightness(1.9) saturate(1.1)" }}

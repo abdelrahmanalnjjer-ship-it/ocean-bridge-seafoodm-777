@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { SPECIES } from "@/data/species";
+import { CATEGORIES, SPECIES } from "@/data/species";
+import { ARTICLES } from "@/data/insights";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ComplianceCard,
@@ -46,9 +47,13 @@ export const Route = createFileRoute("/")({
  * Content
  * ------------------------------------------------------------------------ */
 
+/* All three clips in the media folder. Note oman-flag.mp4 is a portrait
+ * recording — it fills a landscape hero by cropping hard to the centre. It
+ * reads fine on mobile and loses the edges on desktop. */
 const HERO_SLIDES = [
   { src: "/videos/hero-1.mp4", kicker: "Origin — Muscat coastline" },
   { src: "/videos/hero-2.mp4", kicker: "Compliance — regulatory pre-clearance" },
+  { src: "/videos/oman-flag.mp4", kicker: "Sultanate of Oman — verified origin" },
 ];
 const HERO_POSTER = "/videos/hero-poster.jpg";
 const HERO_INTERVAL = 7000;
@@ -114,9 +119,6 @@ const STATS = [
   { value: 100, suffix: "%", label: "Pre-shipment document review" },
 ];
 
-/* A curated cross-section for the rail, one from each corner of the catalogue. */
-const FEATURED_IDS = [2, 10, 27, 31, 16, 29, 6, 26];
-
 /* ---------------------------------------------------------------------------
  * Page
  * ------------------------------------------------------------------------ */
@@ -132,6 +134,7 @@ function Home() {
       <Compliance />
       <Gateways />
       <Origin />
+      <Insights />
       <Updates />
       <ClosingCta />
     </div>
@@ -182,29 +185,29 @@ function Hero() {
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,20,25,0.94)_0%,rgba(8,20,25,0.62)_38%,rgba(8,20,25,0.18)_70%,rgba(8,20,25,0.35)_100%)]" />
       </div>
 
-      <div className="shell relative w-full pb-16 pt-32 md:pb-24">
+      {/* Content anchored bottom-right, matching the reference layout. The
+        * headline is short enough that right-alignment stays scannable —
+        * it would not be with a full sentence. */}
+      <div className="shell relative flex w-full flex-col items-start pb-16 pt-40 md:items-end md:pb-24 md:text-right">
         <motion.div
           key={slide}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-          className="eyebrow mb-7"
+          className="eyebrow mb-7 md:flex-row-reverse"
         >
           {active.kicker}
         </motion.div>
 
-        <h1 className="h-display h-display-xl max-w-[16ch]">
-          <LineReveal
-            immediate
-            lines={["Oman's catch,", "cleared for arrival."]}
-          />
+        <h1 className="h-display h-display-xl max-w-[15ch]">
+          <LineReveal immediate lines={["Oman's catch,", "cleared for arrival."]} />
         </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.55, ease: [0.19, 1, 0.22, 1] }}
-          className="lede lede-lg mt-8 max-w-xl text-foreground/90"
+          className="lede lede-lg mt-8 max-w-lg text-foreground/90"
         >
           We verify the supply at source, settle destination-market regulation before
           the offer goes out, and stay on the transaction until the container lands.
@@ -214,17 +217,17 @@ function Hero() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.75, ease: [0.19, 1, 0.22, 1] }}
-          className="mt-10 flex flex-wrap items-center gap-4"
+          className="mt-10 flex flex-wrap items-center gap-4 md:justify-end"
         >
+          <Link to="/products" className="btn btn-outline border-white/40 text-white hover:border-white">
+            See the catalogue
+            <ArrowRight className="size-4" />
+          </Link>
           <Link to="/contact" className="btn-pill">
             Start a buyer inquiry
             <span className="pill-badge">
               <ArrowUpRight className="size-4" />
             </span>
-          </Link>
-          <Link to="/products" className="btn btn-outline">
-            See the catalogue
-            <ArrowRight className="size-4" />
           </Link>
         </motion.div>
       </div>
@@ -367,67 +370,63 @@ function Disciplines() {
 /* ---- 5. Catalogue rail ---------------------------------------------------- */
 
 function Catalogue() {
-  const featured = FEATURED_IDS.map((id) => SPECIES.find((s) => s.id === id)).filter(
-    (s): s is (typeof SPECIES)[number] => Boolean(s),
-  );
+  const counts = SPECIES.reduce<Record<string, number>>((acc, s) => {
+    acc[s.category] = (acc[s.category] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <section className="band-wash border-t border-border">
-      <div className="section-lg">
-        <div className="shell">
-          <div className="flex flex-wrap items-end justify-between gap-8">
-            <Reveal>
-              <div className="eyebrow mb-6">The catalogue</div>
-              <h2 className="h-display h-display-lg max-w-[18ch]">
-                Thirty-five species, seasoned and specified.
-              </h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <Link to="/products" className="link-underline">
-                Open the full catalogue <ArrowUpRight className="size-4" />
-              </Link>
-            </Reveal>
-          </div>
+      <div className="shell section-lg">
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <Reveal>
+            <div className="eyebrow mb-6">The catalogue</div>
+            <h2 className="h-display h-display-lg max-w-[16ch]">
+              Four groups, thirty-five species.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <Link to="/products" className="link-underline">
+              Open the full catalogue <ArrowUpRight className="size-4" />
+            </Link>
+          </Reveal>
         </div>
 
-        {/* Full-bleed rail so the last card runs off the edge — signals
-          * scrollability without needing an arrow affordance. */}
-        <Reveal delay={0.15}>
-          <div className="rail mt-14 px-6 lg:px-12" tabIndex={0} aria-label="Featured species">
-            {featured.map((s) => (
-              <article
-                key={s.id}
-                className="card-lift w-[280px] border border-border bg-card md:w-[320px]"
+        {/* The four commercial groups, using the category artwork rather than
+          * individual species — a buyer picks a group first, then drills in. */}
+        <Stagger className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" step={0.08}>
+          {CATEGORIES.map((c) => (
+            <StaggerItem key={c.id}>
+              <Link
+                to="/products"
+                search={{ category: c.id }}
+                className="card-lift group flex h-full flex-col border border-border bg-card"
               >
-                <div className="plate h-[220px]">
-                  <img src={s.image} alt={s.alt || s.name_en} loading="lazy" />
+                <div className="plate aspect-[4/3] overflow-hidden">
+                  <img
+                    src={c.image}
+                    alt={c.label_en}
+                    loading="lazy"
+                    className="transition-transform duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05]"
+                  />
                 </div>
-                <div className="border-t border-border p-6">
-                  <div className="label-caps">{s.status}</div>
+                <div className="flex flex-1 flex-col border-t border-border p-6">
+                  <div className="label-caps">{counts[c.id] ?? 0} species</div>
                   <h3 className="mt-2 font-display text-2xl leading-tight text-foreground">
-                    {s.name_en}
+                    {c.label_en}
                   </h3>
-                  <p className="mt-1 text-[13px] italic text-fg-subtle">{s.scientific}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {s.sizes.split(",").slice(0, 3).map((size) => (
-                      <span
-                        key={size}
-                        className="border border-border px-2.5 py-1 text-[11px] uppercase tracking-[0.06em] text-muted-foreground"
-                      >
-                        {size.trim()}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="mt-3 text-[14px] leading-[1.65] text-muted-foreground">
+                    {c.blurb}
+                  </p>
+                  <span className="mt-auto flex items-center gap-2 pt-6 text-[13px] font-semibold text-[color:var(--accent)]">
+                    View group
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
                 </div>
-              </article>
-            ))}
-            <div className="grid w-[280px] place-items-center md:w-[320px]">
-              <Link to="/products" className="btn btn-outline">
-                All 35 species <ArrowRight className="size-4" />
               </Link>
-            </div>
-          </div>
-        </Reveal>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </div>
     </section>
   );
@@ -441,15 +440,16 @@ function Compliance() {
       <div className="section-lg">
         <div className="shell">
           <Reveal>
-            <div className="eyebrow mb-6">Regimes we clear</div>
+            <div className="eyebrow mb-6">Certified establishments</div>
             <h2 className="h-display h-display-lg max-w-[20ch]">
               Detained cargo is a paperwork failure, not bad luck.
             </h2>
             <p className="lede mt-6 max-w-2xl">
-              These are the frameworks we work through on your behalf before a
-              consignment moves. Ocean Bridge Trade is a coordinating intermediary — we
-              hold no certification ourselves, and every mark below is our own. What we
-              guarantee is that the file is complete and the issuing bodies are real.
+              The certifications below are held by the processing establishments in our
+              vetted Oman network — we verify them, we do not issue them. Ocean Bridge
+              Trade's job is to confirm each certificate is current, that the issuing
+              body is recognised in your destination market, and that the file is
+              complete before a consignment moves.
             </p>
           </Reveal>
         </div>
@@ -597,6 +597,89 @@ function Origin() {
               </Reveal>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- 8b. Insights --------------------------------------------------------- */
+
+function Insights() {
+  const [lead, ...rest] = ARTICLES.slice(0, 5);
+
+  return (
+    <section className="band-paper">
+      <div className="shell section-lg">
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <Reveal>
+            <div className="eyebrow mb-6">Insights</div>
+            <h2 className="h-display h-display-lg max-w-[16ch]">
+              What we learn clearing cargo.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <Link to="/insights" className="link-underline">
+              All insights <ArrowUpRight className="size-4" />
+            </Link>
+          </Reveal>
+        </div>
+
+        <div className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+          {/* Lead */}
+          <Reveal>
+            <Link to="/article/$slug" params={{ slug: lead.slug }} className="group block h-full">
+              <ScrollScale className="aspect-[16/10]">
+                <img
+                  src={lead.image}
+                  alt={lead.imageAlt}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </ScrollScale>
+              <div className="mt-6 flex items-center gap-3">
+                <span className="label-caps text-[color:var(--brand-teal)]">{lead.topic}</span>
+                <span className="label-caps">{lead.dateLabel}</span>
+                <span className="label-caps">{lead.readingMinutes} min</span>
+              </div>
+              <h3 className="h-display h-display-sm mt-4">{lead.title}</h3>
+              <p className="lede mt-4">{lead.standfirst}</p>
+              <span className="link-underline mt-6">
+                Read <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
+              </span>
+            </Link>
+          </Reveal>
+
+          {/* The other four, as a list */}
+          <Stagger className="flex flex-col" step={0.06}>
+            {rest.map((a) => (
+              <StaggerItem key={a.slug}>
+                <Link
+                  to="/article/$slug"
+                  params={{ slug: a.slug }}
+                  className="group flex gap-6 border-b border-border py-6 first:pt-0"
+                >
+                  <div className="media hidden h-24 w-32 shrink-0 sm:block">
+                    <img
+                      src={a.image}
+                      alt={a.imageAlt}
+                      loading="lazy"
+                      className="transition-transform duration-700 group-hover:scale-[1.06]"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-3">
+                      <span className="label-caps text-[color:var(--brand-teal)]">{a.topic}</span>
+                      <span className="label-caps">{a.readingMinutes} min</span>
+                    </div>
+                    <h3 className="mt-2 font-display text-xl leading-tight text-foreground transition-colors group-hover:text-[color:var(--accent)]">
+                      {a.title}
+                    </h3>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </div>
     </section>

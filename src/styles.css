@@ -234,10 +234,20 @@
   color: var(--foreground);
   text-wrap: balance;
 }
-.h-display-xl { font-size: clamp(2.75rem, 7vw, 6rem); }
-.h-display-lg { font-size: clamp(2.25rem, 5vw, 4rem); }
-.h-display-md { font-size: clamp(1.75rem, 3.2vw, 2.75rem); }
-.h-display-sm { font-size: clamp(1.375rem, 2.2vw, 1.75rem); line-height: 1.15; }
+/* Sized up across the board. The reference layout carries headlines far
+ * larger than the previous scale, and Cormorant holds up at display sizes —
+ * it is the small sizes where it gets thin, not the large ones. */
+.h-display-xl { font-size: clamp(3rem, 8.5vw, 7.5rem); line-height: 0.98; }
+.h-display-lg { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.0; }
+.h-display-md { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.06; }
+.h-display-sm { font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.14; }
+
+/* The giant editorial wordmark that bleeds off the top-left of the hero. */
+.wordmark-hero {
+  display: block;
+  width: auto;
+  height: clamp(3.5rem, 11vw, 9.5rem);
+}
 
 /* Long-form statement type — the manifesto voice. */
 .h-statement {
