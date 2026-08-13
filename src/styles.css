@@ -2,189 +2,276 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-/*
- * Design system definition.
+/* ============================================================================
+ * OCEAN BRIDGE TRADE — DESIGN SYSTEM
  *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
+ * Light editorial. Paper is the default surface; ink is the exception, used
+ * for the hero, the CTA and the footer so the page opens and closes dark and
+ * breathes light in between.
  *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
+ * THREE RULES
+ * 1. Hierarchy comes from the three ink tokens, never from opacity.
+ *    Every pair below is contrast-measured and noted.
+ * 2. Nothing renders below 11px. Use .label-caps for the smallest label.
+ * 3. Bands redefine local tokens, so a component dropped into .band-ink
+ *    inverts automatically. Never hardcode a hex in JSX.
+ * ========================================================================= */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 8px;
+  --radius-2xl: 12px;
+  --radius-3xl: 16px;
+  --radius-4xl: 24px;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
+  --color-secondary: var(--card);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--card);
   --color-muted-foreground: var(--muted-foreground);
   --color-fg-subtle: var(--fg-subtle);
   --color-track: var(--track);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-foreground: #ffffff;
   --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-input: var(--border);
+  --color-ring: var(--accent);
   --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-brand-moss: var(--brand-moss);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-deep: #081419;
+  --color-brand-wash: #F2F4F0;
+
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --color-brand-marine: var(--brand-marine);
-  --color-brand-ocean-raw: var(--brand-ocean);
-  --color-brand-accent: var(--brand-accent);
-  --color-brand-ocean: var(--brand-ocean);
-  --color-brand-navy: #10222B;     /* Deep ocean teal — base band */
-  --color-brand-deep: #0B1A21;     /* Deepest teal — nav, footer, hero */
-  --color-brand-mid: #1A2E35;      /* Elevated surface */
-  --color-brand-ice: #FFFFFF;      /* Mist white — light bands */
-  --color-brand-ink: #12242C;      /* Ink — type on light bands */
-  --color-brand-olive: #2C3E2D;    /* Forest moss */
-  --color-brand-sand: #B9C3B4;
-  --color-brand-slate: #16303A;
-  --color-brand-black: #0B1A21;
 }
 
 :root {
-  --radius: 0.25rem;
-  /* Ocean Bridge Trade — Deep Ocean Teal & Forest Moss */
-  --brand-accent: #4A6B4E;         /* Moss accent — links, active, buttons */
-  --brand-marine: #9CB89A;         /* Moss brightened for text on teal */
-  --brand-ocean: #C3D2BF;
-  --background: #10222B;
-  --foreground: #F4F6F3;
-  --card: #1A2E35;
-  --card-foreground: #F4F6F3;
-  --popover: #1A2E35;
-  --popover-foreground: #F4F6F3;
-  --primary: #2C3E2D;
-  --primary-foreground: #ffffff;
-  --secondary: #1A2E35;
-  --secondary-foreground: #F4F6F3;
-  --muted: #1A2E35;
-  /* Text tiers. Contrast measured against the navy band (#10222B):
-   *   foreground        #F4F6F3  15.0:1
-   *   muted-foreground  #A2B2B4   7.4:1
-   *   fg-subtle         #8FA0A3   6.0:1  <- lowest tier, still AA for body text
-   * Express hierarchy with these three tokens, never with opacity.
-   * text-foreground/40 measures 3.5:1 and text-foreground/30 measures 2.6:1,
-   * both of which fail WCAG AA. */
-  --muted-foreground: #A2B2B4;
-  --fg-subtle: #8FA0A3;
-  --track: rgb(196 214 199 / 0.22);
-  --accent: #4A6B4E;
-  --accent-foreground: #ffffff;
-  --destructive: oklch(0.6 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: rgb(196 214 199 / 0.16);
-  --input: rgb(196 214 199 / 0.20);
-  --ring: #4A6B4E;
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.22 0.06 260);
-  --sidebar-foreground: oklch(0.95 0.01 240);
-  --sidebar-primary: oklch(0.56 0.09 245);
-  --sidebar-primary-foreground: oklch(0.98 0.005 240);
-  --sidebar-accent: oklch(0.27 0.06 258);
-  --sidebar-accent-foreground: oklch(0.95 0.01 240);
-  --sidebar-border: oklch(0.95 0.01 240 / 0.12);
-  --sidebar-ring: oklch(0.56 0.09 245);
-  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --radius: 2px;
+
+  /* Section rhythm. Two sizes only — do not invent a third. */
+  --section-y: 5rem;
+  --section-y-lg: 8rem;
+
+  /* ---- Surfaces (light) ---- */
+  --background: #FFFFFF;
+  --card: #F7F8F5;
+  --wash: #F2F4F0;
+
+  /* ---- Ink tiers. Measured against #FFFFFF ----
+   *   foreground       #10222B   16.3:1
+   *   muted-foreground #4C6066    6.6:1
+   *   fg-subtle        #647376    4.9:1   <- floor, still AA for body text
+   * There is no fourth tier. If something needs to recede further than
+   * fg-subtle, it needs less prominence, not less contrast. */
+  --foreground: #10222B;
+  --muted-foreground: #4C6066;
+  --fg-subtle: #647376;
+
+  /* ---- Brand ---- */
+  --brand-ink: #10222B;   /* deep ocean */
+  --brand-moss: #2C3E2D;  /* forest moss — 11.4:1 on white */
+  --brand-teal: #14606E;  /* ocean teal  —  7.2:1 on white */
+
+  --accent: #2C3E2D;
+  --accent-foreground: #FFFFFF;
+  --primary: #10222B;
+  --primary-foreground: #FFFFFF;
+
+  --border: rgb(16 34 43 / 0.14);
+  --track: rgb(16 34 43 / 0.10);
+  --destructive: #9B2C1F;
+
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* System mono. Dropping JetBrains Mono and Cinzel takes the webfont
+   * payload from four families to two. */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
-/* No .dark block on purpose.
- * :root above IS the dark brand theme. The stock shadcn .dark palette that
- * used to live here was generic blue-grey and silently overrode every brand
- * colour if `.dark` ever landed on <html>. If a light theme is needed later,
- * build it as .theme-light with real brand values. */
+/* ============================================================================
+ * BANDS
+ * Each band re-scopes the tokens, so tokenised components invert for free.
+ * ========================================================================= */
+
+.band-paper,
+.band-wash,
+.band-ink,
+.band-deep {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.band-paper {
+  --background: #FFFFFF;
+  --card: #F7F8F5;
+  --plate: #F2F4F0;
+  --foreground: #10222B;
+  --muted-foreground: #4C6066;
+  --fg-subtle: #647376;
+  --border: rgb(16 34 43 / 0.14);
+  --track: rgb(16 34 43 / 0.10);
+  --accent: #2C3E2D;
+  --brand-teal: #14606E;
+}
+
+.band-wash {
+  --background: #F2F4F0;
+  --card: #FFFFFF;
+  --plate: #FFFFFF;
+  --foreground: #10222B;
+  --muted-foreground: #4A5E62;   /* 6.4:1 on #F2F4F0 */
+  --fg-subtle: #5F6E71;          /* 4.7:1 on #F2F4F0 */
+  --border: rgb(16 34 43 / 0.14);
+  --track: rgb(16 34 43 / 0.11);
+  --accent: #2C3E2D;
+  --brand-teal: #14606E;
+}
+
+/* Inverted. Used sparingly: hero, one pull section, CTA, footer. */
+.band-ink {
+  --background: #10222B;
+  --card: #1A2E35;
+  --plate: #0B1A21;
+  --foreground: #F4F6F3;         /* 15.0:1 */
+  --muted-foreground: #A2B2B4;   /*  7.4:1 */
+  --fg-subtle: #8FA0A3;          /*  6.0:1 */
+  --border: rgb(196 214 199 / 0.18);
+  --track: rgb(196 214 199 / 0.22);
+  --accent: #9CB89A;             /* moss brightened to carry on dark */
+  --accent-foreground: #10222B;
+  --brand-teal: #7FB3BD;
+}
+
+.band-deep {
+  --background: #081419;
+  --card: #10222B;
+  --plate: #0B1A21;
+  --foreground: #F4F6F3;
+  --muted-foreground: #9EAEB0;
+  --fg-subtle: #8B9CA0;
+  --border: rgb(196 214 199 / 0.15);
+  --track: rgb(196 214 199 / 0.20);
+  --accent: #9CB89A;
+  --accent-foreground: #081419;
+  --brand-teal: #7FB3BD;
+}
 
 @layer base {
   * {
     border-color: var(--border);
   }
 
-  /* Visible focus on everything interactive. The UA default outline is
-   * effectively invisible on the navy bands, so nav links, footer links,
-   * category tabs and card CTAs had no usable keyboard affordance.
-   * :where() keeps specificity at 0, so the per-component :focus-visible
-   * rules further down still win. */
-  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--brand-ocean);
-    outline-offset: 3px;
+  html {
+    scroll-behavior: smooth;
+    /* Anchors clear the fixed header. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: var(--background);
     color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;   /* 17px base */
+    line-height: 1.6;
     font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
+
+  /* Visible focus everywhere. The UA default is unusable on both the paper
+   * and ink bands. :where() keeps specificity at 0. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--brand-moss);
+    color: #fff;
+  }
+
+  img, video { display: block; max-width: 100%; }
 }
 
-/* ---------- Type system ---------- */
+/* ============================================================================
+ * COMPONENTS
+ *
+ * All of this lives in @layer components on purpose. Unlayered CSS outranks
+ * every cascade layer, so an unlayered `.lede` would beat a Tailwind
+ * `text-foreground` utility on the same element and there would be no way to
+ * override it from JSX short of !important. Inside the components layer,
+ * utilities win — which is the behaviour anyone editing a className expects.
+ * ========================================================================= */
 
-/* Editorial eyebrow label — the brand's signature micro-label. */
+@layer components {
+
+/* ---------------------------------------------------------------------------
+ * TYPE
+ * ------------------------------------------------------------------------ */
+
+.h-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  line-height: 1.02;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+.h-display-xl { font-size: clamp(2.75rem, 7vw, 6rem); }
+.h-display-lg { font-size: clamp(2.25rem, 5vw, 4rem); }
+.h-display-md { font-size: clamp(1.75rem, 3.2vw, 2.75rem); }
+.h-display-sm { font-size: clamp(1.375rem, 2.2vw, 1.75rem); line-height: 1.15; }
+
+/* Long-form statement type — the manifesto voice. */
+.h-statement {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
   font-family: var(--font-sans);
-  font-size: 0.6875rem;   /* 11px floor — letterspaced caps below this stop reading as words */
+  font-size: 0.6875rem;      /* 11px floor */
   line-height: 1.4;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em; /* was 0.16em; heavy tracking hurts legibility at small sizes */
-  color: var(--brand-marine);
+  letter-spacing: 0.12em;
+  color: var(--brand-teal);
 }
 .eyebrow::before {
   content: "";
-  width: 1.25rem;
+  width: 1.5rem;
   height: 1px;
   flex-shrink: 0;
-  background-color: var(--brand-accent);
+  background-color: currentColor;
+  opacity: 0.55;
 }
-.eyebrow-bare { display: inline; }
+.eyebrow-bare { display: inline-flex; }
 .eyebrow-bare::before { content: none; }
 
-/* Small light-on-dark secondary label (footer, contact side rails). */
 .eyebrow-muted {
   display: block;
   font-size: 0.6875rem;
@@ -195,7 +282,7 @@
   color: var(--muted-foreground);
 }
 
-/* Smallest structural caps label in the system. Nothing may go below this. */
+/* The smallest label in the system. Nothing goes below this. */
 .label-caps {
   font-size: 0.6875rem;
   line-height: 1.3;
@@ -205,423 +292,297 @@
   color: var(--fg-subtle);
 }
 
-/* Colour helpers so JSX never reaches for text-foreground/40 again. */
+.lede {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+  max-width: 62ch;          /* keeps measure readable without a utility */
+  text-wrap: pretty;
+}
+.lede-lg { font-size: 1.1875rem; line-height: 1.65; }
+
 .text-subtle { color: var(--fg-subtle); }
 .bg-track    { background-color: var(--track); }
+.text-teal   { color: var(--brand-teal); }
 
-/* Display headline scale with editorial leading. */
-.h-display {
-  font-family: var(--font-display);
-  font-weight: 500;
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
-  line-height: 1.05;
-  color: var(--foreground);
-}
-.h-display-xl { font-size: clamp(2.25rem, 4.4vw, 3.75rem); }
-.h-display-lg { font-size: clamp(2rem, 3.4vw, 3rem); }
-.h-display-md { font-size: clamp(1.625rem, 2.5vw, 2.25rem); }
-
-/* Caps wordmark voice — used for brand marks and small structural labels. */
-.wordmark {
-  font-family: "Cinzel", var(--font-display), serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
-
-/* Reading-length body copy. */
-.lede {
-  font-size: 1rem;
-  line-height: 1.7;
-  letter-spacing: 0.004em;
-  color: var(--muted-foreground);
-}
-
-/* Hairline rule used as a quiet section divider / accent. */
 .rule-brand {
   display: block;
   height: 1px;
-  width: 3rem;
-  background-color: var(--brand-accent);
+  width: 3.5rem;
+  background-color: var(--accent);
 }
 
-/* ---------- Full-width bands ----------
- * Each band redefines the local token scope, so tokenised components
- * automatically flip between the navy and ice treatments. */
-.section-navy,
-.section-navy-deep,
-.section-slate,
-.section-ice,
-.section-paper {
-  background-color: var(--background);
-  color: var(--foreground);
+/* ============================================================================
+ * LAYOUT
+ * ========================================================================= */
+
+.shell {
+  margin-inline: auto;
+  max-width: 1320px;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 1024px) { .shell { padding-inline: 3rem; } }
+
+.shell-wide {
+  margin-inline: auto;
+  max-width: 1600px;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 1024px) { .shell-wide { padding-inline: 3rem; } }
+
+.section    { padding-block: var(--section-y); }
+.section-lg { padding-block: var(--section-y-lg); }
+@media (max-width: 767px) {
+  .section    { padding-block: 3.5rem; }
+  .section-lg { padding-block: 4.5rem; }
 }
 
-.section-navy {
-  --background: #10222B;
-  --card: #1A2E35;
-  --foreground: #F4F6F3;
-  --muted-foreground: #A2B2B4;
-  --fg-subtle: #8FA0A3;
-  --track: rgb(196 214 199 / 0.22);
-  --border: rgb(196 214 199 / 0.16);
-  --brand-marine: #9CB89A;
-  --brand-ocean: #C3D2BF;
-  --brand-accent: #4A6B4E;
+/* ============================================================================
+ * MEDIA
+ * ========================================================================= */
+
+/* Photography leads in this design, so the default frame is now a clean
+ * edge-to-edge crop rather than the old corner-bracket treatment. */
+.media {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--card);
 }
-.section-navy-deep,
-.section-slate {
-  --background: #0B1A21;
-  --card: #16303A;
-  --foreground: #F4F6F3;
-  --muted-foreground: #97A8AA;
-  --fg-subtle: #8FA0A3;
-  --track: rgb(196 214 199 / 0.22);
-  --border: rgb(196 214 199 / 0.13);
-  --brand-marine: #9CB89A;
-  --brand-ocean: #C3D2BF;
-  --brand-accent: #4A6B4E;
-}
-.section-ice {
-  --background: #FFFFFF;
-  --card: #F4F5F1;
-  --foreground: #12242C;
-  --muted-foreground: #55666A;
-  --fg-subtle: #647376;
-  --track: rgb(18 36 44 / 0.16);
-  --border: rgb(18 36 44 / 0.13);
-  --brand-marine: #2C3E2D;
-  --brand-ocean: #4A6B4E;
-  --brand-accent: #2C3E2D;
-}
-.section-paper {
-  --background: #F4F5F1;
-  --card: #FFFFFF;
-  --foreground: #12242C;
-  --muted-foreground: #55666A;
-  --fg-subtle: #647376;
-  --track: rgb(18 36 44 / 0.16);
-  --border: rgb(18 36 44 / 0.13);
-  --brand-marine: #2C3E2D;
-  --brand-ocean: #4A6B4E;
-  --brand-accent: #2C3E2D;
+.media img,
+.media video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
-.bg-brand-navy   { background-color: var(--color-brand-navy); }
-.bg-brand-black  { background-color: var(--color-brand-deep); }
-.bg-brand-slate  { background-color: var(--color-brand-slate); }
-.text-brand-marine { color: var(--brand-marine); }
-.text-brand-ocean  { color: var(--color-brand-ocean-raw); }
-.text-brand-sand   { color: var(--color-brand-sand); }
-.border-brand-marine { border-color: var(--brand-accent); }
-.bg-brand-marine   { background-color: var(--brand-accent); }
-
-/* ---------- Brand-framed media ---------- */
-/* Hairline brand frame around photography; corners instead of radius/shadows. */
+/* Retained for the few places a drawn frame still reads well. */
 .media-frame {
   position: relative;
+  overflow: hidden;
   border: 1px solid var(--border);
-  background-color: var(--color-brand-deep);
+  background-color: var(--card);
 }
-.media-frame img,
-.media-frame video { display: block; }
 .media-frame::before,
 .media-frame::after {
   content: "";
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   z-index: 1;
   pointer-events: none;
 }
-.media-frame::before {
-  top: -1px;
-  left: -1px;
-  border-top: 1px solid var(--brand-ocean);
-  border-left: 1px solid var(--brand-ocean);
+.media-frame::before { top: -1px; left: -1px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+.media-frame::after  { bottom: -1px; right: -1px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+
+/* Product cut-outs sit on a tinted plate; photographs fill their frame.
+ * Mixing the two treatments in one grid is what made the old catalogue
+ * look inconsistent. */
+.plate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--plate, #F2F4F0);
 }
-.media-frame::after {
-  bottom: -1px;
-  right: -1px;
-  border-bottom: 1px solid var(--brand-ocean);
-  border-right: 1px solid var(--brand-ocean);
+.plate img {
+  object-fit: contain;
+  height: auto;
+  width: auto;
+  max-height: 100%;
+  max-width: 100%;
 }
 
-/* ---------- Buttons ---------- */
-/* Hairline ghost link that sweeps to a marine fill on hover. */
-.btn-ghost {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--brand-marine);
-  border: 1px solid var(--border);
-  padding: 0.8rem 1.5rem;
-  overflow: hidden;
-  isolation: isolate;
-  transition: color 250ms ease, border-color 250ms ease;
-}
-.btn-ghost::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--brand-accent);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-.btn-ghost:hover { color: var(--primary-foreground); border-color: var(--brand-accent); }
-.btn-ghost:hover::before { transform: scaleX(1); transform-origin: left; }
-.btn-ghost:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
+/* ============================================================================
+ * CONTROLS
+ * ========================================================================= */
 
-/* Text link with animated underline. */
-.link-underline {
+.btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand-marine);
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid var(--brand-accent);
-  transition: color 200ms ease, border-color 200ms ease;
-}
-.link-underline:hover { color: var(--foreground); border-color: var(--foreground); }
-
-/* Premium primary CTA — Deep Marine Blue with smooth hover shift. */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
+  justify-content: center;
   gap: 0.75rem;
-  background-color: var(--primary);
-  color: #fff;
-  padding: 1rem 2rem;
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  min-height: 48px;
+  padding: 0.9rem 1.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  transition: background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  transition: background-color 240ms ease, color 240ms ease,
+              border-color 240ms ease, transform 240ms cubic-bezier(0.19,1,0.22,1);
 }
-.btn-primary:hover { background-color: #3E5741; transform: translateY(-2px); box-shadow: 0 14px 34px -14px rgba(44,62,45,0.75); }
-.btn-primary:active { transform: translateY(0); background-color: #24321f; }
-.btn-primary:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
-.btn-primary:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; box-shadow: none; transform: none; }
+.btn:active { transform: translateY(1px); }
+
+.btn-solid {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border: 1px solid var(--accent);
+}
+.btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 84%, #000); }
+.band-ink .btn-solid:hover,
+.band-deep .btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 84%, #fff); }
 
 .btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  border: 1px solid var(--border);
+  background-color: transparent;
   color: var(--foreground);
-  padding: 1rem 2rem;
-  font-size: 0.8125rem;
-  letter-spacing: 0.05em;
-  transition: border-color 250ms ease, color 250ms ease, background-color 250ms ease;
+  border: 1px solid var(--border);
 }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.band-ink .btn-outline:hover,
+.band-deep .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-/* Pill button — light surface with a circular arrow badge (Insider register). */
+/* Badge-arrow pill. The circle rotates on hover. */
 .btn-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.85rem;
-  border-radius: 9999px;
-  background-color: #F4F6F3;
-  color: #10222B;
-  padding: 0.5rem 0.5rem 0.5rem 1.35rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  gap: 0.9rem;
+  min-height: 48px;
+  border-radius: 999px;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
   letter-spacing: 0.01em;
-  transition: background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+  transition: transform 260ms cubic-bezier(0.19,1,0.22,1), box-shadow 260ms ease;
 }
-.btn-pill:hover { transform: translateY(-2px); box-shadow: 0 16px 38px -18px rgba(0,0,0,0.55); }
-.btn-pill:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 3px; }
+.btn-pill:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -20px rgb(16 34 43 / 0.55); }
 .btn-pill .pill-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 9999px;
-  background-color: #2C3E2D;
-  color: #fff;
-  transition: transform 300ms cubic-bezier(0.19,1,0.22,1);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: var(--accent-foreground);
+  color: var(--accent);
+  transition: transform 320ms cubic-bezier(0.19,1,0.22,1);
 }
 .btn-pill:hover .pill-badge { transform: rotate(45deg); }
 
 .btn-pill-ghost {
   background-color: transparent;
   color: var(--foreground);
-  border: 1px solid color-mix(in oklab, var(--foreground) 30%, transparent);
+  border: 1px solid var(--border);
 }
-.btn-pill-ghost .pill-badge { background-color: transparent; border: 1px solid color-mix(in oklab, var(--foreground) 30%, transparent); color: var(--foreground); }
+.btn-pill-ghost .pill-badge { background-color: transparent; border: 1px solid var(--border); color: var(--foreground); }
+.btn-pill-ghost:hover { border-color: var(--accent); }
 
-.btn-outline-unused {
+/* Animated underline link. */
+.link-underline {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  border: 1px solid var(--border);
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--foreground);
-  padding: 1rem 2rem;
-  font-size: 0.8125rem;
-  letter-spacing: 0.05em;
-  transition: border-color 250ms ease, color 250ms ease, background-color 250ms ease;
+  padding-bottom: 0.3rem;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 320ms cubic-bezier(0.19,1,0.22,1), color 200ms ease;
 }
-.btn-outline:hover { border-color: var(--brand-ocean); background-color: rgba(74,107,78,0.12); }
-.btn-outline:focus-visible { outline: 2px solid var(--brand-ocean); outline-offset: 2px; }
+.link-underline:hover { color: var(--accent); background-size: 0% 1px; }
 
-/* Card lift on hover — hairline highlight instead of a drop shadow. */
-.card-lift { transition: transform 300ms cubic-bezier(0.19,1,0.22,1), border-color 300ms ease, box-shadow 300ms ease; }
-.card-lift:hover {
-  transform: translateY(-5px);
-  border-color: color-mix(in oklab, var(--brand-accent) 55%, transparent);
-  box-shadow: 0 22px 50px -22px rgba(6, 18, 22, 0.55);
-}
-
-/* Nav link underline animation. */
 .nav-link { position: relative; padding-bottom: 4px; }
 .nav-link::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 1px;
-  background-color: var(--brand-ocean);
+  background-color: currentColor;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 300ms ease;
+  transition: transform 320ms cubic-bezier(0.19,1,0.22,1);
 }
-.nav-link:hover::after, .nav-link[data-active="true"]::after { transform: scaleX(1); transform-origin: left; }
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after { transform: scaleX(1); transform-origin: left; }
 
-/* ---------- Brand ambient shadows — colored, layered depth ---------- */
-.shadow-marine {
-  box-shadow: 0 8px 32px -6px rgba(28, 54, 60, 0.35),
-              0 2px 8px -4px rgba(28, 54, 60, 0.15);
+/* Card hover — a lift and a hairline, no coloured glow. */
+.card-lift {
+  transition: transform 380ms cubic-bezier(0.19,1,0.22,1),
+              border-color 380ms ease, box-shadow 380ms ease;
 }
-.shadow-ocean {
-  box-shadow: 0 8px 32px -6px rgba(74, 107, 78, 0.30),
-              0 2px 8px -4px rgba(74, 107, 78, 0.12);
+.card-lift:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  box-shadow: 0 28px 60px -32px rgb(16 34 43 / 0.35);
 }
-.shadow-olive {
-  box-shadow: 0 8px 28px -6px rgba(44, 62, 45, 0.25);
-}
-.shadow-sand {
-  box-shadow: 0 8px 28px -6px rgba(185, 195, 180, 0.20);
-}
-.shadow-card {
-  box-shadow: 0 20px 60px -12px rgba(6, 18, 22, 0.50),
-              0 4px 18px -8px rgba(28, 54, 60, 0.12);
-}
-.shadow-hero {
-  box-shadow: 0 30px 80px -20px rgba(28, 54, 60, 0.25);
-}
-/* Colored ambient shadow variants for depth on dark backgrounds */
-.shadow-ambient-marine {
-  box-shadow: 0 24px 64px -16px rgba(28, 54, 60, 0.40),
-              0 8px 20px -12px rgba(28, 54, 60, 0.18);
-}
-.shadow-ambient-ocean {
-  box-shadow: 0 24px 64px -16px rgba(74, 107, 78, 0.35),
-              0 8px 20px -12px rgba(74, 107, 78, 0.15);
-}
-.shadow-ambient-olive {
-  box-shadow: 0 20px 56px -14px rgba(44, 62, 45, 0.30);
-}
-.shadow-ambient-sand {
-  box-shadow: 0 20px 56px -14px rgba(185, 195, 180, 0.22);
-}
+.band-ink .card-lift:hover,
+.band-deep .card-lift:hover { box-shadow: 0 28px 60px -28px rgb(0 0 0 / 0.6); }
 
-/* ---------- Varied entrance animations — each section gets a distinct feel ---------- */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ============================================================================
+ * MOTION
+ * Scroll choreography lives in components/motion.tsx; this is the CSS half.
+ * ========================================================================= */
+
+@keyframes ob-rise {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: none; }
 }
-@keyframes fade-in-down {
-  from { opacity: 0; transform: translateY(-12px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes ob-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-@keyframes scale-in {
-  from { opacity: 0; transform: scale(0.94); }
-  to   { opacity: 1; transform: scale(1); }
-}
-@keyframes slide-left {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slide-right {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes rotate-in {
-  from { opacity: 0; transform: rotate(-2deg) scale(0.96); }
-  to   { opacity: 1; transform: rotate(0deg) scale(1); }
-}
-@keyframes clip-in {
+@keyframes ob-wipe {
   from { clip-path: inset(0 100% 0 0); }
   to   { clip-path: inset(0 0 0 0); }
 }
-@keyframes blur-in {
-  from { opacity: 0; filter: blur(6px); transform: translateY(8px); }
-  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
-}
-@keyframes stagger-fade {
-  0%   { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in-up   { animation: fade-in-up 0.65s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-fade-in-down { animation: fade-in-down 0.55s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-scale-in     { animation: scale-in 0.7s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-slide-left   { animation: slide-left 0.6s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-slide-right  { animation: slide-right 0.6s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-rotate-in    { animation: rotate-in 0.7s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-clip-in      { animation: clip-in 0.8s cubic-bezier(0.19,1,0.22,1) both; }
-.animate-blur-in      { animation: blur-in 0.6s cubic-bezier(0.19,1,0.22,1) both; }
-
-/* ---------- Marquee / ticker for certification badges ---------- */
 @keyframes marquee-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
+
+.animate-rise { animation: ob-rise 0.8s cubic-bezier(0.19,1,0.22,1) both; }
+.animate-fade { animation: ob-fade 0.9s ease both; }
+.animate-wipe { animation: ob-wipe 0.9s cubic-bezier(0.19,1,0.22,1) both; }
+
+/* Word-by-word headline reveal. The mask is per-line so descenders survive. */
+.reveal-line { display: block; overflow: hidden; }
+.reveal-line > span { display: block; }
+
 .marquee-track {
   overflow: hidden;
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 4%,
-    black 96%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 4%,
-    black 96%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 .marquee-content {
   display: flex;
-  gap: 3rem;
   width: max-content;
-  animation: marquee-scroll 40s linear infinite;
+  animation: marquee-scroll 46s linear infinite;
 }
-.marquee-content:hover {
-  animation-play-state: paused;
-}
+.marquee-track:hover .marquee-content { animation-play-state: paused; }
 
-/* Respect reduced motion. */
+/* Horizontal rail — native scroll-snap so it works without JS and on touch. */
+.rail {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; flex: 0 0 auto; }
+
+/* Sticky column helper for the pinned-scroll sections. */
+.pin { position: sticky; top: 7rem; }
+
+} /* end @layer components */
+
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
   .marquee-content { animation: none; }
+  .card-lift:hover { transform: none; }
+  .btn-pill:hover { transform: none; }
 }

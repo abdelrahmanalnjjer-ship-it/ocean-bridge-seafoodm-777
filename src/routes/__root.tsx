@@ -12,7 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider } from "../i18n/i18n";
-import { SiteHeader, SiteFooter } from "../components/site-chrome";
+import { SiteHeader, SiteFooter, HtmlLangSync } from "../components/site-chrome";
+import { ProgressRail } from "../components/motion";
 
 function NotFoundComponent() {
   return (
@@ -95,7 +96,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" },
+      /* Two families, not four. Cinzel was only referenced by an unused
+       * .wordmark rule and JetBrains Mono is now a system stack, which takes
+       * the webfont payload from thirteen files to nine. */
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -124,8 +128,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
+        <HtmlLangSync />
         <div className="min-h-screen bg-background text-foreground font-sans antialiased">
           <SiteHeader />
+          <ProgressRail />
           <main className="pt-16">
             <Outlet />
           </main>

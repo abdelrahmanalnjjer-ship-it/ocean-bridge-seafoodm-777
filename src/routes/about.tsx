@@ -1,201 +1,325 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-
-const HARBOR_BOATS_IMAGE = "/website-images/harbor-boats.jpg";
-const FISHERMEN_IMAGE = "/website-images/fishermen.jpg";
-const PORT_CRANES_IMAGE = "/website-images/port-cranes.jpg";
-const HARBOR_DUSK_IMAGE = "/website-images/harbor-dusk.jpg";
-const DHOW_DETAIL_IMAGE = "/website-images/dhow-detail.jpg";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
+import {
+  Counter,
+  LineReveal,
+  ParallaxMedia,
+  Reveal,
+  ScrollScale,
+  Stagger,
+  StaggerItem,
+} from "@/components/motion";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — Ocean Bridge Trade" },
-      { name: "description", content: "Elevating and professionalizing the Omani fish export industry — the corporate-grade representative of Oman-origin seafood for international buyers." },
+      {
+        name: "description",
+        content:
+          "An asset-light commercial representation firm in Muscat. What we do, what we deliberately do not do, and the standards we hold ourselves to.",
+      },
       { property: "og:title", content: "About Ocean Bridge Trade" },
-      { property: "og:description", content: "The world-class representative of Oman-origin seafood for international buyers." },
+      {
+        property: "og:description",
+        content: "Corporate discipline between Oman's origin market and international buyers.",
+      },
     ],
   }),
   component: AboutPage,
 });
 
 const BELIEFS = [
-  { t: "Relationships over transactions", b: "Long-term buyer partnerships built on repeatable performance, not one-off shipments." },
-  { t: "Transparency & integrity", b: "Every claim verifiable. Every document traceable. No informal handshakes." },
-  { t: "Accuracy over speed", b: "Offers issued only when backed by verified data — origin, grade, volume, and compliance." },
-  { t: "Professional standards", b: "Corporate KYC, defined SLAs, structured commercial terms applied to a historically informal trade." },
-  { t: "Market intelligence", b: "Continuous ground-level insight from Oman's ports translated into decisions buyers can rely on." },
+  {
+    t: "Relationships over transactions",
+    b: "A buyer who returns for the fourth season is worth more than a margin won on the first. We price and behave accordingly.",
+  },
+  {
+    t: "Verifiable or unsaid",
+    b: "Every claim traceable to a document or a facility visit. If we cannot show you the evidence, we do not make the claim.",
+  },
+  {
+    t: "Accuracy over speed",
+    b: "An offer goes out when origin, grade, volume and compliance are confirmed — not when a competitor has quoted.",
+  },
+  {
+    t: "Corporate standards, informal market",
+    b: "KYC, defined response times and structured commercial terms applied to a trade that has run on handshakes for generations.",
+  },
+  {
+    t: "Proximity is the product",
+    b: "Ground-level intelligence from Oman's ports, gathered in person, is the thing a buyer cannot get from a database.",
+  },
+  {
+    t: "The cold chain is not negotiable",
+    b: "Temperature discipline from landing to container is the difference between a premium grade and a claim.",
+  },
 ];
 
 const NEVER = [
-  "Misrepresent our role or capabilities.",
-  "Issue offers based on unverified data.",
-  "Overstate regulatory approvals or facility status.",
-  "Engage in transactions we cannot document or verify end-to-end.",
+  "Misrepresent our role, our reach, or our capabilities.",
+  "Issue an offer built on data we have not verified ourselves.",
+  "Overstate a regulatory approval or a facility's status.",
+  "Take on a transaction we cannot document end to end.",
 ];
 
 const STATS = [
-  { k: "Muscat", v: "Headquartered" },
-  { k: "35+", v: "Species catalogued" },
-  { k: "4", v: "Regulatory regimes mastered" },
-  { k: "48h", v: "Buyer inquiry response" },
+  { value: 35, suffix: "", label: "Species catalogued" },
+  { value: 4, suffix: "", label: "Regulatory regimes cleared" },
+  { value: 48, suffix: "h", label: "Inquiry response" },
+  { value: 100, suffix: "%", label: "Pre-shipment review" },
 ];
 
 function AboutPage() {
   return (
     <div>
-      <section className="section-navy-deep border-b border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 pt-24 pb-20">
-          <div className="eyebrow mb-6">About Ocean Bridge Trade</div>
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 items-end">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-              className="h-display h-display-xl"
-            >
-              The world-class representative of Oman-origin seafood.
-            </motion.h1>
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[4/3]">
-              <img src={HARBOR_BOATS_IMAGE} alt="Muscat harbour" className="h-full w-full object-cover object-[50%_30%]" />
-            </motion.div>
+      {/* ---- Masthead ---- */}
+      <section className="band-deep relative -mt-16 overflow-hidden">
+        <div className="absolute inset-0 opacity-40">
+          <img
+            src="/website-images/harbor-boats.jpg"
+            alt=""
+            aria-hidden
+            className="h-full w-full object-cover object-[50%_35%]"
+          />
+        </div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,20,25,0.8),rgba(8,20,25,0.96))]" />
+        <div className="shell relative pb-24 pt-36">
+          <div className="eyebrow mb-7">About</div>
+          <h1 className="h-display h-display-xl max-w-[16ch]">
+            <LineReveal immediate lines={["We are the layer", "of accountability."]} />
+          </h1>
+          <p className="lede lede-lg mt-8 max-w-2xl">
+            Between a fragmented origin market and a procurement department that needs
+            paperwork, someone has to be answerable. That is the whole job.
+          </p>
+        </div>
+      </section>
+
+      {/* ---- Model ---- */}
+      <section className="band-paper">
+        <div className="shell section-lg">
+          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <div className="pin self-start">
+              <Reveal>
+                <div className="eyebrow mb-6">The model</div>
+                <h2 className="h-display h-display-lg">Asset-light on purpose.</h2>
+              </Reveal>
+            </div>
+            <div>
+              <Reveal>
+                <p className="h-statement text-foreground">
+                  Ocean Bridge Trade owns no fleet, no plant and no cold store, and never
+                  takes title to the goods.
+                  <span className="text-muted-foreground">
+                    {" "}
+                    That is not a limitation we are apologising for — it is the reason our
+                    representation stays objective. We have no inventory to clear and no
+                    plant to keep busy, so the only thing we can sell you is an accurate
+                    answer.
+                  </span>
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.1}>
+                <div className="mt-14 grid gap-10 border-t border-border pt-10 sm:grid-cols-2">
+                  <div>
+                    <div className="label-caps mb-3">What we do not do</div>
+                    <ul className="space-y-2 text-[15px] leading-[1.7] text-muted-foreground">
+                      <li>Own fishing fleets, processing plants or cold-storage.</li>
+                      <li>Take title to goods.</li>
+                      <li>Hold speculative inventory.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="label-caps mb-3">What we do</div>
+                    <ul className="space-y-2 text-[15px] leading-[1.7] text-muted-foreground">
+                      <li>Institutional due diligence on every supplier.</li>
+                      <li>Physical facility and cold-chain audits.</li>
+                      <li>The full commercial workflow, order to container.</li>
+                    </ul>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section-ice border-t border-border">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20 grid md:grid-cols-2 gap-12">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-            <div className="eyebrow mb-6">Our Mission</div>
-            <p className="font-display text-xl md:text-2xl leading-snug text-foreground">
-              To elevate and professionalize the Omani fish export industry — becoming the most trusted, corporate-grade representative of Oman-origin seafood for international buyers.
-            </p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}>
-            <div className="eyebrow mb-6">What We Actually Do</div>
-            <p className="font-display text-xl md:text-2xl leading-snug text-foreground">
-              We don't just connect buyers and sellers. We engineer reliable, compliant, repeatable supply chains from Oman to the world.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
-          {STATS.map((s, i) => (
-            <motion.div key={s.v} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.06 }}>
-              <div className="font-display text-2xl md:text-3xl text-foreground">{s.k}</div>
-              <div className="mt-3 eyebrow-muted">{s.v}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      <section className="section-ice border-t border-border">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
-          <div className="eyebrow mb-5">Core Beliefs</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-10">Principles that govern every transaction we touch.</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {BELIEFS.map((b, i) => (
-              <motion.div
-                key={b.t}
-                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: i * 0.07 }}
-                className="card-lift border border-border bg-card p-8 shadow-ambient-ocean"
-              >
-                <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground mb-4">0{i + 1}</div>
-                <div className="font-display text-xl text-foreground mb-3">{b.t}</div>
-                <p className="text-[15px] text-muted-foreground leading-[1.7]">{b.b}</p>
-              </motion.div>
+      {/* ---- Numbers ---- */}
+      <section className="band-wash border-y border-border">
+        <div className="shell section">
+          <Stagger className="grid grid-cols-2 gap-10 md:grid-cols-4">
+            {STATS.map((s) => (
+              <StaggerItem key={s.label}>
+                <div className="font-display text-5xl leading-none text-foreground md:text-6xl">
+                  <Counter value={s.value} suffix={s.suffix} />
+                </div>
+                <div className="label-caps mt-4">{s.label}</div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
-      <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
-          <div className="grid md:grid-cols-[1fr_1fr] gap-12 items-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-              <div className="eyebrow mb-5">Origin Infrastructure</div>
-              <h2 className="h-display h-display-md mb-6">Supply is already secured.</h2>
-              <p className="lede">
-                From our Muscat headquarters we operate a deep-rooted, Oman-based commercial partner network — landing sites, processors, cold-chain operators, and licensed exporters. Continuous on-the-ground market intelligence, physical facility audits, and end-to-end cold-chain oversight are the baseline standard, not a premium tier.
+      {/* ---- Origin infrastructure ---- */}
+      <section className="band-paper">
+        <div className="shell section-lg">
+          <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+            <Reveal>
+              <div className="eyebrow mb-6">Origin infrastructure</div>
+              <h2 className="h-display h-display-lg">Built in person, audited in person.</h2>
+              <p className="lede mt-6">
+                From Muscat we run a partner network across Oman's coast — landing sites,
+                processors, cold-chain operators and licensed exporters. We walk the
+                floors. We check the temperature logs. We know which plant can hold a
+                grade in August and which one cannot.
               </p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[4/3]">
-              <img src={FISHERMEN_IMAGE} alt="Omani fishermen at work" className="h-full w-full object-cover object-[50%_22%]" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section-navy-deep border-t border-border">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20 grid md:grid-cols-[1fr_1.4fr] gap-12">
-          <div>
-            <div className="eyebrow mb-5">Our Discipline</div>
-            <h2 className="h-display h-display-md">What we will never do.</h2>
-          </div>
-          <ul className="space-y-6">
-            {NEVER.map((n, i) => (
-              <motion.li
-                key={n}
-                initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="flex gap-6 border-b border-border pb-6"
-              >
-                <span className="font-mono text-xs text-brand-marine shrink-0 pt-1">0{i + 1}</span>
-                <span className="text-foreground/85">{n}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="media-frame aspect-[21/9] shadow-ambient-olive">
-            <img src={PORT_CRANES_IMAGE} alt="Port export infrastructure" className="h-full w-full object-cover object-[50%_35%]" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Additional Oman imagery — harbor dusk and dhow detail */}
-      <section className="section-navy border-t border-border">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-14 md:py-20">
-          <div className="eyebrow mb-5">Oman's Coast</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-10">The waters and vessels that define our origin.</h2>
-          <div className="grid md:grid-cols-[1fr_1fr_0.62fr] gap-6 items-stretch">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-              className="media-frame aspect-[4/3] shadow-ambient-sand"
-            >
-              <img src={HARBOR_DUSK_IMAGE} alt="Muscat harbour at dusk" className="h-full w-full object-cover" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
-              className="media-frame aspect-[4/3] shadow-ambient-sand"
-            >
-              <img src={DHOW_DETAIL_IMAGE} alt="Traditional Omani dhow" className="h-full w-full object-cover" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.18, ease: [0.19, 1, 0.22, 1] }}
-              className="media-frame aspect-[9/16] md:aspect-auto"
-            >
-              <video
-                src="/videos/oman-flag.mp4"
-                className="h-full w-full object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
+              <p className="lede mt-4">
+                Continuous market intelligence, physical facility audits and cold-chain
+                oversight are the baseline here, not a premium tier.
+              </p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <ParallaxMedia
+                src="/website-images/fishermen.jpg"
+                alt="Omani fishermen working at a landing site"
+                className="aspect-[4/3]"
+                objectPosition="50% 22%"
               />
-            </motion.div>
+            </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* ---- Beliefs ---- */}
+      <section className="band-wash border-t border-border">
+        <div className="shell section-lg">
+          <Reveal>
+            <div className="eyebrow mb-6">Operating principles</div>
+            <h2 className="h-display h-display-lg max-w-[20ch]">
+              Six things that decide how we behave when it costs us.
+            </h2>
+          </Reveal>
+          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3" step={0.06}>
+            {BELIEFS.map((b, i) => (
+              <StaggerItem key={b.t}>
+                <div className="card-lift flex h-full flex-col border border-border bg-card p-8">
+                  <span className="num label-caps text-[color:var(--brand-teal)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-6 font-display text-2xl leading-tight text-foreground">{b.t}</h3>
+                  <p className="mt-4 text-[15px] leading-[1.7] text-muted-foreground">{b.b}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ---- Never ---- */}
+      <section className="band-ink">
+        <div className="shell section-lg">
+          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+            <Reveal>
+              <div className="eyebrow mb-6">The discipline</div>
+              <h2 className="h-display h-display-lg">What we will never do.</h2>
+              <p className="lede mt-6">
+                A short list, written down so it can be held against us.
+              </p>
+            </Reveal>
+            <ul>
+              {NEVER.map((n, i) => (
+                <Reveal key={n} as="li" delay={i * 0.06}>
+                  <div className="flex gap-8 border-b border-border py-7">
+                    <span className="num label-caps shrink-0 pt-1.5 text-[color:var(--brand-teal)]">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-[19px] leading-[1.5] text-foreground">{n}</span>
+                  </div>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Coast ---- */}
+      <section className="band-paper">
+        <div className="shell section-lg">
+          <Reveal>
+            <div className="eyebrow mb-6">Oman's coast</div>
+            <h2 className="h-display h-display-lg max-w-[18ch]">
+              Two thousand kilometres of Arabian Sea.
+            </h2>
+          </Reveal>
+
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            <Reveal delay={0.05}>
+              <ScrollScale className="aspect-[4/5]">
+                <img
+                  src="/website-images/harbor-dusk.jpg"
+                  alt="Muscat harbour at dusk"
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </ScrollScale>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <ScrollScale className="aspect-[4/5]">
+                <img
+                  src="/website-images/dhow-detail.jpg"
+                  alt="Detail of a traditional Omani dhow"
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </ScrollScale>
+            </Reveal>
+            <Reveal delay={0.19}>
+              <div className="media aspect-[4/5]">
+                <video
+                  src="/videos/oman-flag.mp4"
+                  className="h-full w-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="none"
+                  aria-hidden
+                />
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.1}>
+            <div className="mt-6">
+              <ScrollScale className="aspect-[21/9]">
+                <img
+                  src="/website-images/port-cranes.jpg"
+                  alt="Export terminal infrastructure"
+                  loading="lazy"
+                  className="h-full w-full object-cover object-[50%_38%]"
+                />
+              </ScrollScale>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---- CTA ---- */}
+      <section className="band-wash border-t border-border">
+        <div className="shell section text-center">
+          <Reveal>
+            <h2 className="h-display h-display-md mx-auto max-w-[22ch]">
+              If that sounds like how you prefer to buy, let's talk.
+            </h2>
+            <Link to="/contact" className="btn-pill mt-10">
+              Start a buyer inquiry
+              <span className="pill-badge">
+                <ArrowUpRight className="size-4" />
+              </span>
+            </Link>
+          </Reveal>
         </div>
       </section>
     </div>

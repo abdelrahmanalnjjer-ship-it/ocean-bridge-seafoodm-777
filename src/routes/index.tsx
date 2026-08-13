@@ -1,444 +1,617 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CATEGORIES } from "@/data/species";
+import { SPECIES } from "@/data/species";
 import { supabase } from "@/integrations/supabase/client";
-import terminalNight from "@/assets/terminal-night.jpg.asset.json";
+import {
+  ComplianceCard,
+  ComplianceMark,
+  REGIMES,
+} from "@/components/compliance-mark";
+import {
+  Counter,
+  LineReveal,
+  ParallaxMedia,
+  Reveal,
+  ScrollScale,
+  Stagger,
+  StaggerItem,
+} from "@/components/motion";
 import marketChina from "@/assets/market-china.jpg.asset.json";
 import marketEu from "@/assets/market-eu.jpg.asset.json";
 import marketGcc from "@/assets/market-gcc.jpg.asset.json";
 import marketUsa from "@/assets/market-usa.jpg.asset.json";
 
-/* Hero rotation — widescreen cuts only, re-encoded to 1080p faststart. Every
- * clip stays mounted and crossfades on opacity, so switching never re-downloads
- * the file or flashes a black frame. The portrait flag clip lives on About. */
-const HERO_SLIDES = [
-  {
-    src: "/videos/hero-1.mp4",
-    kicker: "Origin · Muscat Coastline",
-  },
-  {
-    src: "/videos/hero-2.mp4",
-    kicker: "Compliance · Regulatory Pre-Clearance",
-  },
-];
-
-const HERO_POSTER = "/videos/hero-poster.jpg";
-const HERO_HEADLINE =
-  "We don't just connect buyers and sellers. We engineer reliable, compliant, repeatable supply chains from Oman to the world.";
-
-const HERO_INTERVAL = 7000;
-
-const CATEGORY_IMAGES = [
-  "/product-images/pelagic.png",
-  "/product-images/demersal.png",
-  "/product-images/cephalopods.png",
-  "/product-images/seafood-02-yellowfin-tuna.jpg",
-];
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Ocean Bridge Trade — Oman-origin seafood, cleared for arrival" },
+      {
+        name: "description",
+        content:
+          "We verify Oman-origin seafood supply, clear destination-market regulation before the offer is issued, and coordinate the transaction end to end. Muscat, Sultanate of Oman.",
+      },
+      { property: "og:title", content: "Ocean Bridge Trade" },
+      {
+        property: "og:description",
+        content: "Oman-origin seafood, verified at source and cleared for arrival.",
+      },
+    ],
+  }),
+  component: Home,
 });
 
-const VALUE_PROPS = [
-  { n: "01", title: "Verified Origin Access", body: "Direct, vetted access to Oman's coastal supply base through an established partner network — pre-qualified processors, cold-chain operators, and export licence holders." },
-  { n: "02", title: "Regulatory Pre-Clearance", body: "Every shipment mapped against destination-market requirements before an offer is issued. GACC, EU TRACES, FDA FSVP, SFDA — cleared upstream, not at the border." },
-  { n: "03", title: "Structured Commercial Terms", body: "Clear specifications, defined Incoterms, validity periods, and payment structures. No informal handshakes — every transaction documented and enforceable." },
-  { n: "04", title: "Transaction Integrity", body: "Pre-shipment document validation, third-party inspection coordination, and real-time milestone tracking from purchase order to delivered container." },
+/* ---------------------------------------------------------------------------
+ * Content
+ * ------------------------------------------------------------------------ */
+
+const HERO_SLIDES = [
+  { src: "/videos/hero-1.mp4", kicker: "Origin — Muscat coastline" },
+  { src: "/videos/hero-2.mp4", kicker: "Compliance — regulatory pre-clearance" },
+];
+const HERO_POSTER = "/videos/hero-poster.jpg";
+const HERO_INTERVAL = 7000;
+
+const DISCIPLINES = [
+  {
+    n: "01",
+    title: "We verify the source",
+    body: "Direct access to Oman's landing sites through a partner network we audit in person — processors, cold-chain operators, licensed exporters. Nothing enters an offer on the strength of a phone call.",
+  },
+  {
+    n: "02",
+    title: "We clear the paperwork first",
+    body: "Every shipment is mapped against the destination market before you see a price. GACC facility registration, EU catch certification, FDA supplier verification, Gulf conformity — settled upstream, not argued at the border.",
+  },
+  {
+    n: "03",
+    title: "We write it down",
+    body: "Specification, Incoterms, validity window, payment structure. A trade that has run on handshakes for decades, documented the way your procurement team already works.",
+  },
+  {
+    n: "04",
+    title: "We stay on it until it lands",
+    body: "Pre-shipment document review, third-party inspection coordination, and milestone tracking from purchase order to delivered container.",
+  },
 ];
 
 const MARKETS = [
-  { region: "China", body: "GACC Decree 248 / CIFER facility registration, accurate Field 519 declarations.", img: marketChina.url, alt: "Container terminal at the Port of Shanghai, Yangshan deep-water zone" },
-  { region: "European Union", body: "TRACES documentation, IUU Catch Certificates, third-country establishment listing.", img: marketEu.url, alt: "Container terminal in the Port of Rotterdam" },
-  { region: "Gulf Cooperation Council", body: "SFDA / ESMA / GSO standards, halal certification oversight, FASAH clearance.", img: marketGcc.url, alt: "Container yard at Jebel Ali free zone" },
-  { region: "United States", body: "FDA Seafood HACCP (21 CFR 123) and Foreign Supplier Verification Program compliance.", img: marketUsa.url, alt: "Container cranes at a United States port terminal" },
-];
-
-/* Fix 5: Certification badges for the scrolling ticker */
-const CERT_BADGES = [
-  { label: "GACC", full: "China GACC Decree 248", color: "border-brand-marine" },
-  { label: "TRACES", full: "EU TRACES / IUU", color: "border-brand-ocean" },
-  { label: "SFDA", full: "SFDA / GSO Standards", color: "border-brand-olive" },
-  { label: "FDA HACCP", full: "FDA Seafood HACCP", color: "border-brand-sand" },
-  { label: "FSVP", full: "Foreign Supplier Verification", color: "border-brand-marine" },
-  { label: "ESMA", full: "ESMA Conformity", color: "border-brand-ocean" },
-  { label: "GSO", full: "GSO Standardization", color: "border-brand-olive" },
-  { label: "HALAL", full: "Halal Certification", color: "border-brand-sand" },
+  {
+    region: "China",
+    lede: "Qingdao, Dalian, Xiamen",
+    body: "GACC Decree 248 and CIFER facility registration, with Field 519 declarations prepared to match.",
+    img: marketChina.url,
+    alt: "Container terminal at the Port of Shanghai, Yangshan deep-water zone",
+  },
+  {
+    region: "European Union",
+    lede: "Rotterdam, Vigo, Piraeus",
+    body: "TRACES documentation, validated IUU catch certificates, third-country establishment listing.",
+    img: marketEu.url,
+    alt: "Container terminal in the Port of Rotterdam",
+  },
+  {
+    region: "Gulf Cooperation Council",
+    lede: "Jebel Ali, Dammam, Jeddah",
+    body: "SFDA and GSO conformity, FASAH clearance routing, halal certification oversight.",
+    img: marketGcc.url,
+    alt: "Container yard at Jebel Ali free zone",
+  },
+  {
+    region: "United States",
+    lede: "Seattle, Newark, Long Beach",
+    body: "Seafood HACCP under 21 CFR Part 123 and a complete Foreign Supplier Verification file.",
+    img: marketUsa.url,
+    alt: "Container cranes at a United States port terminal",
+  },
 ];
 
 const STATS = [
-  { k: "35+", v: "Species catalogued" },
-  { k: "4", v: "Destination regulatory regimes" },
-  { k: "48h", v: "Buyer inquiry response" },
-  { k: "100%", v: "Pre-shipment document review" },
+  { value: 35, suffix: "", label: "Species in the catalogue" },
+  { value: 4, suffix: "", label: "Regulatory regimes cleared" },
+  { value: 48, suffix: "h", label: "Buyer inquiry response" },
+  { value: 100, suffix: "%", label: "Pre-shipment document review" },
 ];
 
-function Index() {
-  const [slide, setSlide] = useState(0);
-  /* Only the first clip preloads. Previously every slide carried
-   * preload="auto", so a first-time visitor downloaded both 1080p files before
-   * the hero settled — the single biggest cost on the page. The rest stay cold
-   * until the hero has been on screen a moment. */
-  const [warm, setWarm] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const active = HERO_SLIDES[slide];
+/* A curated cross-section for the rail, one from each corner of the catalogue. */
+const FEATURED_IDS = [2, 10, 27, 31, 16, 29, 6, 26];
 
-  const goTo = (next: number) => {
-    setSlide(((next % HERO_SLIDES.length) + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
+/* ---------------------------------------------------------------------------
+ * Page
+ * ------------------------------------------------------------------------ */
+
+function Home() {
+  return (
+    <div>
+      <Hero />
+      <Positioning />
+      <Numbers />
+      <Disciplines />
+      <Catalogue />
+      <Compliance />
+      <Gateways />
+      <Origin />
+      <Updates />
+      <ClosingCta />
+    </div>
+  );
+}
+
+/* ---- 1. Hero -------------------------------------------------------------- */
+
+function Hero() {
+  const [slide, setSlide] = useState(0);
+  const [warm, setWarm] = useState(false);
+  const reduce = useReducedMotion();
+  const active = HERO_SLIDES[slide];
 
   useEffect(() => {
     const id = window.setTimeout(() => setWarm(true), 2500);
     return () => window.clearTimeout(id);
   }, []);
 
-  /* Depends on reduceMotion only. Keying this on `slide` rebuilt the interval
-   * on every tick, so a manual dot click gave an inconsistent next interval. */
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduce) return;
     const id = window.setInterval(
       () => setSlide((s) => (s + 1) % HERO_SLIDES.length),
       HERO_INTERVAL,
     );
     return () => window.clearInterval(id);
-  }, [reduceMotion]);
+  }, [reduce]);
 
   return (
-    <div>
-      {/* HERO — full-bleed rotating footage, chrome floating over it */}
-      <section className="section-navy-deep relative -mt-16 min-h-[600px] h-[78vh] md:h-[80vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          {HERO_SLIDES.map((s, i) => (
-            <video
-              key={s.src}
-              src={s.src}
-              poster={HERO_POSTER}
-              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out"
-              style={{ opacity: i === slide ? 1 : 0 }}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload={i === 0 || warm ? "auto" : "none"}
-              aria-hidden
-            />
-          ))}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1A21]/55 via-[#0B1A21]/25 to-[#0B1A21]/90" />
-        </div>
-        <div className="relative mx-auto max-w-[1240px] px-6 lg:px-12 pb-14 md:pb-16 pt-28 md:pt-36 w-full flex flex-col items-start md:items-end text-left md:text-right">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={slide}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              className="mb-4 flex items-center gap-3 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.14em] md:tracking-[0.16em] text-brand-marine"
-            >
-              {active.kicker}
-              <span className="h-px w-6 bg-brand-marine" />
-            </motion.div>
-          </AnimatePresence>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
-            className="h-display h-display-lg max-w-3xl"
-          >
-            {HERO_HEADLINE}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.35 }}
-            className="mt-5 max-w-md text-base text-foreground/85 leading-[1.7]"
-          >
-            Verified supply and regulatory pre-clearance, from Oman's coast to international processors and importers.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-7"
-          >
-            <Link to="/contact" className="btn-pill">
-              Request a Buyer Consultation
-              <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Minimal sequence dots, bottom-left */}
-        <div
-          className="absolute bottom-3 md:bottom-7 left-3 lg:left-9 flex items-center"
-          role="group"
-          aria-label="Hero footage selector"
-        >
-          {/* Was role="tablist" / role="tab" with no tabpanel and no
-            * aria-controls — an invalid tab pattern. These are just toggles. */}
-          {HERO_SLIDES.map((s, i) => (
-            <button
-              key={s.src}
-              type="button"
-              aria-pressed={i === slide}
-              aria-label={`Show segment ${i + 1}: ${s.kicker}`}
-              onClick={() => goTo(i)}
-              className="grid place-items-center p-3"
-            >
-              {/* 8px dot, 44px hit area — the dot alone was an 8px target. */}
-              <span
-                className={`block size-2 rounded-full transition-all duration-500 ${
-                  i === slide ? "bg-foreground scale-125" : "bg-foreground/45 hover:bg-foreground/80"
-                }`}
-              />
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* MANIFESTO */}
-      <section className="section-ice">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-20 md:py-28">
-          <motion.div
-            initial={{ opacity: 0, width: 0 }}
-            whileInView={{ opacity: 1, width: "3rem" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="h-[2px] mb-10"
-            style={{ backgroundColor: "var(--brand-accent)" }}
+    <section className="band-deep relative -mt-16 flex min-h-[640px] items-end overflow-hidden h-[92vh]">
+      <div className="absolute inset-0">
+        {HERO_SLIDES.map((s, i) => (
+          <video
+            key={s.src}
+            src={s.src}
+            poster={HERO_POSTER}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-in-out"
+            style={{ opacity: i === slide ? 1 : 0 }}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload={i === 0 || warm ? "auto" : "none"}
+            aria-hidden
           />
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1 }}
-            className="font-display text-2xl md:text-4xl leading-[1.2] max-w-4xl text-foreground"
+        ))}
+        {/* Weighted to the bottom-left, where the type sits. */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,20,25,0.94)_0%,rgba(8,20,25,0.62)_38%,rgba(8,20,25,0.18)_70%,rgba(8,20,25,0.35)_100%)]" />
+      </div>
+
+      <div className="shell relative w-full pb-16 pt-32 md:pb-24">
+        <motion.div
+          key={slide}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+          className="eyebrow mb-7"
+        >
+          {active.kicker}
+        </motion.div>
+
+        <h1 className="h-display h-display-xl max-w-[16ch]">
+          <LineReveal
+            immediate
+            lines={["Oman's catch,", "cleared for arrival."]}
+          />
+        </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.55, ease: [0.19, 1, 0.22, 1] }}
+          className="lede lede-lg mt-8 max-w-xl text-foreground/90"
+        >
+          We verify the supply at source, settle destination-market regulation before
+          the offer goes out, and stay on the transaction until the container lands.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.75, ease: [0.19, 1, 0.22, 1] }}
+          className="mt-10 flex flex-wrap items-center gap-4"
+        >
+          <Link to="/contact" className="btn-pill">
+            Start a buyer inquiry
+            <span className="pill-badge">
+              <ArrowUpRight className="size-4" />
+            </span>
+          </Link>
+          <Link to="/products" className="btn btn-outline">
+            See the catalogue
+            <ArrowRight className="size-4" />
+          </Link>
+        </motion.div>
+      </div>
+
+      <div
+        className="absolute bottom-3 left-3 flex items-center lg:left-9"
+        role="group"
+        aria-label="Hero footage"
+      >
+        {HERO_SLIDES.map((s, i) => (
+          <button
+            key={s.src}
+            type="button"
+            aria-pressed={i === slide}
+            aria-label={`Show segment ${i + 1}: ${s.kicker}`}
+            onClick={() => setSlide(i)}
+            className="grid place-items-center p-3"
           >
-            Corporate-grade structure for a trade that has historically operated informally.
-            <span className="text-muted-foreground"> Documented specifications, verified establishments, and destination-market compliance settled before an offer is issued — so buyers receive certainty, not promises.</span>
-          </motion.p>
-        </div>
-      </section>
+            <span
+              className={`block h-[3px] rounded-full transition-all duration-500 ${
+                i === slide ? "w-10 bg-[color:var(--foreground)]" : "w-4 bg-[color:var(--foreground)]/40"
+              }`}
+            />
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
 
-      {/* BUYER VALUE PROPOSITION */}
-      <section className="section-navy border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <div className="eyebrow mb-5">Buyer Proposition</div>
-          <h2 className="h-display h-display-md max-w-3xl mb-10">Four disciplines a global buyer receives on every transaction.</h2>
-          <div className="grid md:grid-cols-2 gap-px bg-border/60">
-            {VALUE_PROPS.map((c, i) => (
-              <motion.div
-                key={c.n}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: (i % 2) * 0.1, ease: [0.19, 1, 0.22, 1] }}
-                className="bg-background p-8 border-t-2 border-transparent hover:border-brand-marine transition-colors"
-              >
-                <div className="font-mono text-xs text-muted-foreground mb-8">{c.n}</div>
-                <div className="font-display text-xl mb-3 text-foreground">{c.title}</div>
-                <p className="text-[15px] text-muted-foreground leading-[1.7] max-w-md">{c.body}</p>
-              </motion.div>
-            ))}
+/* ---- 2. Positioning ------------------------------------------------------- */
+
+function Positioning() {
+  return (
+    <section className="band-paper">
+      <div className="shell section-lg">
+        <Reveal>
+          <div className="eyebrow mb-10">What we are</div>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <p className="h-statement max-w-5xl text-foreground">
+            Ocean Bridge Trade is not a fishing company and not a broker.
+            <span className="text-muted-foreground">
+              {" "}
+              We are the layer of corporate discipline between Oman's fragmented
+              origin market and the procurement standards of an international
+              buyer — the party that does the verification, holds the
+              documentation, and answers for it.
+            </span>
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.16}>
+          <div className="mt-16 grid gap-10 border-t border-border pt-10 md:grid-cols-3">
+            <div>
+              <div className="label-caps">We do not</div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-muted-foreground">
+                Own fleets, plants or cold stores. Take title to the goods. Issue an
+                offer on data we have not verified ourselves.
+              </p>
+            </div>
+            <div>
+              <div className="label-caps">We do</div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-muted-foreground">
+                Audit facilities on the ground, enforce cold-chain protocol, and run
+                the commercial workflow from first introduction to delivered container.
+              </p>
+            </div>
+            <div>
+              <div className="label-caps">Based in</div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-muted-foreground">
+                Muscat, Sultanate of Oman — inside the supply base, not representing it
+                from a distance.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
-      {/* STATS strip — small, calm */}
-      <section className="section-navy-deep border-t border-border">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
-          {STATS.map((s, i) => (
-            <motion.div
-              key={s.k}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
-            >
-              <div className="font-display text-3xl md:text-4xl text-foreground">{s.k}</div>
-              <div className="mt-3 eyebrow-muted">{s.v}</div>
-            </motion.div>
+/* ---- 3. Numbers ----------------------------------------------------------- */
+
+function Numbers() {
+  return (
+    <section className="band-wash border-y border-border">
+      <div className="shell section">
+        <Stagger className="grid grid-cols-2 gap-10 md:grid-cols-4">
+          {STATS.map((s) => (
+            <StaggerItem key={s.label}>
+              <div className="font-display text-5xl leading-none text-foreground md:text-6xl">
+                <Counter value={s.value} suffix={s.suffix} />
+              </div>
+              <div className="label-caps mt-4">{s.label}</div>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </div>
+    </section>
+  );
+}
+
+/* ---- 4. Disciplines (pinned heading, scrolling list) ---------------------- */
+
+function Disciplines() {
+  return (
+    <section className="band-paper">
+      <div className="shell section-lg grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+        <div className="pin self-start">
+          <Reveal>
+            <div className="eyebrow mb-6">How it works</div>
+            <h2 className="h-display h-display-lg">Four things happen before you get a price.</h2>
+            <p className="lede mt-6">
+              Not a service tier and not an upsell. This is the minimum that has to be
+              true before we are willing to put a number in front of a buyer.
+            </p>
+            <Link to="/about" className="link-underline mt-8">
+              How we operate <ArrowUpRight className="size-4" />
+            </Link>
+          </Reveal>
+        </div>
+
+        <div>
+          {DISCIPLINES.map((d, i) => (
+            <Reveal key={d.n} delay={i * 0.05}>
+              <div className="group border-t border-border py-10 first:border-t-0 first:pt-0">
+                <div className="num label-caps mb-5 text-[color:var(--brand-teal)]">{d.n}</div>
+                <h3 className="h-display h-display-sm mb-4">{d.title}</h3>
+                <p className="text-[16px] leading-[1.75] text-muted-foreground">{d.body}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* PORTFOLIO teaser */}
-      <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-6">
-            <div>
-              <div className="eyebrow mb-5">Product Scope</div>
-              <h2 className="h-display h-display-md max-w-3xl">Verified Oman-origin species, ready to source.</h2>
-            </div>
-            <Link to="/products" className="link-underline">
-              View full matrix <ArrowUpRight className="size-3.5" />
-            </Link>
+/* ---- 5. Catalogue rail ---------------------------------------------------- */
+
+function Catalogue() {
+  const featured = FEATURED_IDS.map((id) => SPECIES.find((s) => s.id === id)).filter(
+    (s): s is (typeof SPECIES)[number] => Boolean(s),
+  );
+
+  return (
+    <section className="band-wash border-t border-border">
+      <div className="section-lg">
+        <div className="shell">
+          <div className="flex flex-wrap items-end justify-between gap-8">
+            <Reveal>
+              <div className="eyebrow mb-6">The catalogue</div>
+              <h2 className="h-display h-display-lg max-w-[18ch]">
+                Thirty-five species, seasoned and specified.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Link to="/products" className="link-underline">
+                Open the full catalogue <ArrowUpRight className="size-4" />
+              </Link>
+            </Reveal>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {CATEGORIES.map((c, i) => (
-              <motion.div
-                key={c.id}
-                initial={{ opacity: 0, scale: 0.94, rotate: -1 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.19, 1, 0.22, 1] }}
-                className="card-lift border border-border bg-card overflow-hidden group shadow-ambient-ocean"
+        </div>
+
+        {/* Full-bleed rail so the last card runs off the edge — signals
+          * scrollability without needing an arrow affordance. */}
+        <Reveal delay={0.15}>
+          <div className="rail mt-14 px-6 lg:px-12" tabIndex={0} aria-label="Featured species">
+            {featured.map((s) => (
+              <article
+                key={s.id}
+                className="card-lift w-[280px] border border-border bg-card md:w-[320px]"
               >
-                <div className="h-44 flex items-center justify-center overflow-hidden bg-brand-black p-3">
-                  <img
-                    src={CATEGORY_IMAGES[i % CATEGORY_IMAGES.length]}
-                    alt={c.label_en}
-                    className="max-h-full max-w-full object-contain group-hover:scale-[1.03] transition-transform duration-700"
-                  />
+                <div className="plate h-[220px]">
+                  <img src={s.image} alt={s.alt || s.name_en} loading="lazy" />
                 </div>
-                <div className="p-6">
-                  <div className="font-mono text-xs text-muted-foreground mb-3">0{i + 1}</div>
-                  <div className="font-display text-xl text-foreground mb-4">{c.label_en}</div>
-                  <div className="h-px w-8 group-hover:w-16 transition-all" style={{ backgroundColor: "var(--brand-accent)" }} />
+                <div className="border-t border-border p-6">
+                  <div className="label-caps">{s.status}</div>
+                  <h3 className="mt-2 font-display text-2xl leading-tight text-foreground">
+                    {s.name_en}
+                  </h3>
+                  <p className="mt-1 text-[13px] italic text-fg-subtle">{s.scientific}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {s.sizes.split(",").slice(0, 3).map((size) => (
+                      <span
+                        key={size}
+                        className="border border-border px-2.5 py-1 text-[11px] uppercase tracking-[0.06em] text-muted-foreground"
+                      >
+                        {size.trim()}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </motion.div>
+              </article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MARKETS & COMPLIANCE */}
-      <section className="section-navy border-t border-border">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-start">
-            <motion.div
-              initial={{ opacity: 0, x: -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-              className="lg:sticky lg:top-24"
-            >
-              <div className="eyebrow mb-4">Markets &amp; Compliance</div>
-              <h2 className="h-display h-display-md">We've already cleared the compliance maze.</h2>
-              <p className="mt-4 lede max-w-md">
-                Buyers should never worry about detained or rejected cargo. Regulatory pre-clearance is the baseline, not a service tier.
-              </p>
-              <div className="media-frame mt-8 aspect-[4/3]">
-                <img
-                  src={terminalNight.url}
-                  alt="Container terminal working under floodlights at night"
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </motion.div>
-            <div className="divide-y divide-border/60">
-              {MARKETS.map((g, i) => (
-                <motion.div
-                  key={g.region}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.07, ease: [0.19, 1, 0.22, 1] }}
-                  className="py-5 grid grid-cols-[92px_1fr] gap-5 items-center group"
-                >
-                  <div className="aspect-[4/3] overflow-hidden border border-border">
-                    <img
-                      src={g.img}
-                      alt={g.alt}
-                      loading="lazy"
-                      className="h-full w-full object-cover grayscale-[35%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-display text-xl text-foreground">{g.region}</div>
-                    <div className="mt-1.5 text-[15px] text-muted-foreground leading-[1.65]">{g.body}</div>
-                  </div>
-                </motion.div>
-              ))}
-              <p className="pt-5 text-[12px] text-subtle leading-relaxed">
-                Terminal photography via Wikimedia Commons — China: Yangshan, Shanghai (public domain) · European Union: Rotterdam (CC BY 2.0) · GCC: Jebel Ali, UAE (CC BY-SA 3.0) · United States: Seattle (CC BY 2.0). Section image: Hamburg Altenwerder (CC0).
-              </p>
+            <div className="grid w-[280px] place-items-center md:w-[320px]">
+              <Link to="/products" className="btn btn-outline">
+                All 35 species <ArrowRight className="size-4" />
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
-      {/* CERTIFICATION TICKER — auto-scrolling compliance badges */}
-      <section className="section-navy-deep border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-4 mb-8"
-          >
-            <div className="eyebrow-bare text-[11px] uppercase tracking-[0.14em] text-brand-marine font-semibold whitespace-nowrap">
-              Certifications & Compliance
-            </div>
-            <span className="h-px flex-1 bg-foreground/10" />
-          </motion.div>
-          <div className="marquee-track">
+/* ---- 6. Compliance -------------------------------------------------------- */
+
+function Compliance() {
+  return (
+    <section className="band-ink">
+      <div className="section-lg">
+        <div className="shell">
+          <Reveal>
+            <div className="eyebrow mb-6">Regimes we clear</div>
+            <h2 className="h-display h-display-lg max-w-[20ch]">
+              Detained cargo is a paperwork failure, not bad luck.
+            </h2>
+            <p className="lede mt-6 max-w-2xl">
+              These are the frameworks we work through on your behalf before a
+              consignment moves. Ocean Bridge Trade is a coordinating intermediary — we
+              hold no certification ourselves, and every mark below is our own. What we
+              guarantee is that the file is complete and the issuing bodies are real.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* Marks ticker. */}
+        <Reveal delay={0.1}>
+          <div className="marquee-track mt-14 border-y border-border py-8">
             <div className="marquee-content">
-              {/* First copy */}
-              {CERT_BADGES.map((b) => (
-                <div
-                  key={b.label}
-                  className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
-                >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[11px] font-bold uppercase tracking-[0.06em] text-foreground">
-                    {b.label.slice(0, 3)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-foreground whitespace-nowrap">{b.label}</div>
-                    <div className="text-[12px] text-subtle whitespace-nowrap">{b.full}</div>
-                  </div>
-                </div>
-              ))}
-              {/* Duplicate for seamless loop */}
-              {CERT_BADGES.map((b) => (
-                <div
-                  key={`dup-${b.label}`}
-                  className={`flex items-center gap-4 shrink-0 border-l-2 ${b.color} pl-4 py-3`}
-                >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 border border-foreground/10 text-[11px] font-bold uppercase tracking-[0.06em] text-foreground">
-                    {b.label.slice(0, 3)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-foreground whitespace-nowrap">{b.label}</div>
-                    <div className="text-[12px] text-subtle whitespace-nowrap">{b.full}</div>
-                  </div>
+              {[0, 1].map((copy) => (
+                <div key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
+                  {REGIMES.map((r) => (
+                    <div
+                      key={`${copy}-${r.code}`}
+                      className="flex shrink-0 items-center gap-4 px-8"
+                    >
+                      <span className="text-[color:var(--brand-teal)]">
+                        <ComplianceMark regime={r} size={56} />
+                      </span>
+                      <span>
+                        <span className="block font-display text-xl leading-none text-foreground">
+                          {r.code}
+                        </span>
+                        <span className="label-caps mt-1 block">{r.jurisdiction}</span>
+                      </span>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </Reveal>
 
-      {/* MARKET UPDATES — one signup module instead of empty placeholder cards */}
-      <section className="section-ice border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24">
-          <NewsletterSignup />
+        <div className="shell">
+          <Stagger className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" step={0.06}>
+            {REGIMES.slice(0, 8).map((r) => (
+              <StaggerItem key={r.code}>
+                <ComplianceCard regime={r} />
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* CTA */}
-      <section className="section-navy-deep border-t border-border/60">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 md:py-24 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="h-display h-display-md max-w-2xl mx-auto"
-          >
-            Sourcing Oman-origin seafood?
-          </motion.h2>
-          <p className="mt-4 lede max-w-lg mx-auto">Send us your specifications, target volumes, destination market, and preferred Incoterms. Buyer inquiries are reviewed within 48 business hours.</p>
-          <Link to="/contact" className="btn-pill mt-12">
-            Request a Buyer Consultation <span className="pill-badge"><ArrowUpRight className="size-4" /></span>
-          </Link>
+/* ---- 7. Gateways ---------------------------------------------------------- */
+
+function Gateways() {
+  return (
+    <section className="band-paper">
+      <div className="shell section-lg">
+        <Reveal>
+          <div className="eyebrow mb-6">Destination markets</div>
+          <h2 className="h-display h-display-lg max-w-[18ch]">Where the containers go.</h2>
+        </Reveal>
+
+        <div className="mt-16 grid gap-x-10 gap-y-16 md:grid-cols-2">
+          {MARKETS.map((m, i) => (
+            <Reveal key={m.region} delay={(i % 2) * 0.08}>
+              <article className="group">
+                <ScrollScale className="aspect-[16/10]">
+                  <img
+                    src={m.img}
+                    alt={m.alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </ScrollScale>
+                <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-border pt-5">
+                  <h3 className="font-display text-3xl leading-none text-foreground">
+                    {m.region}
+                  </h3>
+                  <span className="label-caps shrink-0">{m.lede}</span>
+                </div>
+                <p className="mt-4 text-[15px] leading-[1.7] text-muted-foreground">{m.body}</p>
+              </article>
+            </Reveal>
+          ))}
         </div>
-      </section>
-    </div>
+
+        <Reveal>
+          <p className="mt-14 max-w-3xl border-t border-border pt-6 text-[12px] leading-relaxed text-fg-subtle">
+            Terminal photography via Wikimedia Commons — Yangshan, Shanghai (public
+            domain); Rotterdam (CC BY 2.0); Jebel Ali, UAE (CC BY-SA 3.0); Seattle
+            (CC BY 2.0).
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ---- 8. Origin ------------------------------------------------------------ */
+
+function Origin() {
+  return (
+    <section className="band-wash border-y border-border">
+      <div className="shell section-lg">
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          <Reveal>
+            <div className="eyebrow mb-6">Origin</div>
+            <h2 className="h-display h-display-lg">The supply is already secured.</h2>
+            <p className="lede mt-6">
+              Our advantage is not a database. It is a partner network in Oman that we
+              built in person and audit in person — landing sites, processors,
+              cold-chain operators and licensed exporters, in a country whose coastline
+              runs the length of the Arabian Sea.
+            </p>
+            <p className="lede mt-4">
+              That proximity is why we can tell you in the same week whether a species
+              is running, what grade is realistic, and which plant can actually hold the
+              temperature.
+            </p>
+            <Link to="/about" className="link-underline mt-8">
+              More about how we operate <ArrowUpRight className="size-4" />
+            </Link>
+          </Reveal>
+
+          <div className="grid gap-6">
+            <Reveal delay={0.1}>
+              <ParallaxMedia
+                src="/website-images/fishermen.jpg"
+                alt="Omani fishermen landing the day's catch"
+                className="aspect-[4/3]"
+                objectPosition="50% 25%"
+              />
+            </Reveal>
+            <div className="grid grid-cols-2 gap-6">
+              <Reveal delay={0.18}>
+                <ParallaxMedia
+                  src="/website-images/harbor-dusk.jpg"
+                  alt="Muscat harbour at dusk"
+                  className="aspect-square"
+                  strength={8}
+                />
+              </Reveal>
+              <Reveal delay={0.24}>
+                <ParallaxMedia
+                  src="/website-images/dhow-detail.jpg"
+                  alt="Detail of a traditional Omani dhow"
+                  className="aspect-square"
+                  strength={8}
+                />
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- 9. Updates ----------------------------------------------------------- */
+
+function Updates() {
+  return (
+    <section className="band-paper">
+      <div className="shell section-lg">
+        <NewsletterSignup />
+      </div>
+    </section>
   );
 }
 
@@ -456,66 +629,108 @@ function NewsletterSignup() {
       .insert({ email: email.trim().toLowerCase(), source: "home" });
 
     if (error) {
-      // A duplicate address is a success from the visitor's point of view.
+      /* A duplicate address is a success from the visitor's point of view. */
       if (error.code === "23505") {
         setState("done");
         setMessage("You're already on the list — we'll be in touch.");
         return;
       }
       setState("error");
-      setMessage("That didn't go through. Please check the address and try again.");
+      setMessage("That didn't go through. Check the address and try again.");
       return;
     }
     setState("done");
-    setMessage("You're on the list. Market updates will land in your inbox.");
+    setMessage("You're on the list. Market notes will land in your inbox.");
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-      className="border border-border bg-card p-8 md:p-12 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center"
-    >
-      <div>
-        <div className="eyebrow mb-4">Market Updates</div>
-        <h2 className="h-display h-display-md">Get notified when we publish market updates and field dispatches.</h2>
-        <p className="mt-4 text-[15px] text-muted-foreground leading-[1.7] max-w-md">
-          Origin pricing signals, season shifts, and regulatory changes across China, the EU, GCC, and the US — sent only when there is something worth reading.
-        </p>
-      </div>
+    <Reveal>
+      <div className="grid gap-10 border border-border bg-card p-8 md:p-14 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+        <div>
+          <div className="eyebrow mb-6">Market notes</div>
+          <h2 className="h-display h-display-md max-w-[20ch]">
+            Season shifts and rule changes, before they cost you a container.
+          </h2>
+          <p className="lede mt-5">
+            Origin pricing signals, season turns, and regulatory changes across China,
+            the EU, the GCC and the US. Sent only when something has actually moved.
+          </p>
+        </div>
 
-      {state === "done" ? (
-        <p className="text-sm text-foreground border-l-2 pl-4" style={{ borderColor: "var(--brand-accent)" }}>
-          {message}
-        </p>
-      ) : (
-        <form onSubmit={submit} className="w-full">
-          <label htmlFor="newsletter-email" className="eyebrow-muted block mb-3">
-            Work email
-          </label>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              id="newsletter-email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@company.com"
-              className="min-w-0 flex-1 border border-border bg-background px-4 py-3 text-[15px] text-foreground placeholder:text-subtle focus:outline-none focus:border-[color:var(--brand-accent)]"
-            />
-            <button
-              type="submit"
-              disabled={state === "saving"}
-              className="shrink-0 border border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)]/12 px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-[color:var(--brand-accent)]/22 disabled:opacity-60"
-            >
-              {state === "saving" ? "Sending…" : "Notify me"}
-            </button>
+        {state === "done" ? (
+          <p
+            className="border-l-2 pl-5 text-[16px] text-foreground"
+            style={{ borderColor: "var(--accent)" }}
+          >
+            {message}
+          </p>
+        ) : (
+          <form onSubmit={submit} className="w-full">
+            <label htmlFor="newsletter-email" className="eyebrow-muted mb-3 block">
+              Work email
+            </label>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@company.com"
+                className="min-w-0 flex-1 border border-border bg-background px-4 py-3.5 text-base text-foreground placeholder:text-fg-subtle focus:border-[color:var(--accent)] focus:outline-none"
+              />
+              <button type="submit" disabled={state === "saving"} className="btn btn-solid shrink-0">
+                {state === "saving" ? "Sending…" : "Notify me"}
+              </button>
+            </div>
+            {state === "error" && (
+              <p className="mt-3 text-[14px] text-[color:var(--destructive)]">{message}</p>
+            )}
+          </form>
+        )}
+      </div>
+    </Reveal>
+  );
+}
+
+/* ---- 10. Closing CTA ------------------------------------------------------ */
+
+function ClosingCta() {
+  return (
+    <section className="band-deep relative overflow-hidden">
+      <div className="absolute inset-0 opacity-25">
+        <img
+          src="/website-images/port-cranes.jpg"
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="h-full w-full object-cover object-[50%_40%]"
+        />
+      </div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,20,25,0.75),rgba(8,20,25,0.95))]" />
+
+      <div className="shell section-lg relative text-center">
+        <Reveal>
+          <h2 className="h-display h-display-lg mx-auto max-w-[20ch]">
+            Tell us what you need to land, and where.
+          </h2>
+          <p className="lede mx-auto mt-6 max-w-xl">
+            Species, grade, volume, destination market and preferred Incoterms is enough
+            to start. Buyer inquiries are reviewed within 48 business hours.
+          </p>
+          <div className="mt-12 flex flex-wrap justify-center gap-4">
+            <Link to="/contact" className="btn-pill">
+              Start a buyer inquiry
+              <span className="pill-badge">
+                <ArrowUpRight className="size-4" />
+              </span>
+            </Link>
+            <Link to="/products" className="btn btn-outline">
+              Browse the catalogue first
+            </Link>
           </div>
-          {state === "error" && <p className="mt-3 text-[13px] text-destructive">{message}</p>}
-        </form>
-      )}
-    </motion.div>
+        </Reveal>
+      </div>
+    </section>
   );
 }

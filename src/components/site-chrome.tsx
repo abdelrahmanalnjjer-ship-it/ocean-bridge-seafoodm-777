@@ -1,47 +1,65 @@
 import { Link } from "@tanstack/react-router";
 import { useI18n, type Locale } from "@/i18n/i18n";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import logoHorizontal from "@/assets/logo-horizontal.png.asset.json";
 import logoVertical from "@/assets/logo-vertical.png.asset.json";
-import logoSubmark from "@/assets/logo-submark.png.asset.json";
 
-/* Brand marks — secondary horizontal in the nav, primary vertical in the
- * footer, submark for the favicon and the compact mobile menu. */
 const LOGO_HORIZONTAL = logoHorizontal.url;
 const LOGO_VERTICAL = logoVertical.url;
-const LOGO_SUBMARK = logoSubmark.url;
 
-function LocaleSwitcher() {
+const NAV = [
+  { to: "/", key: "nav.home" },
+  { to: "/products", key: "nav.products" },
+  { to: "/about", key: "nav.about" },
+  { to: "/contact", key: "nav.contact" },
+] as const;
+
+/* ---------------------------------------------------------------------------
+ * Keeps <html lang> and <html dir> in step with the active locale.
+ * Without this, switching to Arabic swapped the strings but left the document
+ * in LTR — punctuation, alignment and scroll direction all stayed wrong.
+ * Mount inside I18nProvider.
+ * ------------------------------------------------------------------------ */
+export function HtmlLangSync() {
+  const { locale } = useI18n();
+  useEffect(() => {
+    const el = document.documentElement;
+    el.lang = locale;
+    el.dir = locale === "ar" ? "rtl" : "ltr";
+  }, [locale]);
+  return null;
+}
+
+function LocaleSwitcher({ tone }: { tone: "light" | "dark" }) {
   const { locale, setLocale } = useI18n();
-  /* zh is omitted until a full Chinese content pass ships. A permanently
-   * disabled control is worse than no control — it advertises a dead end.
-   * Add { id: "zh", label: "中文" } back once the strings exist. */
-  const items: { id: Locale; label: string; disabled?: boolean }[] = [
+  /* zh stays out until the Chinese content pass ships. A permanently disabled
+   * control just advertises a dead end. */
+  const items: { id: Locale; label: string }[] = [
     { id: "en", label: "EN" },
-    { id: "ar", label: "AR" },
+    { id: "ar", label: "العربية" },
   ];
+
   return (
-    <div className="flex items-center gap-1.5 text-[12px] tracking-[0.1em] font-mono">
+    <div className={`flex items-center gap-2 text-[13px] ${tone === "light" ? "text-white/70" : "text-muted-foreground"}`}>
       {items.map((i, idx) => (
-        <span key={i.id} className="flex items-center gap-1">
+        <span key={i.id} className="flex items-center gap-2">
           <button
-            onClick={() => !i.disabled && setLocale(i.id)}
-            disabled={i.disabled}
-            aria-disabled={i.disabled}
-            title={i.disabled ? "Chinese version coming soon" : undefined}
-            className={`transition-colors ${
-              i.disabled
-                ? "text-subtle cursor-not-allowed"
-                : locale === i.id
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+            type="button"
+            onClick={() => setLocale(i.id)}
+            aria-current={locale === i.id ? "true" : undefined}
+            className={`px-1 py-2 transition-colors ${
+              locale === i.id
+                ? tone === "light"
+                  ? "text-white"
+                  : "text-foreground"
+                : "hover:text-foreground"
             }`}
           >
             {i.label}
           </button>
-          {idx < items.length - 1 && <span className="text-subtle">/</span>}
+          {idx < items.length - 1 && <span aria-hidden className="opacity-40">/</span>}
         </span>
       ))}
     </div>
@@ -52,82 +70,143 @@ export function SiteHeader() {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = [
-    { to: "/", label: t("nav.home") },
-    { to: "/products", label: t("nav.products") },
-    { to: "/about", label: t("nav.about") },
-    { to: "/contact", label: t("nav.contact") },
-  ] as const;
+  /* Escape closes, and the page behind stops scrolling while the panel is up. */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    panelRef.current?.querySelector<HTMLElement>("a, button")?.focus();
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  /* Two tones: floating over the dark hero, or a solid paper bar once the
+   * page has moved. */
+  const solid = scrolled && !open;
+
   return (
     <header
-      className={`section-navy-deep fixed top-0 inset-x-0 z-50 text-foreground transition-all duration-500 ${
-        scrolled || open
-          ? "border-b border-foreground/10 bg-[#0B1A21]/92 backdrop-blur-xl"
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
+        solid
+          ? "border-b border-[rgb(16_34_43_/_0.12)] bg-white/90 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-[1240px] px-6 lg:px-12 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
+      <div className="shell flex h-16 items-center justify-between">
+        <Link to="/" aria-label="Ocean Bridge Trade — home" className="flex items-center">
           <img
             src={LOGO_HORIZONTAL}
             alt="Ocean Bridge Trade"
-            className={`w-auto transition-all duration-500 ${scrolled ? "h-9" : "h-11"}`}
-            style={{ filter: "brightness(1.9) saturate(1.1)" }}
+            className={`w-auto transition-all duration-500 ${scrolled ? "h-8" : "h-10"}`}
+            /* The mark is dark artwork, so it needs lifting only while it sits
+             * over the hero footage. */
+            style={solid ? undefined : { filter: "brightness(1.9) saturate(1.1)" }}
           />
         </Link>
-        <nav className="hidden md:flex items-center gap-10 text-[13px] tracking-wide">
-          {links.map((l) => (
+
+        <nav className="hidden items-center gap-9 text-[14px] md:flex">
+          {NAV.map((l) => (
             <Link
               key={l.to}
               to={l.to}
               activeOptions={{ exact: l.to === "/" }}
-              activeProps={{ className: "nav-link text-foreground", "data-active": "true" } as any}
-              inactiveProps={{ className: "nav-link text-muted-foreground hover:text-foreground transition-colors" }}
+              activeProps={{
+                className: `nav-link ${solid ? "text-foreground" : "text-white"}`,
+                "data-active": "true",
+              } as never}
+              inactiveProps={{
+                className: `nav-link transition-colors ${
+                  solid ? "text-muted-foreground hover:text-foreground" : "text-white/75 hover:text-white"
+                }`,
+              }}
             >
-              {l.label}
+              {t(l.key)}
             </Link>
           ))}
         </nav>
-        <div className="hidden md:block"><LocaleSwitcher /></div>
+
+        <div className="hidden items-center gap-6 md:flex">
+          <LocaleSwitcher tone={solid ? "dark" : "light"} />
+          {/* No `!` prefixes: .btn lives in @layer components, so plain
+            * utilities already win. (v4 also moved important to a suffix.) */}
+          <Link
+            to="/contact"
+            className={`btn ${solid ? "btn-solid" : "btn-outline"} min-h-[40px] px-5 text-[13px] ${
+              solid ? "" : "border-white/40 text-white hover:border-white"
+            }`}
+          >
+            Buyer inquiry
+          </Link>
+        </div>
+
         <button
-          className="md:hidden transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--brand-ocean)]"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
+          type="button"
+          className={`grid size-11 place-items-center md:hidden ${solid ? "text-foreground" : "text-white"}`}
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-label={open ? "Close menu" : "Open menu"}
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </div>
+
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
+            ref={panelRef}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="md:hidden border-t border-foreground/10 bg-[#0B1A21] px-6 py-6 space-y-4"
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: [0.19, 1, 0.22, 1] }}
+            className="band-deep h-[calc(100dvh-4rem)] overflow-y-auto md:hidden"
           >
-            <img src={LOGO_SUBMARK} alt="" aria-hidden className="h-10 w-auto mb-2" />
-            {links.map((l, i) => (
-              <motion.div
-                key={l.to}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.25, delay: 0.04 * i }}
-              >
-                <Link to={l.to} onClick={() => setOpen(false)} className="block py-1 text-[15px] text-foreground/90 hover:text-foreground transition-colors">
-                  {l.label}
+            <div className="shell flex h-full flex-col py-10">
+              <nav className="flex flex-col">
+                {NAV.map((l, i) => (
+                  <motion.div
+                    key={l.to}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.05 * i }}
+                  >
+                    <Link
+                      to={l.to}
+                      onClick={() => setOpen(false)}
+                      className="h-display h-display-md block border-b border-border py-5"
+                    >
+                      {t(l.key)}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              <div className="mt-auto pt-10">
+                <Link to="/contact" onClick={() => setOpen(false)} className="btn-pill w-full justify-between">
+                  Start a buyer inquiry
+                  <span className="pill-badge">
+                    <ArrowUpRight className="size-4" />
+                  </span>
                 </Link>
-              </motion.div>
-            ))}
-            <div className="pt-4 border-t border-foreground/10"><LocaleSwitcher /></div>
+                <div className="mt-8 border-t border-border pt-6">
+                  <LocaleSwitcher tone="light" />
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -137,73 +216,87 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const { t } = useI18n();
+
   const legal = [
-    "Privacy and Cookies",
-    "Cookie Preferences",
-    "Terms & Conditions",
-    "Security & Fraud Awareness",
-    "Regulatory Disclosures",
+    "Privacy and cookies",
+    "Terms and conditions",
+    "Security and fraud awareness",
+    "Regulatory disclosures",
   ];
+
   return (
-    <footer className="section-navy-deep mt-20 text-foreground border-t border-foreground/10">
-      <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-16 grid gap-12 md:grid-cols-4">
-        <div className="md:col-span-2">
-          <img
-            src={LOGO_VERTICAL}
-            alt="Ocean Bridge Trade"
-            className="h-36 w-auto mb-4"
-            style={{ filter: "brightness(1.9) saturate(1.1)" }}
-          />
-          <p className="mt-3 text-[15px] text-muted-foreground max-w-sm leading-[1.7]">
-            {t("brand.tagline")} Verified Oman-origin seafood, engineered for international processors and importers.
-          </p>
-        </div>
-        <div>
-          <div className="eyebrow-muted mb-4">Navigate</div>
-          <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.home")}</Link></li>
-            <li><Link to="/products" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.products")}</Link></li>
-            <li><Link to="/about" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.about")}</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground text-muted-foreground transition-colors">{t("nav.contact")}</Link></li>
-          </ul>
-        </div>
-        <div>
-          <div className="eyebrow-muted mb-4">Contact</div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Muscat, Sultanate of Oman</li>
-            <li>info@oceanbridge-trade.com</li>
-            <li className="font-mono text-[13px]">+968 77 62 1857</li>
-          </ul>
+    <footer className="band-deep border-t border-border">
+      <div className="shell section">
+        <div className="grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <img
+              src={LOGO_VERTICAL}
+              alt="Ocean Bridge Trade"
+              className="mb-6 h-28 w-auto"
+              style={{ filter: "brightness(1.9) saturate(1.1)" }}
+            />
+            <p className="lede max-w-sm">
+              {t("brand.tagline")} Oman-origin seafood, verified at source and cleared
+              for arrival.
+            </p>
+            <Link to="/contact" className="link-underline mt-8">
+              Start a buyer inquiry <ArrowUpRight className="size-4" />
+            </Link>
+          </div>
+
+          <div className="md:col-span-3">
+            <div className="eyebrow-muted mb-5">Navigate</div>
+            <ul className="space-y-3 text-[15px]">
+              {NAV.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-muted-foreground transition-colors hover:text-foreground">
+                    {t(l.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="md:col-span-4">
+            <div className="eyebrow-muted mb-5">Trade desk</div>
+            <ul className="space-y-3 text-[15px] text-muted-foreground">
+              <li>Muscat, Sultanate of Oman</li>
+              <li>
+                <a href="mailto:info@oceanbridge-trade.com" className="transition-colors hover:text-foreground">
+                  info@oceanbridge-trade.com
+                </a>
+              </li>
+              <li className="num">+968 77 62 1857</li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/company/oceanbridge-trade"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition-colors hover:text-foreground"
+                >
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      {/* Legal / regulatory sub-menu */}
-      <div className="border-t border-foreground/10">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex flex-wrap gap-x-6 gap-y-2 text-[12px] tracking-[0.02em] text-subtle">
-          {legal.map((label) => (
-            <a key={label} href="#" className="hover:text-foreground transition-colors">
-              {label}
-            </a>
-          ))}
-        </div>
-      </div>
-      <div className="border-t border-foreground/10">
-        <div className="mx-auto max-w-[1240px] px-6 lg:px-12 py-5 flex flex-wrap gap-3 justify-between items-center text-[11px] tracking-[0.12em] uppercase text-subtle">
+
+      <div className="border-t border-border">
+        <div className="shell flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-6 text-[13px] text-fg-subtle">
           <span>© {new Date().getFullYear()} Ocean Bridge Trade</span>
-          <span>Bridging Origin. Verifying Supply.</span>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {legal.map((label) => (
+              <li key={label}>
+                {/* Deliberately not links yet — five href="#" placeholders read
+                  * worse than plain text on a compliance-led brand. Swap to
+                  * <Link> as each page is written. */}
+                <span>{label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>
-  );
-}
-
-export function MediaSlot({ label, className, aspect = "aspect-video" }: { label: string; className?: string; aspect?: string }) {
-  return (
-    <div className={`relative ${aspect} w-full overflow-hidden bg-card border border-border/60 flex items-center justify-center ${className ?? ""}`}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,111,160,0.25),transparent_60%)]" />
-      <div className="relative text-center">
-        <div className="label-caps">Media Slot</div>
-        <div className="mt-1 font-mono text-[13px] text-muted-foreground">{label}</div>
-      </div>
-    </div>
   );
 }
