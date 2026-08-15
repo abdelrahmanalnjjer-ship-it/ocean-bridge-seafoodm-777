@@ -3,16 +3,28 @@ import { useI18n, type Locale } from "@/i18n/i18n";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import logoHorizontal from "@/assets/logo-horizontal.png.asset.json";
-import logoVertical from "@/assets/logo-vertical.png.asset.json";
+/* Local files, not the Lovable-hosted /__l5e/ asset URLs the project shipped
+ * with. Those break the moment the project leaves Lovable. */
+/* Exact filenames as they sit in public/logos. The stacked one contains
+ * spaces, hence the %20 — an unencoded space in a src silently 404s. */
+const LOGO_HORIZONTAL = "/logos/Ocean_Bridge_Trade_Secondary_Horizontal_Logo.png";
+const LOGO_STACKED = "/logos/Ocean%20bridge%20logo.png";
 
-const LOGO_HORIZONTAL = logoHorizontal.url;
-const LOGO_VERTICAL = logoVertical.url;
+/* Plate removed at the client's request — the mark now sits directly on the
+ * dark ground.
+ *
+ * THIS ONLY LOOKS RIGHT IF THE PNG HAS A TRANSPARENT BACKGROUND. If the file
+ * carries a white background baked in, you will see a white rectangle behind
+ * the logo, and no CSS can remove it: `multiply` only drops white on light
+ * grounds, `screen` keeps white white, and a knockout filter turns the whole
+ * rectangle solid. Transparency has to come from the export.
+ *
+ * If a white box appears after this build, re-export the three logos as PNGs
+ * with a transparent background and drop them in over the top. */
 
 const NAV = [
   { to: "/", key: "nav.home" },
   { to: "/products", key: "nav.products" },
-  { to: "/insights", key: "nav.insights" },
   { to: "/about", key: "nav.about" },
   { to: "/contact", key: "nav.contact" },
 ] as const;
@@ -33,7 +45,7 @@ export function HtmlLangSync() {
   return null;
 }
 
-function LocaleSwitcher({ tone }: { tone: "light" | "dark" }) {
+function LocaleSwitcher() {
   const { locale, setLocale } = useI18n();
   /* zh stays out until the Chinese content pass ships. A permanently disabled
    * control just advertises a dead end. */
@@ -43,7 +55,7 @@ function LocaleSwitcher({ tone }: { tone: "light" | "dark" }) {
   ];
 
   return (
-    <div className={`flex items-center gap-2 text-[13px] ${tone === "light" ? "text-white/70" : "text-muted-foreground"}`}>
+    <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
       {items.map((i, idx) => (
         <span key={i.id} className="flex items-center gap-2">
           <button
@@ -51,11 +63,7 @@ function LocaleSwitcher({ tone }: { tone: "light" | "dark" }) {
             onClick={() => setLocale(i.id)}
             aria-current={locale === i.id ? "true" : undefined}
             className={`px-1 py-2 transition-colors ${
-              locale === i.id
-                ? tone === "light"
-                  ? "text-white"
-                  : "text-foreground"
-                : "hover:text-foreground"
+              locale === i.id ? "text-foreground" : "hover:text-foreground"
             }`}
           >
             {i.label}
@@ -104,7 +112,7 @@ export function SiteHeader() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
         solid
-          ? "border-b border-[rgb(16_34_43_/_0.12)] bg-white/90 backdrop-blur-xl"
+          ? "border-b border-border bg-[#0E1315]/92 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -117,14 +125,23 @@ export function SiteHeader() {
           solid ? "h-16" : "h-28"
         }`}
       >
+        {/* Over the hero this is SET TYPE, not the logo image.
+          *
+          * The old approach put the PNG here and pushed it through
+          * filter: brightness(1.9), because the artwork is dark and the hero
+          * is dark. That filter is what was wrong with the logo colour — you
+          * cannot brighten a dark mark into a white one, you can only wash it
+          * out. It desaturated the blue and left a muddy grey-blue.
+          *
+          * A drawn wordmark has no such problem, matches the reference layout,
+          * and scales to any size. The real logo returns, unfiltered, on the
+          * white scrolled bar where it was always legible. */}
+        {/* Scaled ~150% from the plated version. */}
         <Link to="/" aria-label="Ocean Bridge Trade — home" className="flex items-center">
           <img
             src={LOGO_HORIZONTAL}
             alt="Ocean Bridge Trade"
-            className={solid ? "h-9 w-auto transition-all duration-500" : "wordmark-hero transition-all duration-500"}
-            /* The mark is dark artwork, so it needs lifting only while it sits
-             * over the hero footage. */
-            style={solid ? undefined : { filter: "brightness(1.9) saturate(1.1)" }}
+            className={`w-auto transition-all duration-500 ${solid ? "h-11" : "h-14 md:h-[4.5rem]"}`}
           />
         </Link>
 
@@ -135,13 +152,11 @@ export function SiteHeader() {
               to={l.to}
               activeOptions={{ exact: l.to === "/" }}
               activeProps={{
-                className: `nav-link ${solid ? "text-foreground" : "text-white"}`,
+                className: "nav-link text-foreground",
                 "data-active": "true",
               } as never}
               inactiveProps={{
-                className: `nav-link transition-colors ${
-                  solid ? "text-muted-foreground hover:text-foreground" : "text-white/75 hover:text-white"
-                }`,
+                className: "nav-link text-muted-foreground transition-colors hover:text-foreground",
               }}
             >
               {t(l.key)}
@@ -150,14 +165,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-6 md:flex">
-          <LocaleSwitcher tone={solid ? "dark" : "light"} />
+          <LocaleSwitcher />
           {/* No `!` prefixes: .btn lives in @layer components, so plain
             * utilities already win. (v4 also moved important to a suffix.) */}
           <Link
             to="/contact"
-            className={`btn ${solid ? "btn-solid" : "btn-outline"} min-h-[40px] px-5 text-[13px] ${
-              solid ? "" : "border-white/40 text-white hover:border-white"
-            }`}
+            className={`btn min-h-[40px] px-5 text-[13px] ${solid ? "btn-solid" : "btn-outline"}`}
           >
             Buyer inquiry
           </Link>
@@ -165,7 +178,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className={`grid size-11 place-items-center md:hidden ${solid ? "text-foreground" : "text-white"}`}
+          className="grid size-11 place-items-center text-foreground md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
@@ -212,7 +225,7 @@ export function SiteHeader() {
                   </span>
                 </Link>
                 <div className="mt-8 border-t border-border pt-6">
-                  <LocaleSwitcher tone="light" />
+                  <LocaleSwitcher />
                 </div>
               </div>
             </div>
@@ -238,12 +251,7 @@ export function SiteFooter() {
       <div className="shell section">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <img
-              src={LOGO_VERTICAL}
-              alt="Ocean Bridge Trade"
-              className="mb-6 h-28 w-auto"
-              style={{ filter: "brightness(1.9) saturate(1.1)" }}
-            />
+            <img src={LOGO_STACKED} alt="Ocean Bridge Trade" className="mb-7 h-40 w-auto" />
             <p className="lede max-w-sm">
               {t("brand.tagline")} Oman-origin seafood, verified at source and cleared
               for arrival.

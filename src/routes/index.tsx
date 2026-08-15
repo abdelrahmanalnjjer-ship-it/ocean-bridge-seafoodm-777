@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CATEGORIES, SPECIES } from "@/data/species";
@@ -51,9 +51,24 @@ export const Route = createFileRoute("/")({
  * recording — it fills a landscape hero by cropping hard to the centre. It
  * reads fine on mobile and loses the edges on desktop. */
 const HERO_SLIDES = [
-  { src: "/videos/hero-1.mp4", kicker: "Origin — Muscat coastline" },
-  { src: "/videos/hero-2.mp4", kicker: "Compliance — regulatory pre-clearance" },
-  { src: "/videos/oman-flag.mp4", kicker: "Sultanate of Oman — verified origin" },
+  {
+    src: "/videos/hero-1.mp4",
+    kicker: "Origin — Muscat coastline",
+    lines: ["Oman's catch,", "cleared for arrival."],
+    sub: "We verify the supply at source, settle destination-market regulation before the offer goes out, and stay on the transaction until the container lands.",
+  },
+  {
+    src: "/videos/hero-2.mp4",
+    kicker: "Compliance — regulatory pre-clearance",
+    lines: ["Cleared before", "it ever ships."],
+    sub: "GACC registration, EU catch certification, FDA supplier verification and Gulf conformity — settled upstream, so nothing is argued at the border.",
+  },
+  {
+    src: "/videos/oman-flag.mp4",
+    kicker: "Sultanate of Oman — verified origin",
+    lines: ["Verified at", "the water's edge."],
+    sub: "A partner network we built in person across two thousand kilometres of Arabian Sea coast — audited on the quay, not from a database.",
+  },
 ];
 const HERO_POSTER = "/videos/hero-poster.jpg";
 const HERO_INTERVAL = 7000;
@@ -177,7 +192,13 @@ function Hero() {
             loop
             muted
             playsInline
-            preload={i === 0 || warm ? "auto" : "none"}
+            /* The glitch: preload="none" on inactive clips meant a slide became
+              * visible before it had buffered a single frame, so the crossfade
+              * landed on black and then jumped. Current AND next are always
+              * warm, so the clip is decoded before it is ever shown. */
+            preload={
+              i === slide || i === (slide + 1) % HERO_SLIDES.length || warm ? "auto" : "metadata"
+            }
             aria-hidden
           />
         ))}
@@ -185,51 +206,52 @@ function Hero() {
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,20,25,0.94)_0%,rgba(8,20,25,0.62)_38%,rgba(8,20,25,0.18)_70%,rgba(8,20,25,0.35)_100%)]" />
       </div>
 
-      {/* Content anchored bottom-right, matching the reference layout. The
-        * headline is short enough that right-alignment stays scannable —
-        * it would not be with a full sentence. */}
-      <div className="shell relative flex w-full flex-col items-start pb-16 pt-40 md:items-end md:pb-24 md:text-right">
-        <motion.div
-          key={slide}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-          className="eyebrow mb-7 md:flex-row-reverse"
-        >
-          {active.kicker}
-        </motion.div>
+      <div className="shell relative flex w-full flex-col pb-16 pt-28 md:pb-24">
+        {/* The editorial wordmark, left-aligned directly under the bar. */}
+        <span className="wordmark-hero text-foreground">Ocean Bridge</span>
 
-        <h1 className="h-display h-display-xl max-w-[15ch]">
-          <LineReveal immediate lines={["Oman's catch,", "cleared for arrival."]} />
-        </h1>
+        {/* Headline block, bottom-right. Keyed on `slide` so the whole thing
+          * re-mounts and re-animates each time the footage changes — copy and
+          * video turn over together rather than the video changing under a
+          * fixed headline. */}
+        <div className="mt-auto flex flex-col items-start pt-20 md:items-end md:pt-28 md:text-right">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slide}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              className="flex flex-col items-start md:items-end"
+            >
+              <div className="eyebrow mb-6 md:flex-row-reverse">{active.kicker}</div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.55, ease: [0.19, 1, 0.22, 1] }}
-          className="lede lede-lg mt-8 max-w-lg text-foreground/90"
-        >
-          We verify the supply at source, settle destination-market regulation before
-          the offer goes out, and stay on the transaction until the container lands.
-        </motion.p>
+              <h1 className="h-display h-display-xl max-w-[15ch]">
+                <LineReveal immediate lines={active.lines} />
+              </h1>
 
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.75, ease: [0.19, 1, 0.22, 1] }}
-          className="mt-10 flex flex-wrap items-center gap-4 md:justify-end"
-        >
-          <Link to="/products" className="btn btn-outline border-white/40 text-white hover:border-white">
-            See the catalogue
-            <ArrowRight className="size-4" />
-          </Link>
-          <Link to="/contact" className="btn-pill">
-            Start a buyer inquiry
-            <span className="pill-badge">
-              <ArrowUpRight className="size-4" />
-            </span>
-          </Link>
-        </motion.div>
+              <p className="lede lede-lg mt-7 max-w-lg text-foreground/90">{active.sub}</p>
+            </motion.div>
+          </AnimatePresence>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75, ease: [0.19, 1, 0.22, 1] }}
+            className="mt-9 flex flex-wrap items-center gap-4 md:justify-end"
+          >
+            <Link to="/products" className="btn btn-outline">
+              See the catalogue
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link to="/contact" className="btn-pill">
+              Start a buyer inquiry
+              <span className="pill-badge">
+                <ArrowUpRight className="size-4" />
+              </span>
+            </Link>
+          </motion.div>
+        </div>
       </div>
 
       <div
@@ -609,7 +631,7 @@ function Insights() {
   const [lead, ...rest] = ARTICLES.slice(0, 5);
 
   return (
-    <section className="band-paper">
+    <section id="insights" className="band-paper scroll-mt-24">
       <div className="shell section-lg">
         <div className="flex flex-wrap items-end justify-between gap-8">
           <Reveal>
@@ -617,11 +639,6 @@ function Insights() {
             <h2 className="h-display h-display-lg max-w-[16ch]">
               What we learn clearing cargo.
             </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <Link to="/insights" className="link-underline">
-              All insights <ArrowUpRight className="size-4" />
-            </Link>
           </Reveal>
         </div>
 

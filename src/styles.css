@@ -49,11 +49,12 @@
   --color-ring: var(--accent);
   --color-ring-offset-background: var(--background);
 
-  --color-brand-moss: var(--brand-moss);
+  --color-brand-stone: var(--brand-stone);
+  --color-brand-dill: var(--brand-dill);
+  --color-brand-shell: var(--brand-shell);
   --color-brand-teal: var(--brand-teal);
   --color-brand-ink: var(--brand-ink);
-  --color-brand-deep: #081419;
-  --color-brand-wash: #F2F4F0;
+  --color-brand-deep: #0E1315;
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
@@ -67,34 +68,55 @@
   --section-y: 5rem;
   --section-y-lg: 8rem;
 
-  /* ---- Surfaces (light) ---- */
-  --background: #FFFFFF;
-  --card: #F7F8F5;
-  --wash: #F2F4F0;
+  /* ==========================================================================
+   * PALETTE — SAMPLED FROM THE PRODUCT PHOTOGRAPHY, NOT INVENTED
+   *
+   * Every product image in this project is a full-bleed photograph shot on
+   * black slate: dark ground, warm stone pebbles, a sprig of dill, coarse
+   * salt, and the cool greys of the fish themselves. Nothing else.
+   *
+   * A white page put the highest-contrast edge on the site around every photo,
+   * so each image read as a pasted rectangle. The fix is not a better white —
+   * it is to build the page out of the same colours the camera saw.
+   *
+   * Contrast measured against the ground (#14191B):
+   *   foreground       #EDECE8  15.0:1   salt
+   *   muted-foreground #9AA3A6   6.9:1   fish grey
+   *   fg-subtle        #7E888C   4.9:1   floor, still AA
+   *   accent (stone)   #C9B49A   8.8:1   the pebbles
+   *   dill             #8FB25C   7.3:1   the only saturated thing in frame
+   *   shell blue       #7A8B96   5.0:1   crab claw, scale
+   * ======================================================================= */
 
-  /* ---- Ink tiers. Measured against #FFFFFF ----
-   *   foreground       #10222B   16.3:1
-   *   muted-foreground #4C6066    6.6:1
-   *   fg-subtle        #647376    4.9:1   <- floor, still AA for body text
-   * There is no fourth tier. If something needs to recede further than
-   * fg-subtle, it needs less prominence, not less contrast. */
-  --foreground: #10222B;
-  --muted-foreground: #4C6066;
-  --fg-subtle: #647376;
+  --background: #14191B;  /* slate ground — the board the fish lie on */
+  --card: #1C2225;        /* one step up */
+  --plate: #14191B;       /* behind photography, so edges disappear */
 
-  /* ---- Brand ---- */
-  --brand-ink: #10222B;   /* deep ocean */
-  --brand-moss: #2C3E2D;  /* forest moss — 11.4:1 on white */
-  --brand-teal: #14606E;  /* ocean teal  —  7.2:1 on white */
+  --foreground: #EDECE8;
+  --muted-foreground: #9AA3A6;
+  --fg-subtle: #7E888C;
 
-  --accent: #2C3E2D;
-  --accent-foreground: #FFFFFF;
-  --primary: #10222B;
-  --primary-foreground: #FFFFFF;
+  /* ---- Brand ----
+   * The green is back. I removed it last round on a general principle and
+   * that was backwards: the dill is in every single photograph, and it is the
+   * only saturated colour the photographer put in the shot. The cyan that
+   * replaced it appears nowhere in the library. */
+  --brand-ink: #14191B;
+  --brand-stone: #C9B49A;  /* warm accent — pebbles */
+  --brand-dill: #8FB25C;   /* status, in-season markers */
+  --brand-shell: #7A8B96;  /* rules, dividers, quiet structure */
+  --brand-teal: #C9B49A;   /* eyebrows read stone now, not cyan */
 
-  --border: rgb(16 34 43 / 0.14);
-  --track: rgb(16 34 43 / 0.10);
-  --destructive: #9B2C1F;
+  --accent: #C9B49A;
+  --accent-foreground: #14191B;
+  --primary: #C9B49A;
+  --primary-foreground: #14191B;
+
+  /* Hairlines are warm-tinted, never pure white at low alpha — untinted
+   * greys are one of the flatter AI tells. */
+  --border: rgb(201 180 154 / 0.16);
+  --track: rgb(201 180 154 / 0.14);
+  --destructive: #E0765C;
 
   --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
@@ -116,59 +138,38 @@
   color: var(--foreground);
 }
 
-.band-paper {
-  --background: #FFFFFF;
-  --card: #F7F8F5;
-  --plate: #F2F4F0;
-  --foreground: #10222B;
-  --muted-foreground: #4C6066;
-  --fg-subtle: #647376;
-  --border: rgb(16 34 43 / 0.14);
-  --track: rgb(16 34 43 / 0.10);
-  --accent: #2C3E2D;
-  --brand-teal: #14606E;
+/* Four steps of the SAME slate, not four different colours. Rhythm now comes
+ * from luminance steps the way it does inside the photographs, so a section
+ * boundary reads as depth rather than as a stripe.
+ *
+ * The class names are unchanged on purpose — every route already uses them,
+ * so the whole site flips without touching a single component. */
+
+.band-paper {                    /* the default ground */
+  --background: #14191B;
+  --card: #1C2225;
+  --plate: #14191B;
 }
 
-.band-wash {
-  --background: #F2F4F0;
-  --card: #FFFFFF;
-  --plate: #FFFFFF;
-  --foreground: #10222B;
-  --muted-foreground: #4A5E62;   /* 6.4:1 on #F2F4F0 */
-  --fg-subtle: #5F6E71;          /* 4.7:1 on #F2F4F0 */
-  --border: rgb(16 34 43 / 0.14);
-  --track: rgb(16 34 43 / 0.11);
-  --accent: #2C3E2D;
-  --brand-teal: #14606E;
+.band-wash {                     /* one step up — alternating sections */
+  --background: #1A2124;
+  --card: #232A2D;
+  --plate: #1A2124;
+  --border: rgb(201 180 154 / 0.18);
 }
 
-/* Inverted. Used sparingly: hero, one pull section, CTA, footer. */
-.band-ink {
-  --background: #10222B;
-  --card: #1A2E35;
-  --plate: #0B1A21;
-  --foreground: #F4F6F3;         /* 15.0:1 */
-  --muted-foreground: #A2B2B4;   /*  7.4:1 */
-  --fg-subtle: #8FA0A3;          /*  6.0:1 */
-  --border: rgb(196 214 199 / 0.18);
-  --track: rgb(196 214 199 / 0.22);
-  --accent: #9CB89A;             /* moss brightened to carry on dark */
-  --accent-foreground: #10222B;
-  --brand-teal: #7FB3BD;
+.band-ink {                      /* one step down — pull sections */
+  --background: #10161A;
+  --card: #1A2124;
+  --plate: #10161A;
 }
 
-.band-deep {
-  --background: #081419;
-  --card: #10222B;
-  --plate: #0B1A21;
-  --foreground: #F4F6F3;
-  --muted-foreground: #9EAEB0;
-  --fg-subtle: #8B9CA0;
-  --border: rgb(196 214 199 / 0.15);
-  --track: rgb(196 214 199 / 0.20);
-  --accent: #9CB89A;
-  --accent-foreground: #081419;
-  --brand-teal: #7FB3BD;
+.band-deep {                     /* deepest — hero, CTA, footer */
+  --background: #0E1315;
+  --card: #171D20;
+  --plate: #0E1315;
+  --muted-foreground: #96A0A3;
+  --border: rgb(201 180 154 / 0.14);
 }
 
 @layer base {
@@ -203,7 +204,7 @@
   }
 
   ::selection {
-    background-color: var(--brand-moss);
+    background-color: var(--accent);
     color: #fff;
   }
 
@@ -242,11 +243,17 @@
 .h-display-md { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.06; }
 .h-display-sm { font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.14; }
 
-/* The giant editorial wordmark that bleeds off the top-left of the hero. */
+/* The giant editorial wordmark over the hero. Set as type, not an image —
+ * see the note in site-chrome.tsx about why the filtered PNG was wrong. */
 .wordmark-hero {
   display: block;
-  width: auto;
-  height: clamp(3.5rem, 11vw, 9.5rem);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Long-form statement type — the manifesto voice. */
@@ -393,18 +400,21 @@
 /* Product cut-outs sit on a tinted plate; photographs fill their frame.
  * Mixing the two treatments in one grid is what made the old catalogue
  * look inconsistent. */
+/* The product library is full-bleed photography shot on black slate — not
+ * cut-outs. Containing them on a pale panel produced a black rectangle with
+ * dead margins, which is what made the cards look broken.
+ *
+ * They fill the frame instead, and the plate colour matches the slate in the
+ * photographs so any rounding gap is invisible on every band. */
 .plate {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--plate, #F2F4F0);
+  display: block;
+  overflow: hidden;
+  background-color: var(--plate);
 }
 .plate img {
-  object-fit: contain;
-  height: auto;
-  width: auto;
-  max-height: 100%;
-  max-width: 100%;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 /* ============================================================================
@@ -432,9 +442,7 @@
   color: var(--accent-foreground);
   border: 1px solid var(--accent);
 }
-.btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 84%, #000); }
-.band-ink .btn-solid:hover,
-.band-deep .btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 84%, #fff); }
+.btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 82%, #EDECE8); }
 
 .btn-outline {
   background-color: transparent;
@@ -442,8 +450,6 @@
   border: 1px solid var(--border);
 }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-.band-ink .btn-outline:hover,
-.band-deep .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
 /* Badge-arrow pill. The circle rotates on hover. */
 .btn-pill {
@@ -460,7 +466,7 @@
   letter-spacing: 0.01em;
   transition: transform 260ms cubic-bezier(0.19,1,0.22,1), box-shadow 260ms ease;
 }
-.btn-pill:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -20px rgb(16 34 43 / 0.55); }
+.btn-pill:hover { transform: translateY(-2px); background-color: color-mix(in oklab, var(--accent) 82%, #EDECE8); }
 .btn-pill .pill-badge {
   display: inline-flex;
   align-items: center;
@@ -513,18 +519,24 @@
 .nav-link:hover::after,
 .nav-link[data-active="true"]::after { transform: scaleX(1); transform-origin: left; }
 
-/* Card hover — a lift and a hairline, no coloured glow. */
+/* Card hover.
+ *
+ * No drop shadow. A shadow is a light-background device — it works by
+ * darkening the surface behind an element, and on a dark ground there is
+ * nothing left to darken, so it reads as grime. That is what was wrong with
+ * the shadow treatment.
+ *
+ * On dark, separation comes from a one-step surface lift and a warmer
+ * hairline. Same perceived elevation, no mud. */
 .card-lift {
   transition: transform 380ms cubic-bezier(0.19,1,0.22,1),
-              border-color 380ms ease, box-shadow 380ms ease;
+              border-color 380ms ease, background-color 380ms ease;
 }
 .card-lift:hover {
-  transform: translateY(-6px);
-  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
-  box-shadow: 0 28px 60px -32px rgb(16 34 43 / 0.35);
+  transform: translateY(-4px);
+  background-color: color-mix(in oklab, var(--card) 88%, #EDECE8);
+  border-color: color-mix(in oklab, var(--accent) 55%, transparent);
 }
-.band-ink .card-lift:hover,
-.band-deep .card-lift:hover { box-shadow: 0 28px 60px -28px rgb(0 0 0 / 0.6); }
 
 /* ============================================================================
  * MOTION
