@@ -112,7 +112,7 @@ export function SiteHeader() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
         solid
-          ? "border-b border-border bg-[#0E1315]/92 backdrop-blur-xl"
+          ? "border-b border-border bg-[#0E0C08]/92 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >

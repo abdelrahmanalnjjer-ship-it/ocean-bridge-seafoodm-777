@@ -226,11 +226,18 @@ export function LineReveal({
 }) {
   const reduce = useReducedMotion();
 
+  /* aria-label carries the whole headline as one properly spaced sentence.
+   * Without it the split lines concatenate — the homepage h1 was being
+   * announced and copy-pasted as "Oman's catch,cleared for arrival." */
+  const label = lines.join(" ");
+
   if (reduce) {
     return (
-      <span className={className}>
+      <span className={className} aria-label={label}>
         {lines.map((l) => (
-          <span key={l} className="block">{l}</span>
+          <span key={l} aria-hidden className="block">
+            {l}
+          </span>
         ))}
       </span>
     );
@@ -243,12 +250,13 @@ export function LineReveal({
   return (
     <motion.span
       className={className}
+      aria-label={label}
       initial="hidden"
       {...animateProps}
       variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.09, delayChildren: delay } } }}
     >
       {lines.map((line) => (
-        <span key={line} className="reveal-line">
+        <span key={line} aria-hidden className="reveal-line">
           <motion.span
             variants={{
               hidden: { y: "110%" },
@@ -294,11 +302,31 @@ export function Counter({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
-  const [display, setDisplay] = useState(reduce ? value : 0);
+  const inView = useInView(ref, { margin: "-15% 0px" });
+
+  /* Starts at the REAL value, not zero.
+   *
+   * The previous version initialised to 0 and only counted up once useInView
+   * fired. That meant the server-rendered HTML — and anyone with JS disabled,
+   * a slow hydration, or a crawler — saw "0 Species in the catalogue". It was
+   * live on the site.
+   *
+   * Now the number is always correct, and the count-up only runs if the stat
+   * scrolls in from off-screen. If it is already visible on load it simply
+   * shows the figure, which is the right outcome anyway. */
+  const [display, setDisplay] = useState(value);
+  const wasOffScreen = useRef(false);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (reduce || !inView) return;
+    if (reduce) return;
+    if (!inView) {
+      wasOffScreen.current = true;
+      return;
+    }
+    if (hasAnimated.current || !wasOffScreen.current) return;
+    hasAnimated.current = true;
+
     const controls = animate(0, value, {
       duration,
       ease: "easeOut",

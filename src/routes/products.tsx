@@ -144,7 +144,7 @@ function ProductsPage() {
       </section>
 
       {/* ---- Filter bar ---- */}
-      <section className="band-paper sticky top-16 z-40 border-b border-border bg-[#14191B]/92 backdrop-blur-xl">
+      <section className="band-paper sticky top-16 z-40 border-b border-border bg-[#16130F]/92 backdrop-blur-xl">
         <div className="shell flex flex-wrap items-center gap-x-6 gap-y-4 py-4">
           <div className="-mx-1 flex items-center gap-1 overflow-x-auto px-1 md:flex-wrap md:overflow-visible">
             <FilterChip active={category === "all"} onClick={() => setCategory("all")}>
