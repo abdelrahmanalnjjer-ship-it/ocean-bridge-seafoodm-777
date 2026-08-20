@@ -89,22 +89,48 @@
    * A warm surround also makes the cool slate in the photographs read as
    * deliberate contrast rather than as more of the same.
    *
-   * Contrast measured against the ground (#16130F):
-   *   foreground       #F2EDE3  15.7:1   warm salt
-   *   muted-foreground #B0A594   7.6:1   taupe
-   *   fg-subtle        #8C8272   4.9:1   clay — floor, still AA
-   *   accent (saffron) #D9A05B   8.0:1
-   *   terracotta       #C4653F   4.6:1   large text and accents only
-   *   dill             #9DB05C   7.4:1   the fresh note, kept
+   * Contrast measured against the WORST surface a token can land on, which
+   * is a --card inside .band-wash (#26211A) — not against the ground. That
+   * distinction matters: measuring against .band-paper alone is how the old
+   * fg-subtle shipped at a real-world 4.22:1 while being documented as 4.9.
+   *
+   *   foreground       #F2EDE3  13.7:1   warm salt
+   *   muted-foreground #B0A594   6.6:1   taupe
+   *   fg-subtle        #948A79   4.7:1   clay — floor, AA everywhere
+   *   accent (saffron) #D9A05B   6.9:1
+   *   terracotta       #C4653F   4.0:1   LARGE TEXT ONLY — fails AA under 24px
+   *   dill             #9DB05C   6.7:1   the fresh note, kept
    * ======================================================================= */
 
   --background: #16130F;  /* warm charcoal — spice, not slate */
   --card: #1F1B15;        /* one step up */
   --plate: #16130F;       /* behind photography, so edges disappear */
 
+  /* THE SCRIM. Every gradient laid over photography uses this and nothing
+   * else. It is --brand-deep (#0E0C08) expressed as bare channels so it can
+   * be composited at any alpha: rgb(var(--scrim) / 0.86).
+   *
+   * This exists because six overlays across five routes were still carrying
+   * rgba(8,20,25) — #081419, a cold navy left behind by the first, cool pass
+   * of the palette. The page below them had been rebuilt warm; the scrims
+   * had not. Every masthead on the site read navy against a warm brown body
+   * with a hard seam between the two.
+   *
+   * Rule 3 says never hardcode a hex in JSX. This token is how you obey it
+   * for scrims. */
+  --scrim: 14 12 8;       /* #0E0C08 */
+
   --foreground: #F2EDE3;   /* warm salt   15.7:1 */
   --muted-foreground: #B0A594; /* taupe    7.6:1 */
-  --fg-subtle: #8C8272;    /* clay        4.9:1 — floor */
+  /* Clay. Was #8C8272, measured 4.9:1 — but only against .band-paper's
+   * #16130F. The real worst case in this system is a --card inside
+   * .band-wash (#26211A), which is where the whole species catalogue lives,
+   * and there the old value fell to 4.22:1 — under AA. Re-floored so the
+   * token clears 4.5:1 on EVERY surface it can land on:
+   *   card-in-wash #26211A  4.69:1
+   *   card-in-paper #1F1B15 5.03:1
+   *   band-paper   #16130F  5.44:1 */
+  --fg-subtle: #948A79;    /* clay        4.69:1 on the worst surface */
 
   /* ---- Brand ----
    * The green is back. I removed it last round on a general principle and
@@ -214,9 +240,11 @@
     border-radius: 2px;
   }
 
+  /* White on saffron measures 2.3:1 — selected text disappeared. The ink
+   * token is the same one every solid button already uses on this accent. */
   ::selection {
     background-color: var(--accent);
-    color: #fff;
+    color: var(--accent-foreground);
   }
 
   img, video { display: block; max-width: 100%; }
@@ -253,19 +281,6 @@
 .h-display-lg { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.0; }
 .h-display-md { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.06; }
 .h-display-sm { font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.14; }
-
-/* The giant editorial wordmark over the hero. Set as type, not an image —
- * see the note in site-chrome.tsx about why the filtered PNG was wrong. */
-.wordmark-hero {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2.5rem, 8vw, 7rem);
-  line-height: 0.9;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
 
 /* Long-form statement type — the manifesto voice. */
 .h-statement {
@@ -387,6 +402,79 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+
+/* Translucent sticky bars — the header once it leaves the hero, and the
+ * catalogue filter rail. Both used to hardcode a hex in JSX. */
+.bar-solid  { background-color: rgb(var(--scrim) / 0.92); }
+
+/* Transparent-header legibility. The hero opens on a bright sky and the nav
+ * links and outline button were reading at roughly 2:1 against it. A short
+ * top-down gradient behind the bar lifts them clear without darkening the
+ * photograph the way raising .scrim-hero would. */
+.bar-float {
+  position: relative;
+}
+/* Painted on a pseudo-element that overhangs the bar by 4rem, so the gradient
+ * has somewhere to finish. Ending it exactly at the header's own edge left a
+ * faint horizontal seam across the photograph. */
+.bar-float::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -4rem 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--scrim) / 0.58) 0%,
+    rgb(var(--scrim) / 0.34) 40%,
+    rgb(var(--scrim) / 0) 100%
+  );
+}
+.bar-ground { background-color: color-mix(in oklab, var(--background) 92%, transparent); }
+
+/* ---------------------------------------------------------------------------
+ * SCRIMS
+ *
+ * Three of them, and no route may write its own. Before this existed, five
+ * routes each carried a bespoke `rgba(8,20,25, …)` gradient — a cold navy
+ * from the abandoned cool palette — with alphas that drifted between 0.75
+ * and 0.86 for no reason anyone recorded. Every masthead on the site read
+ * navy over a warm body.
+ *
+ * They all composite --scrim now, so a change to the ground colour carries
+ * through the whole site in one edit.
+ * ------------------------------------------------------------------------ */
+
+/* Homepage hero. Weighted to the bottom, where the type sits, with a light
+ * touch at the very top so the header bar stays legible over bright sky. */
+.scrim-hero {
+  background-image: linear-gradient(
+    to top,
+    rgb(var(--scrim) / 0.94) 0%,
+    rgb(var(--scrim) / 0.62) 38%,
+    rgb(var(--scrim) / 0.18) 70%,
+    rgb(var(--scrim) / 0.35) 100%
+  );
+}
+
+/* The four interior page mastheads. Full-strength photography underneath. */
+.scrim-masthead {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--scrim) / 0.70),
+    rgb(var(--scrim) / 0.94)
+  );
+}
+
+/* Panels whose image is already dimmed by an opacity utility, so they need
+ * less on top. */
+.scrim-panel {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--scrim) / 0.70),
+    rgb(var(--scrim) / 0.92)
+  );
 }
 
 /* Retained for the few places a drawn frame still reads well. */

@@ -77,21 +77,21 @@ function AboutPage() {
       <section className="band-deep relative -mt-16 overflow-hidden">
         <div className="absolute inset-0 opacity-40">
           <img
-            src="/website-images/harbor-boats.jpg"
+            src="/website-images/harbor-boats.webp"
             alt=""
             aria-hidden
             className="h-full w-full object-cover object-[50%_35%]"
           />
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,20,25,0.8),rgba(8,20,25,0.96))]" />
+        <div className="scrim-masthead absolute inset-0" />
         <div className="shell relative pb-24 pt-36">
           <div className="eyebrow mb-7">About</div>
           <h1 className="h-display h-display-xl max-w-[16ch]">
             <LineReveal immediate lines={["We are the layer", "of accountability."]} />
           </h1>
           <p className="lede lede-lg mt-8 max-w-2xl">
-            Between a fragmented origin market and a procurement department that needs
-            paperwork, someone has to be answerable. That is the whole job.
+            Between a fragmented origin market and a procurement department that needs paperwork,
+            someone has to be answerable. That is the whole job.
           </p>
         </div>
       </section>
@@ -109,14 +109,13 @@ function AboutPage() {
             <div>
               <Reveal>
                 <p className="h-statement text-foreground">
-                  Ocean Bridge Trade owns no fleet, no plant and no cold store, and never
-                  takes title to the goods.
+                  Ocean Bridge Trade owns no fleet, no plant and no cold store, and never takes
+                  title to the goods.
                   <span className="text-muted-foreground">
                     {" "}
                     That is not a limitation we are apologising for — it is the reason our
-                    representation stays objective. We have no inventory to clear and no
-                    plant to keep busy, so the only thing we can sell you is an accurate
-                    answer.
+                    representation stays objective. We have no inventory to clear and no plant to
+                    keep busy, so the only thing we can sell you is an accurate answer.
                   </span>
                 </p>
               </Reveal>
@@ -171,18 +170,18 @@ function AboutPage() {
               <h2 className="h-display h-display-lg">Built in person, audited in person.</h2>
               <p className="lede mt-6">
                 From Muscat we run a partner network across Oman's coast — landing sites,
-                processors, cold-chain operators and licensed exporters. We walk the
-                floors. We check the temperature logs. We know which plant can hold a
-                grade in August and which one cannot.
+                processors, cold-chain operators and licensed exporters. We walk the floors. We
+                check the temperature logs. We know which plant can hold a grade in August and which
+                one cannot.
               </p>
               <p className="lede mt-4">
-                Continuous market intelligence, physical facility audits and cold-chain
-                oversight are the baseline here, not a premium tier.
+                Continuous market intelligence, physical facility audits and cold-chain oversight
+                are the baseline here, not a premium tier.
               </p>
             </Reveal>
             <Reveal delay={0.12}>
               <ParallaxMedia
-                src="/website-images/fishermen.jpg"
+                src="/website-images/fishermen.webp"
                 alt="Omani fishermen working at a landing site"
                 className="aspect-[4/3]"
                 objectPosition="50% 22%"
@@ -208,7 +207,9 @@ function AboutPage() {
                   <span className="num label-caps text-[color:var(--brand-teal)]">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-6 font-display text-2xl leading-tight text-foreground">{b.t}</h3>
+                  <h3 className="mt-6 font-display text-2xl leading-tight text-foreground">
+                    {b.t}
+                  </h3>
                   <p className="mt-4 text-[15px] leading-[1.7] text-muted-foreground">{b.b}</p>
                 </div>
               </StaggerItem>
@@ -224,9 +225,7 @@ function AboutPage() {
             <Reveal>
               <div className="eyebrow mb-6">The discipline</div>
               <h2 className="h-display h-display-lg">What we will never do.</h2>
-              <p className="lede mt-6">
-                A short list, written down so it can be held against us.
-              </p>
+              <p className="lede mt-6">A short list, written down so it can be held against us.</p>
             </Reveal>
             <ul>
               {NEVER.map((n, i) => (
@@ -258,7 +257,7 @@ function AboutPage() {
             <Reveal delay={0.05}>
               <ScrollScale className="aspect-[4/5]">
                 <img
-                  src="/website-images/harbor-dusk.jpg"
+                  src="/website-images/harbor-dusk.webp"
                   alt="Muscat harbour at dusk"
                   loading="lazy"
                   className="h-full w-full object-cover"
@@ -268,7 +267,7 @@ function AboutPage() {
             <Reveal delay={0.12}>
               <ScrollScale className="aspect-[4/5]">
                 <img
-                  src="/website-images/dhow-detail.jpg"
+                  src="/website-images/dhow-detail.webp"
                   alt="Detail of a traditional Omani dhow"
                   loading="lazy"
                   className="h-full w-full object-cover"
@@ -295,7 +294,7 @@ function AboutPage() {
             <div className="mt-6">
               <ScrollScale className="aspect-[21/9]">
                 <img
-                  src="/website-images/port-cranes.jpg"
+                  src="/website-images/port-cranes.webp"
                   alt="Export terminal infrastructure"
                   loading="lazy"
                   className="h-full w-full object-cover object-[50%_38%]"

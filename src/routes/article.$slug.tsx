@@ -34,7 +34,7 @@ function ArticlePage() {
         <div className="absolute inset-0 opacity-25">
           <img src={article.image} alt="" aria-hidden className="h-full w-full object-cover" />
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,20,25,0.86),rgba(8,20,25,0.97))]" />
+        <div className="scrim-masthead absolute inset-0" />
         <div className="shell relative pb-20 pt-40">
           <Link to="/insights" className="link-underline mb-10">
             <ArrowLeft className="size-4" />
@@ -51,7 +51,7 @@ function ArticlePage() {
       </section>
 
       {/* Body. Measure is constrained to ~68ch — the single biggest factor in
-        * whether long-form actually gets read. */}
+       * whether long-form actually gets read. */}
       <article className="band-paper">
         <div className="shell section-lg">
           <div className="mx-auto max-w-[68ch]">
@@ -69,9 +69,9 @@ function ArticlePage() {
 
             <div className="mt-16 border-t border-border pt-10">
               <p className="text-[15px] leading-[1.7] text-fg-subtle">
-                Written by the Ocean Bridge Trade desk, Muscat. Regulatory detail changes
-                — if you are planning a shipment against anything described here, confirm
-                the current position with us or your customs broker before you commit.
+                Written by the Ocean Bridge Trade desk, Muscat. Regulatory detail changes — if you
+                are planning a shipment against anything described here, confirm the current
+                position with us or your customs broker before you commit.
               </p>
               <Link to="/contact" className="btn-pill mt-8">
                 Ask the trade desk
