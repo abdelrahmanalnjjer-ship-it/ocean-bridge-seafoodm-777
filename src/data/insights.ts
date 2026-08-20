@@ -17,12 +17,12 @@ export interface Article {
   title: string;
   standfirst: string;
   topic: string;
-  date: string;      // ISO
+  date: string; // ISO
   dateLabel: string;
   readingMinutes: number;
   image: string;
   imageAlt: string;
-  body: string[];    // paragraphs; a leading "## " marks a subheading
+  body: string[]; // paragraphs; a leading "## " marks a subheading
 }
 
 export const ARTICLES: Article[] = [
@@ -35,7 +35,7 @@ export const ARTICLES: Article[] = [
     date: "2026-07-28",
     dateLabel: "28 July 2026",
     readingMinutes: 6,
-    image: "/website-images/port-cranes.jpg",
+    image: "/website-images/port-cranes.webp",
     imageAlt: "Container cranes at an export terminal",
     body: [
       "China's Decree 248 changed the question a Chinese importer asks a new supplier. It is no longer whether the product meets specification. It is whether the establishment that produced it appears on the General Administration of Customs list, under the correct product category, with a registration that has not lapsed.",
@@ -61,7 +61,7 @@ export const ARTICLES: Article[] = [
     date: "2026-07-14",
     dateLabel: "14 July 2026",
     readingMinutes: 5,
-    image: "/website-images/fishermen.jpg",
+    image: "/website-images/fishermen.webp",
     imageAlt: "Omani fishermen landing the day's catch",
     body: [
       "Every line in our catalogue carries a season window and a status. Buyers tend to read the status and skip the window. It should be the other way round.",
@@ -85,7 +85,7 @@ export const ARTICLES: Article[] = [
     date: "2026-06-30",
     dateLabel: "30 June 2026",
     readingMinutes: 7,
-    image: "/website-images/harbor-boats.jpg",
+    image: "/website-images/harbor-boats.webp",
     imageAlt: "Fishing vessels moored in an Omani harbour",
     body: [
       "The European Union's regulation on illegal, unreported and unregulated fishing requires that every consignment of marine catch entering the EU arrives with a validated catch certificate traceable to the vessel that caught it. Not the processor. The vessel.",
@@ -111,7 +111,7 @@ export const ARTICLES: Article[] = [
     date: "2026-06-16",
     dateLabel: "16 June 2026",
     readingMinutes: 6,
-    image: "/website-images/harbor-dusk.jpg",
+    image: "/website-images/harbor-dusk.webp",
     imageAlt: "Omani harbour at dusk",
     body: [
       "Buyers audit freezers. Freezers are easy to audit — they have a temperature readout and a chart, and they are almost never the problem.",
@@ -137,7 +137,7 @@ export const ARTICLES: Article[] = [
     date: "2026-05-29",
     dateLabel: "29 May 2026",
     readingMinutes: 5,
-    image: "/website-images/port-cranes.jpg",
+    image: "/website-images/port-cranes.webp",
     imageAlt: "Container terminal at night",
     body: [
       "Most seafood moves on FOB or CFR. The choice looks like a question about who books the ship. It is really a question about who carries the risk during the leg where the most value can be destroyed.",
