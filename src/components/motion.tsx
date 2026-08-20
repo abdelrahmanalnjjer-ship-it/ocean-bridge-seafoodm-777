@@ -35,6 +35,25 @@ const TAGS = {
 type TagName = keyof typeof TAGS;
 
 /* ---------------------------------------------------------------------------
+ * A NOTE ON data-reveal
+ *
+ * Everything in this file starts life hidden — opacity 0, or translated out
+ * of a clipping mask — and is brought in by JavaScript when it scrolls into
+ * view. Nearly every block on the site is wrapped in one of these.
+ *
+ * That means the server-rendered HTML ships with the body copy invisible. It
+ * is present in the DOM, so most text extractors still read it, but a
+ * hydration failure would leave a visitor looking at a blank page, and any
+ * consumer that renders CSS without running scripts sees nothing.
+ *
+ * Every element that begins hidden carries data-reveal, and __root.tsx ships
+ * a <noscript> rule that forces those elements visible. Motion becomes a
+ * progressive enhancement rather than a precondition for reading the site.
+ *
+ * If you add a new animated wrapper here, tag it.
+ * ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
  * Reveal — the workhorse. Fades and rises once when scrolled into view.
  * ------------------------------------------------------------------------ */
 export function Reveal({
@@ -63,6 +82,7 @@ export function Reveal({
   return (
     <Tag
       className={className}
+      data-reveal
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12% 0px -8% 0px" }}
@@ -92,6 +112,7 @@ export function Stagger({
   return (
     <motion.div
       className={className}
+      data-reveal
       initial="hidden"
       whileInView="shown"
       viewport={{ once: true, margin: "-10% 0px" }}
@@ -251,9 +272,13 @@ export function LineReveal({
     <motion.span
       className={className}
       aria-label={label}
+      data-reveal
       initial="hidden"
       {...animateProps}
-      variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.09, delayChildren: delay } } }}
+      variants={{
+        hidden: {},
+        shown: { transition: { staggerChildren: 0.09, delayChildren: delay } },
+      }}
     >
       {lines.map((line) => (
         <span key={line} aria-hidden className="reveal-line">

@@ -1,15 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CATEGORIES, SPECIES } from "@/data/species";
 import { ARTICLES } from "@/data/insights";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  ComplianceCard,
-  ComplianceMark,
-  REGIMES,
-} from "@/components/compliance-mark";
+import { ComplianceCard, ComplianceMark, REGIMES } from "@/components/compliance-mark";
 import {
   Counter,
   LineReveal,
@@ -19,10 +15,6 @@ import {
   Stagger,
   StaggerItem,
 } from "@/components/motion";
-import marketChina from "@/assets/market-china.jpg.asset.json";
-import marketEu from "@/assets/market-eu.jpg.asset.json";
-import marketGcc from "@/assets/market-gcc.jpg.asset.json";
-import marketUsa from "@/assets/market-usa.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,30 +39,31 @@ export const Route = createFileRoute("/")({
  * Content
  * ------------------------------------------------------------------------ */
 
+/* THE HEADLINE DOES NOT ROTATE.
+ *
+ * It used to. Three slides carried three different headlines and three
+ * different value propositions on a 7-second timer, which meant a buyer
+ * landing at second 8 read a different promise than one landing at second 2,
+ * and neither could get back the one they came for. The headline is the most-
+ * read text on any page — rotating it away is the one thing a hero must not
+ * do.
+ *
+ * The footage still rotates, and the kicker rotates with it, because the
+ * kicker is a caption for what you are looking at rather than a claim. */
+const HERO = {
+  lines: ["Oman's catch,", "cleared for arrival."],
+  sub: "We verify the supply at source, settle destination-market regulation before the offer goes out, and stay on the transaction until the container lands.",
+};
+
 /* All three clips in the media folder. Note oman-flag.mp4 is a portrait
  * recording — it fills a landscape hero by cropping hard to the centre. It
  * reads fine on mobile and loses the edges on desktop. */
 const HERO_SLIDES = [
-  {
-    src: "/videos/hero-1.mp4",
-    kicker: "Origin — Muscat coastline",
-    lines: ["Oman's catch,", "cleared for arrival."],
-    sub: "We verify the supply at source, settle destination-market regulation before the offer goes out, and stay on the transaction until the container lands.",
-  },
-  {
-    src: "/videos/hero-2.mp4",
-    kicker: "Compliance — regulatory pre-clearance",
-    lines: ["Cleared before", "it ever ships."],
-    sub: "GACC registration, EU catch certification, FDA supplier verification and Gulf conformity — settled upstream, so nothing is argued at the border.",
-  },
-  {
-    src: "/videos/oman-flag.mp4",
-    kicker: "Sultanate of Oman — verified origin",
-    lines: ["Verified at", "the water's edge."],
-    sub: "A partner network we built in person across two thousand kilometres of Arabian Sea coast — audited on the quay, not from a database.",
-  },
+  { src: "/videos/hero-1.mp4", kicker: "Origin — Muscat coastline" },
+  { src: "/videos/hero-2.mp4", kicker: "Compliance — regulatory pre-clearance" },
+  { src: "/videos/oman-flag.mp4", kicker: "Sultanate of Oman — verified origin" },
 ];
-const HERO_POSTER = "/videos/hero-poster.jpg";
+const HERO_POSTER = "/videos/hero-poster.webp";
 const HERO_INTERVAL = 7000;
 
 const DISCIPLINES = [
@@ -96,34 +89,44 @@ const DISCIPLINES = [
   },
 ];
 
+/* No images here any more.
+ *
+ * These four entries used to carry `img: marketChina.url` and friends, which
+ * resolved to Lovable-hosted /__l5e/assets-v1/… paths. Every one of those
+ * returns 404 on the live domain — the section has been rendering four broken
+ * frames in production. The logos were migrated off Lovable at some point and
+ * these were missed, and the source files are no longer retrievable.
+ *
+ * Rather than substitute four generic stock port photographs, the section is
+ * set as type. For a business whose argument is regulatory precision, the
+ * ports and the rules ARE the content; a stock photo of a crane was never
+ * carrying any of it. This also retires the Wikimedia attribution line.
+ *
+ * `codes` ties each market back to the compliance marks above it. */
 const MARKETS = [
   {
     region: "China",
-    lede: "Qingdao, Dalian, Xiamen",
+    ports: "Qingdao · Dalian · Xiamen",
     body: "GACC Decree 248 and CIFER facility registration, with Field 519 declarations prepared to match.",
-    img: marketChina.url,
-    alt: "Container terminal at the Port of Shanghai, Yangshan deep-water zone",
+    codes: ["GACC"],
   },
   {
     region: "European Union",
-    lede: "Rotterdam, Vigo, Piraeus",
+    ports: "Rotterdam · Vigo · Piraeus",
     body: "TRACES documentation, validated IUU catch certificates, third-country establishment listing.",
-    img: marketEu.url,
-    alt: "Container terminal in the Port of Rotterdam",
+    codes: ["TRACES", "IUU"],
   },
   {
     region: "Gulf Cooperation Council",
-    lede: "Jebel Ali, Dammam, Jeddah",
+    ports: "Jebel Ali · Dammam · Jeddah",
     body: "SFDA and GSO conformity, FASAH clearance routing, halal certification oversight.",
-    img: marketGcc.url,
-    alt: "Container yard at Jebel Ali free zone",
+    codes: ["SFDA", "GSO", "HALAL"],
   },
   {
     region: "United States",
-    lede: "Seattle, Newark, Long Beach",
+    ports: "Seattle · Newark · Long Beach",
     body: "Seafood HACCP under 21 CFR Part 123 and a complete Foreign Supplier Verification file.",
-    img: marketUsa.url,
-    alt: "Container cranes at a United States port terminal",
+    codes: ["HACCP", "FSVP"],
   },
 ];
 
@@ -160,26 +163,28 @@ function Home() {
 
 function Hero() {
   const [slide, setSlide] = useState(0);
-  const [warm, setWarm] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const reduce = useReducedMotion();
   const active = HERO_SLIDES[slide];
 
   useEffect(() => {
-    const id = window.setTimeout(() => setWarm(true), 2500);
-    return () => window.clearTimeout(id);
-  }, []);
-
-  useEffect(() => {
-    if (reduce) return;
+    if (reduce || !playing) return;
     const id = window.setInterval(
       () => setSlide((s) => (s + 1) % HERO_SLIDES.length),
       HERO_INTERVAL,
     );
     return () => window.clearInterval(id);
-  }, [reduce]);
+  }, [reduce, playing]);
+
+  /* Choosing a clip by hand is a deliberate act — stop the carousel moving
+   * under the person who just took control of it. */
+  const pick = (i: number) => {
+    setSlide(i);
+    setPlaying(false);
+  };
 
   return (
-    <section className="band-deep relative -mt-16 flex min-h-[640px] items-end overflow-hidden h-[92vh]">
+    <section className="band-deep relative -mt-16 flex min-h-[640px] items-end overflow-hidden h-[92dvh]">
       <div className="absolute inset-0">
         {HERO_SLIDES.map((s, i) => (
           <video
@@ -192,85 +197,111 @@ function Hero() {
             loop
             muted
             playsInline
-            /* The glitch: preload="none" on inactive clips meant a slide became
-              * visible before it had buffered a single frame, so the crossfade
-              * landed on black and then jumped. Current AND next are always
-              * warm, so the clip is decoded before it is ever shown. */
-            preload={
-              i === slide || i === (slide + 1) % HERO_SLIDES.length || warm ? "auto" : "metadata"
-            }
+            /* Current and next only.
+             *
+             * preload="none" on inactive clips used to mean a slide became
+             * visible before it had buffered a frame, so the crossfade landed
+             * on black. The fix for that set a `warm` flag 2.5s after mount
+             * which flipped EVERY clip to "auto" — all three files, 2.8 MB,
+             * downloaded in full on every visit including over mobile data.
+             *
+             * Current + next is all the crossfade ever needed. The third clip
+             * starts buffering when the second one comes up. */
+            preload={i === slide || i === (slide + 1) % HERO_SLIDES.length ? "auto" : "metadata"}
             aria-hidden
           />
         ))}
-        {/* Weighted to the bottom-left, where the type sits. */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,20,25,0.94)_0%,rgba(8,20,25,0.62)_38%,rgba(8,20,25,0.18)_70%,rgba(8,20,25,0.35)_100%)]" />
+        <div className="scrim-hero absolute inset-0" />
       </div>
 
-      <div className="shell relative flex w-full flex-col pb-16 pt-28 md:pb-24">
-        {/* The editorial wordmark, left-aligned directly under the bar. */}
-        <span className="wordmark-hero text-foreground">Ocean Bridge</span>
-
-        {/* Headline block, bottom-right. Keyed on `slide` so the whole thing
-          * re-mounts and re-animates each time the footage changes — copy and
-          * video turn over together rather than the video changing under a
-          * fixed headline. */}
-        <div className="mt-auto flex flex-col items-start pt-20 md:items-end md:pt-28 md:text-right">
+      <div className="shell relative flex w-full flex-col pb-20 pt-28 md:pb-24">
+        {/* One focal point. The brand name is carried by the header lockup —
+         * it used to also be set here at 112px, which put the company's own
+         * name above its offer in the visual hierarchy and clipped its own
+         * ascenders against the top of the section. */}
+        <div className="mt-auto flex flex-col items-start md:items-end">
+          {/* Only the kicker turns over with the footage. */}
           <AnimatePresence mode="wait">
             <motion.div
               key={slide}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              className="flex flex-col items-start md:items-end"
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+              className="eyebrow mb-6 md:flex-row-reverse"
             >
-              <div className="eyebrow mb-6 md:flex-row-reverse">{active.kicker}</div>
-
-              <h1 className="h-display h-display-xl max-w-[15ch]">
-                <LineReveal immediate lines={active.lines} />
-              </h1>
-
-              <p className="lede lede-lg mt-7 max-w-lg text-foreground/90">{active.sub}</p>
+              {active.kicker}
             </motion.div>
           </AnimatePresence>
+
+          <h1 className="h-display h-display-xl max-w-[15ch] md:text-right">
+            <LineReveal immediate lines={HERO.lines} />
+          </h1>
+
+          {/* Left-aligned inside the right-hand column. A right-aligned
+           * paragraph gives the eye a ragged left edge to find on every
+           * return sweep, which costs more than the symmetry is worth. */}
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
+            className="lede lede-lg mt-7 max-w-lg text-foreground"
+          >
+            {HERO.sub}
+          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.75, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ duration: 0.8, delay: 0.7, ease: [0.19, 1, 0.22, 1] }}
             className="mt-9 flex flex-wrap items-center gap-4 md:justify-end"
           >
-            <Link to="/products" className="btn btn-outline">
-              See the catalogue
-              <ArrowRight className="size-4" />
-            </Link>
             <Link to="/contact" className="btn-pill">
               Start a buyer inquiry
               <span className="pill-badge">
                 <ArrowUpRight className="size-4" />
               </span>
             </Link>
+            <Link to="/products" className="btn btn-outline">
+              See the catalogue
+              <ArrowRight className="size-4" />
+            </Link>
           </motion.div>
         </div>
       </div>
 
+      {/* Footage controls. WCAG 2.2.2 requires a way to stop anything that
+       * auto-advances for longer than five seconds; the old dots could jump
+       * between clips but never halt the timer. */}
       <div
-        className="absolute bottom-3 left-3 flex items-center lg:left-9"
+        className="absolute bottom-3 left-3 flex items-center gap-1 lg:left-9"
         role="group"
         aria-label="Hero footage"
       >
+        {!reduce && (
+          <button
+            type="button"
+            onClick={() => setPlaying((v) => !v)}
+            aria-label={playing ? "Pause background footage" : "Play background footage"}
+            className="grid size-11 place-items-center text-foreground/70 transition-colors hover:text-foreground"
+          >
+            {playing ? <Pause className="size-3.5" /> : <Play className="size-3.5" />}
+          </button>
+        )}
         {HERO_SLIDES.map((s, i) => (
           <button
             key={s.src}
             type="button"
             aria-pressed={i === slide}
-            aria-label={`Show segment ${i + 1}: ${s.kicker}`}
-            onClick={() => setSlide(i)}
-            className="grid place-items-center p-3"
+            aria-label={`Show footage ${i + 1} of ${HERO_SLIDES.length}: ${s.kicker}`}
+            onClick={() => pick(i)}
+            className="grid min-h-11 place-items-center px-2"
           >
             <span
               className={`block h-[3px] rounded-full transition-all duration-500 ${
-                i === slide ? "w-10 bg-[color:var(--foreground)]" : "w-4 bg-[color:var(--foreground)]/40"
+                i === slide
+                  ? "w-10 bg-[color:var(--foreground)]"
+                  : "w-4 bg-[color:var(--foreground)]/40"
               }`}
             />
           </button>
@@ -294,10 +325,9 @@ function Positioning() {
             Ocean Bridge Trade is not a fishing company and not a broker.
             <span className="text-muted-foreground">
               {" "}
-              We are the layer of corporate discipline between Oman's fragmented
-              origin market and the procurement standards of an international
-              buyer — the party that does the verification, holds the
-              documentation, and answers for it.
+              We are the layer of corporate discipline between Oman's fragmented origin market and
+              the procurement standards of an international buyer — the party that does the
+              verification, holds the documentation, and answers for it.
             </span>
           </p>
         </Reveal>
@@ -307,22 +337,22 @@ function Positioning() {
             <div>
               <div className="label-caps">We do not</div>
               <p className="mt-3 text-[15px] leading-[1.7] text-muted-foreground">
-                Own fleets, plants or cold stores. Take title to the goods. Issue an
-                offer on data we have not verified ourselves.
+                Own fleets, plants or cold stores. Take title to the goods. Issue an offer on data
+                we have not verified ourselves.
               </p>
             </div>
             <div>
               <div className="label-caps">We do</div>
               <p className="mt-3 text-[15px] leading-[1.7] text-muted-foreground">
-                Audit facilities on the ground, enforce cold-chain protocol, and run
-                the commercial workflow from first introduction to delivered container.
+                Audit facilities on the ground, enforce cold-chain protocol, and run the commercial
+                workflow from first introduction to delivered container.
               </p>
             </div>
             <div>
               <div className="label-caps">Based in</div>
               <p className="mt-3 text-[15px] leading-[1.7] text-muted-foreground">
-                Muscat, Sultanate of Oman — inside the supply base, not representing it
-                from a distance.
+                Muscat, Sultanate of Oman — inside the supply base, not representing it from a
+                distance.
               </p>
             </div>
           </div>
@@ -364,8 +394,8 @@ function Disciplines() {
             <div className="eyebrow mb-6">How it works</div>
             <h2 className="h-display h-display-lg">Four things happen before you get a price.</h2>
             <p className="lede mt-6">
-              Not a service tier and not an upsell. This is the minimum that has to be
-              true before we are willing to put a number in front of a buyer.
+              Not a service tier and not an upsell. This is the minimum that has to be true before
+              we are willing to put a number in front of a buyer.
             </p>
             <Link to="/about" className="link-underline mt-8">
               How we operate <ArrowUpRight className="size-4" />
@@ -415,7 +445,7 @@ function Catalogue() {
         </div>
 
         {/* The four commercial groups, using the category artwork rather than
-          * individual species — a buyer picks a group first, then drills in. */}
+         * individual species — a buyer picks a group first, then drills in. */}
         <Stagger className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" step={0.08}>
           {CATEGORIES.map((c) => (
             <StaggerItem key={c.id}>
@@ -437,9 +467,7 @@ function Catalogue() {
                   <h3 className="mt-2 font-display text-2xl leading-tight text-foreground">
                     {c.label_en}
                   </h3>
-                  <p className="mt-3 text-[14px] leading-[1.65] text-muted-foreground">
-                    {c.blurb}
-                  </p>
+                  <p className="mt-3 text-[14px] leading-[1.65] text-muted-foreground">{c.blurb}</p>
                   <span className="mt-auto flex items-center gap-2 pt-6 text-[13px] font-semibold text-[color:var(--accent)]">
                     View group
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -467,11 +495,10 @@ function Compliance() {
               Detained cargo is a paperwork failure, not bad luck.
             </h2>
             <p className="lede mt-6 max-w-2xl">
-              The certifications below are held by the processing establishments in our
-              vetted Oman network — we verify them, we do not issue them. Ocean Bridge
-              Trade's job is to confirm each certificate is current, that the issuing
-              body is recognised in your destination market, and that the file is
-              complete before a consignment moves.
+              The certifications below are held by the processing establishments in our vetted Oman
+              network — we verify them, we do not issue them. Ocean Bridge Trade's job is to confirm
+              each certificate is current, that the issuing body is recognised in your destination
+              market, and that the file is complete before a consignment moves.
             </p>
           </Reveal>
         </div>
@@ -527,39 +554,43 @@ function Gateways() {
         <Reveal>
           <div className="eyebrow mb-6">Destination markets</div>
           <h2 className="h-display h-display-lg max-w-[18ch]">Where the containers go.</h2>
-        </Reveal>
-
-        <div className="mt-16 grid gap-x-10 gap-y-16 md:grid-cols-2">
-          {MARKETS.map((m, i) => (
-            <Reveal key={m.region} delay={(i % 2) * 0.08}>
-              <article className="group">
-                <ScrollScale className="aspect-[16/10]">
-                  <img
-                    src={m.img}
-                    alt={m.alt}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                </ScrollScale>
-                <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-border pt-5">
-                  <h3 className="font-display text-3xl leading-none text-foreground">
-                    {m.region}
-                  </h3>
-                  <span className="label-caps shrink-0">{m.lede}</span>
-                </div>
-                <p className="mt-4 text-[15px] leading-[1.7] text-muted-foreground">{m.body}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal>
-          <p className="mt-14 max-w-3xl border-t border-border pt-6 text-[12px] leading-relaxed text-fg-subtle">
-            Terminal photography via Wikimedia Commons — Yangshan, Shanghai (public
-            domain); Rotterdam (CC BY 2.0); Jebel Ali, UAE (CC BY-SA 3.0); Seattle
-            (CC BY 2.0).
+          <p className="lede mt-6">
+            Four regimes, cleared upstream. Each one is settled before an offer is issued, not
+            argued at the border.
           </p>
         </Reveal>
+
+        <Stagger className="mt-16 grid gap-x-12 gap-y-0 md:grid-cols-2" step={0.07}>
+          {MARKETS.map((m) => (
+            <StaggerItem key={m.region}>
+              <article className="group flex h-full flex-col border-t border-border py-10">
+                <div className="flex items-baseline justify-between gap-4">
+                  <h3 className="h-display h-display-sm">{m.region}</h3>
+                  <span className="num label-caps shrink-0">
+                    {m.ports.split(" · ").length} ports
+                  </span>
+                </div>
+
+                <p className="mt-3 text-[15px] text-[color:var(--brand-stone)]">{m.ports}</p>
+
+                <p className="mt-5 text-[16px] leading-[1.75] text-muted-foreground">{m.body}</p>
+
+                {/* The regimes this market turns on, tied back to the marks
+                 * in the section above. */}
+                <div className="mt-auto flex flex-wrap gap-2 pt-7">
+                  {m.codes.map((code) => (
+                    <span
+                      key={code}
+                      className="border border-border px-3 py-1.5 text-[12px] font-semibold tracking-[0.08em] text-[color:var(--accent)]"
+                    >
+                      {code}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </div>
     </section>
   );
@@ -576,15 +607,13 @@ function Origin() {
             <div className="eyebrow mb-6">Origin</div>
             <h2 className="h-display h-display-lg">The supply is already secured.</h2>
             <p className="lede mt-6">
-              Our advantage is not a database. It is a partner network in Oman that we
-              built in person and audit in person — landing sites, processors,
-              cold-chain operators and licensed exporters, in a country whose coastline
-              runs the length of the Arabian Sea.
+              Our advantage is not a database. It is a partner network in Oman that we built in
+              person and audit in person — landing sites, processors, cold-chain operators and
+              licensed exporters, in a country whose coastline runs the length of the Arabian Sea.
             </p>
             <p className="lede mt-4">
-              That proximity is why we can tell you in the same week whether a species
-              is running, what grade is realistic, and which plant can actually hold the
-              temperature.
+              That proximity is why we can tell you in the same week whether a species is running,
+              what grade is realistic, and which plant can actually hold the temperature.
             </p>
             <Link to="/about" className="link-underline mt-8">
               More about how we operate <ArrowUpRight className="size-4" />
@@ -594,7 +623,7 @@ function Origin() {
           <div className="grid gap-6">
             <Reveal delay={0.1}>
               <ParallaxMedia
-                src="/website-images/fishermen.jpg"
+                src="/website-images/fishermen.webp"
                 alt="Omani fishermen landing the day's catch"
                 className="aspect-[4/3]"
                 objectPosition="50% 25%"
@@ -603,7 +632,7 @@ function Origin() {
             <div className="grid grid-cols-2 gap-6">
               <Reveal delay={0.18}>
                 <ParallaxMedia
-                  src="/website-images/harbor-dusk.jpg"
+                  src="/website-images/harbor-dusk.webp"
                   alt="Muscat harbour at dusk"
                   className="aspect-square"
                   strength={8}
@@ -611,7 +640,7 @@ function Origin() {
               </Reveal>
               <Reveal delay={0.24}>
                 <ParallaxMedia
-                  src="/website-images/dhow-detail.jpg"
+                  src="/website-images/dhow-detail.webp"
                   alt="Detail of a traditional Omani dhow"
                   className="aspect-square"
                   strength={8}
@@ -636,9 +665,7 @@ function Insights() {
         <div className="flex flex-wrap items-end justify-between gap-8">
           <Reveal>
             <div className="eyebrow mb-6">Insights</div>
-            <h2 className="h-display h-display-lg max-w-[16ch]">
-              What we learn clearing cargo.
-            </h2>
+            <h2 className="h-display h-display-lg max-w-[16ch]">What we learn clearing cargo.</h2>
           </Reveal>
         </div>
 
@@ -752,8 +779,8 @@ function NewsletterSignup() {
             Season shifts and rule changes, before they cost you a container.
           </h2>
           <p className="lede mt-5">
-            Origin pricing signals, season turns, and regulatory changes across China,
-            the EU, the GCC and the US. Sent only when something has actually moved.
+            Origin pricing signals, season turns, and regulatory changes across China, the EU, the
+            GCC and the US. Sent only when something has actually moved.
           </p>
         </div>
 
@@ -779,7 +806,11 @@ function NewsletterSignup() {
                 placeholder="name@company.com"
                 className="min-w-0 flex-1 border border-border bg-background px-4 py-3.5 text-base text-foreground placeholder:text-fg-subtle focus:border-[color:var(--accent)] focus:outline-none"
               />
-              <button type="submit" disabled={state === "saving"} className="btn btn-solid shrink-0">
+              <button
+                type="submit"
+                disabled={state === "saving"}
+                className="btn btn-solid shrink-0"
+              >
                 {state === "saving" ? "Sending…" : "Notify me"}
               </button>
             </div>
@@ -800,14 +831,14 @@ function ClosingCta() {
     <section className="band-deep relative overflow-hidden">
       <div className="absolute inset-0 opacity-25">
         <img
-          src="/website-images/port-cranes.jpg"
+          src="/website-images/port-cranes.webp"
           alt=""
           aria-hidden
           loading="lazy"
           className="h-full w-full object-cover object-[50%_40%]"
         />
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,20,25,0.75),rgba(8,20,25,0.95))]" />
+      <div className="scrim-panel absolute inset-0" />
 
       <div className="shell section-lg relative text-center">
         <Reveal>
@@ -815,8 +846,8 @@ function ClosingCta() {
             Tell us what you need to land, and where.
           </h2>
           <p className="lede mx-auto mt-6 max-w-xl">
-            Species, grade, volume, destination market and preferred Incoterms is enough
-            to start. Buyer inquiries are reviewed within 48 business hours.
+            Species, grade, volume, destination market and preferred Incoterms is enough to start.
+            Buyer inquiries are reviewed within 48 business hours.
           </p>
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link to="/contact" className="btn-pill">
