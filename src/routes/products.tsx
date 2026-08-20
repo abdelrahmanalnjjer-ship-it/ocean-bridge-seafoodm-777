@@ -120,13 +120,13 @@ function ProductsPage() {
       <section className="band-deep relative -mt-16 overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <img
-            src="/website-images/harbor-boats.jpg"
+            src="/website-images/harbor-boats.webp"
             alt=""
             aria-hidden
             className="h-full w-full object-cover object-[50%_45%]"
           />
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,20,25,0.86),rgba(8,20,25,0.97))]" />
+        <div className="scrim-masthead absolute inset-0" />
 
         <div className="shell relative pb-20 pt-36">
           <Reveal>
@@ -135,24 +135,33 @@ function ProductsPage() {
               Thirty-five species, fully specified.
             </h1>
             <p className="lede lede-lg mt-8 max-w-2xl">
-              Season windows, size ranges, grade, freezing method and HS code for every
-              line. Nothing here is speculative inventory — supply is confirmed per
-              transaction against live availability.
+              Season windows, size ranges, grade, freezing method and HS code for every line.
+              Nothing here is speculative inventory — supply is confirmed per transaction against
+              live availability.
             </p>
           </Reveal>
         </div>
       </section>
 
       {/* ---- Filter bar ---- */}
-      <section className="band-paper sticky top-16 z-40 border-b border-border bg-[#16130F]/92 backdrop-blur-xl">
+      <section className="band-paper bar-ground sticky top-16 z-40 border-b border-border backdrop-blur-xl">
         <div className="shell flex flex-wrap items-center gap-x-6 gap-y-4 py-4">
           <div className="-mx-1 flex items-center gap-1 overflow-x-auto px-1 md:flex-wrap md:overflow-visible">
-            <FilterChip active={category === "all"} onClick={() => setCategory("all")}>
-              All <span className="text-subtle">({SPECIES.length})</span>
+            <FilterChip
+              active={category === "all"}
+              count={SPECIES.length}
+              onClick={() => setCategory("all")}
+            >
+              All
             </FilterChip>
             {CATEGORIES.map((c) => (
-              <FilterChip key={c.id} active={category === c.id} onClick={() => setCategory(c.id)}>
-                {labelFor(c)} <span className="text-subtle">({counts[c.id] ?? 0})</span>
+              <FilterChip
+                key={c.id}
+                active={category === c.id}
+                count={counts[c.id] ?? 0}
+                onClick={() => setCategory(c.id)}
+              >
+                {labelFor(c)}
               </FilterChip>
             ))}
           </div>
@@ -222,7 +231,11 @@ function ProductsPage() {
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.97 }}
-                    transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.3), ease: [0.19, 1, 0.22, 1] }}
+                    transition={{
+                      duration: 0.4,
+                      delay: Math.min(i * 0.02, 0.3),
+                      ease: [0.19, 1, 0.22, 1],
+                    }}
                   >
                     <SpeciesCard s={s} name={nameFor(s)} t={t} />
                   </motion.article>
@@ -241,8 +254,8 @@ function ProductsPage() {
               Need a species that isn't listed?
             </h2>
             <p className="lede mx-auto mt-5">
-              The catalogue covers what we source regularly. If your specification sits
-              outside it, tell us — our partner network is wider than this page.
+              The catalogue covers what we source regularly. If your specification sits outside it,
+              tell us — our partner network is wider than this page.
             </p>
             <Link to="/contact" className="btn-pill mt-10">
               Talk to the trade desk
@@ -259,10 +272,12 @@ function ProductsPage() {
 
 function FilterChip({
   active,
+  count,
   onClick,
   children,
 }: {
   active: boolean;
+  count: number;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -277,7 +292,15 @@ function FilterChip({
           : "border-border text-muted-foreground hover:border-[color:var(--accent)] hover:text-foreground"
       }`}
     >
-      {children}
+      {children}{" "}
+      {/* The count used to be a .text-subtle span passed in as a child, which
+       * meant clay (#948A79) sat on the saffron fill of the ACTIVE chip at
+       * 1.48:1 — the one thing on the site still under AA after this pass.
+       * The chip owns the count now, so it can pick a colour that works
+       * against whichever fill it is currently wearing. */}
+      <span className={active ? "text-[color:var(--accent-foreground)]" : "text-subtle"}>
+        ({count})
+      </span>
     </button>
   );
 }
@@ -307,8 +330,8 @@ function SeasonBar({ start, end }: { start: string; end: string }) {
         ))}
       </div>
       {/* Quarter anchors, not twelve labels — the old version set every month
-        * name at 7px, which is below any usable reading size. */}
-      <div className="flex text-[11px] leading-none text-fg-subtle">
+       * name at 7px, which is below any usable reading size. */}
+      <div className="flex text-[12px] leading-none text-fg-subtle">
         {["Jan", "Apr", "Jul", "Oct"].map((m) => (
           <span key={m} className="flex-1">
             {m}
@@ -319,15 +342,7 @@ function SeasonBar({ start, end }: { start: string; end: string }) {
   );
 }
 
-function SpeciesCard({
-  s,
-  name,
-  t,
-}: {
-  s: Species;
-  name: string;
-  t: (k: string) => string;
-}) {
+function SpeciesCard({ s, name, t }: { s: Species; name: string; t: (k: string) => string }) {
   return (
     <div className="card-lift group flex h-full flex-col border border-border bg-card">
       <div className="plate h-56 overflow-hidden">
@@ -361,7 +376,7 @@ function SpeciesCard({
         </dl>
 
         {/* The full range, not sizes[0]. The old card silently hid every size
-          * after the first, which is a commercial problem, not a visual one. */}
+         * after the first, which is a commercial problem, not a visual one. */}
         <div className="mt-5">
           <div className="label-caps mb-2">Sizes</div>
           <div className="flex flex-wrap gap-2">
@@ -377,13 +392,21 @@ function SpeciesCard({
         </div>
 
         <div className="mt-auto pt-7">
+          {/* The CTA carries the species with it.
+           *
+           * This used to be a bare <Link to="/contact"> labelled "Inquire
+           * about this species" — the same words on all thirty-five cards,
+           * every one of them landing on an empty form that had no idea
+           * which fish had been clicked. The buyer's first task on arrival
+           * was to retype what they had just told us. */}
           <Link
             to="/contact"
+            search={{ species: name, hs: s.hs_code }}
             aria-label={`Inquire about ${name}`}
             className="btn btn-outline group/cta w-full justify-between"
           >
-            {t("products.initiate")}
-            <ArrowUpRight className="size-4 transition-transform group-hover/cta:rotate-45" />
+            <span className="truncate">{t("products.initiateNamed").replace("{name}", name)}</span>
+            <ArrowUpRight className="size-4 shrink-0 transition-transform group-hover/cta:rotate-45" />
           </Link>
         </div>
       </div>
@@ -395,7 +418,10 @@ function Spec({ label, value, mono }: { label: string; value: string; mono?: boo
   return (
     <div className="min-w-0">
       <dt className="label-caps">{label}</dt>
-      <dd className={`mt-1 truncate text-[14px] text-foreground ${mono ? "num" : ""}`} title={value}>
+      <dd
+        className={`mt-1 truncate text-[14px] text-foreground ${mono ? "num" : ""}`}
+        title={value}
+      >
         {value}
       </dd>
     </div>

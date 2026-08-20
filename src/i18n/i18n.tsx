@@ -17,13 +17,15 @@ const en: Dict = {
   "hero.cta.catalog": "Explore Catalogue",
   "hero.cta.contact": "Initiate Inquiry",
   "section.vlog": "Vlog",
-  "section.vlog.sub": "News, updates and field reports from origin ports, facility audits and cold-chain operations.",
+  "section.vlog.sub":
+    "News, updates and field reports from origin ports, facility audits and cold-chain operations.",
   "section.capabilities": "Core Competencies",
   "section.species": "Species Portfolio",
   "section.gateways": "Destination Gateways",
   "section.regulatory": "Regulatory Mastery",
   "products.title": "Institutional Seafood Portfolio",
-  "products.sub": "Corporate-grade B2B supply for processors and importers. Origin-verified, specification-led, and transaction-ready.",
+  "products.sub":
+    "Corporate-grade B2B supply for processors and importers. Origin-verified, specification-led, and transaction-ready.",
   "products.view.grid": "Visual Grid",
   "products.view.terminal": "Terminal Data",
   "products.request": "Request Spec Sheet",
@@ -34,6 +36,9 @@ const en: Dict = {
   "products.hs": "HS",
   "products.pack": "Packaging",
   "products.initiate": "Inquire about this species",
+  /* Parameterised so the button names the fish the buyer actually clicked.
+   * {name} is substituted at the call site. */
+  "products.initiateNamed": "Inquire about {name}",
   "about.title": "About Ocean Bridge Trade",
   "contact.title": "The Global Trade Desk",
 };
@@ -51,7 +56,8 @@ const ar: Dict = {
   "hero.cta.catalog": "استعرض الكتالوج",
   "hero.cta.contact": "ابدأ استفسارًا",
   "section.vlog": "المدوّنة المرئية",
-  "section.vlog.sub": "أخبار وتحديثات وتقارير ميدانية من موانئ المصدر وتدقيق المنشآت وسلسلة التبريد.",
+  "section.vlog.sub":
+    "أخبار وتحديثات وتقارير ميدانية من موانئ المصدر وتدقيق المنشآت وسلسلة التبريد.",
   "section.capabilities": "الكفاءات الأساسية",
   "section.species": "محفظة الأنواع",
   "section.gateways": "بوابات الوجهات",
@@ -68,6 +74,7 @@ const ar: Dict = {
   "products.hs": "رمز جمركي",
   "products.pack": "التعبئة",
   "products.initiate": "استفسر عن هذا النوع",
+  "products.initiateNamed": "استفسر عن {name}",
   "about.title": "عن أوشن بريدج تريد",
   "contact.title": "مكتب التجارة العالمي",
 };
