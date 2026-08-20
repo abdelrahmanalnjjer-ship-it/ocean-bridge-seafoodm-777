@@ -31,14 +31,16 @@ export const REGIMES: ComplianceRegime[] = [
     code: "GACC",
     regime: "Decree 248 / CIFER",
     jurisdiction: "China",
-    detail: "Facility registration verified and Field 519 declarations prepared before the offer is issued.",
+    detail:
+      "Facility registration verified and Field 519 declarations prepared before the offer is issued.",
     glyph: "grid",
   },
   {
     code: "TRACES",
     regime: "EU health certification",
     jurisdiction: "European Union",
-    detail: "Consignment documentation and third-country establishment listing checked against the current EU list.",
+    detail:
+      "Consignment documentation and third-country establishment listing checked against the current EU list.",
     glyph: "arc",
   },
   {
@@ -59,7 +61,8 @@ export const REGIMES: ComplianceRegime[] = [
     code: "FSVP",
     regime: "Foreign Supplier Verification",
     jurisdiction: "United States",
-    detail: "Supplier verification records assembled so the US importer's FSVP file is complete on arrival.",
+    detail:
+      "Supplier verification records assembled so the US importer's FSVP file is complete on arrival.",
     glyph: "chevron",
   },
   {
@@ -80,7 +83,8 @@ export const REGIMES: ComplianceRegime[] = [
     code: "HALAL",
     regime: "Certification oversight",
     jurisdiction: "GCC / Global",
-    detail: "Certificate validity and issuing-body recognition confirmed for the destination market.",
+    detail:
+      "Certificate validity and issuing-body recognition confirmed for the destination market.",
     glyph: "arc",
   },
 ];
@@ -88,7 +92,12 @@ export const REGIMES: ComplianceRegime[] = [
 /* Each glyph is drawn from primitives — no traced logos. */
 function Glyph({ kind }: { kind: ComplianceRegime["glyph"] }) {
   const stroke = "currentColor";
-  const common = { fill: "none", stroke, strokeWidth: 1, vectorEffect: "non-scaling-stroke" as const };
+  const common = {
+    fill: "none",
+    stroke,
+    strokeWidth: 1,
+    vectorEffect: "non-scaling-stroke" as const,
+  };
 
   switch (kind) {
     case "grid":
@@ -159,11 +168,27 @@ export function ComplianceMark({
       className={className}
     >
       {/* Outer ring + inner hairline. */}
-      <circle cx="32" cy="32" r="30.5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
-      <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.18" />
+      <circle
+        cx="32"
+        cy="32"
+        r="30.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        opacity="0.35"
+      />
+      <circle
+        cx="32"
+        cy="32"
+        r="26"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        opacity="0.18"
+      />
       <Glyph kind={regime.glyph} />
       {/* Tick marks at the quarters — a compass reference, since the whole
-        * brand idiom is navigation. */}
+       * brand idiom is navigation. */}
       <g opacity={0.45} stroke="currentColor" strokeWidth="1">
         <path d="M32 1.5 V6" />
         <path d="M32 58 V62.5" />
