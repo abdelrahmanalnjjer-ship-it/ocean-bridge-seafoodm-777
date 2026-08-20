@@ -49,12 +49,13 @@
   --color-ring: var(--accent);
   --color-ring-offset-background: var(--background);
 
+  --color-brand-saffron: var(--brand-saffron);
+  --color-brand-terracotta: var(--brand-terracotta);
   --color-brand-stone: var(--brand-stone);
   --color-brand-dill: var(--brand-dill);
-  --color-brand-shell: var(--brand-shell);
   --color-brand-teal: var(--brand-teal);
   --color-brand-ink: var(--brand-ink);
-  --color-brand-deep: #0E1315;
+  --color-brand-deep: #0E0C08;
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
@@ -79,44 +80,54 @@
    * so each image read as a pasted rectangle. The fix is not a better white —
    * it is to build the page out of the same colours the camera saw.
    *
-   * Contrast measured against the ground (#14191B):
-   *   foreground       #EDECE8  15.0:1   salt
-   *   muted-foreground #9AA3A6   6.9:1   fish grey
-   *   fg-subtle        #7E888C   4.9:1   floor, still AA
-   *   accent (stone)   #C9B49A   8.8:1   the pebbles
-   *   dill             #8FB25C   7.3:1   the only saturated thing in frame
-   *   shell blue       #7A8B96   5.0:1   crab claw, scale
+   * WARM, NOT COLD. The first pass sampled the slate board and the crab shell
+   * — both cool — and the page came out grey and clinical. The warm notes were
+   * there all along and under-used: the stone pebbles, the cream flesh of the
+   * grouper, the tan of the shrimp. Those now set the temperature, and the
+   * accent moves from stone to saffron.
+   *
+   * A warm surround also makes the cool slate in the photographs read as
+   * deliberate contrast rather than as more of the same.
+   *
+   * Contrast measured against the ground (#16130F):
+   *   foreground       #F2EDE3  15.7:1   warm salt
+   *   muted-foreground #B0A594   7.6:1   taupe
+   *   fg-subtle        #8C8272   4.9:1   clay — floor, still AA
+   *   accent (saffron) #D9A05B   8.0:1
+   *   terracotta       #C4653F   4.6:1   large text and accents only
+   *   dill             #9DB05C   7.4:1   the fresh note, kept
    * ======================================================================= */
 
-  --background: #14191B;  /* slate ground — the board the fish lie on */
-  --card: #1C2225;        /* one step up */
-  --plate: #14191B;       /* behind photography, so edges disappear */
+  --background: #16130F;  /* warm charcoal — spice, not slate */
+  --card: #1F1B15;        /* one step up */
+  --plate: #16130F;       /* behind photography, so edges disappear */
 
-  --foreground: #EDECE8;
-  --muted-foreground: #9AA3A6;
-  --fg-subtle: #7E888C;
+  --foreground: #F2EDE3;   /* warm salt   15.7:1 */
+  --muted-foreground: #B0A594; /* taupe    7.6:1 */
+  --fg-subtle: #8C8272;    /* clay        4.9:1 — floor */
 
   /* ---- Brand ----
    * The green is back. I removed it last round on a general principle and
    * that was backwards: the dill is in every single photograph, and it is the
    * only saturated colour the photographer put in the shot. The cyan that
    * replaced it appears nowhere in the library. */
-  --brand-ink: #14191B;
-  --brand-stone: #C9B49A;  /* warm accent — pebbles */
-  --brand-dill: #8FB25C;   /* status, in-season markers */
-  --brand-shell: #7A8B96;  /* rules, dividers, quiet structure */
-  --brand-teal: #C9B49A;   /* eyebrows read stone now, not cyan */
+  --brand-ink: #16130F;
+  --brand-saffron: #D9A05B;    /* primary accent — buttons, links, active */
+  --brand-terracotta: #C4653F; /* secondary — headings, large accents only */
+  --brand-stone: #C9B49A;      /* the pebbles — quiet warm */
+  --brand-dill: #9DB05C;       /* status, in-season markers */
+  --brand-teal: #D9A05B;       /* eyebrows read saffron now */
 
-  --accent: #C9B49A;
-  --accent-foreground: #14191B;
-  --primary: #C9B49A;
-  --primary-foreground: #14191B;
+  --accent: #D9A05B;
+  --accent-foreground: #16130F;
+  --primary: #D9A05B;
+  --primary-foreground: #16130F;
 
-  /* Hairlines are warm-tinted, never pure white at low alpha — untinted
-   * greys are one of the flatter AI tells. */
-  --border: rgb(201 180 154 / 0.16);
-  --track: rgb(201 180 154 / 0.14);
-  --destructive: #E0765C;
+  /* Hairlines carry the warmth too. An untinted white at low alpha is what
+   * makes a dark UI feel grey and clinical. */
+  --border: rgb(217 160 91 / 0.18);
+  --track: rgb(217 160 91 / 0.15);
+  --destructive: #E07A55;
 
   --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
@@ -146,30 +157,30 @@
  * so the whole site flips without touching a single component. */
 
 .band-paper {                    /* the default ground */
-  --background: #14191B;
-  --card: #1C2225;
-  --plate: #14191B;
+  --background: #16130F;
+  --card: #1F1B15;
+  --plate: #16130F;
 }
 
 .band-wash {                     /* one step up — alternating sections */
-  --background: #1A2124;
-  --card: #232A2D;
-  --plate: #1A2124;
-  --border: rgb(201 180 154 / 0.18);
+  --background: #1D1913;
+  --card: #26211A;
+  --plate: #1D1913;
+  --border: rgb(217 160 91 / 0.20);
 }
 
 .band-ink {                      /* one step down — pull sections */
-  --background: #10161A;
-  --card: #1A2124;
-  --plate: #10161A;
+  --background: #12100B;
+  --card: #1D1913;
+  --plate: #12100B;
 }
 
 .band-deep {                     /* deepest — hero, CTA, footer */
-  --background: #0E1315;
-  --card: #171D20;
-  --plate: #0E1315;
-  --muted-foreground: #96A0A3;
-  --border: rgb(201 180 154 / 0.14);
+  --background: #0E0C08;
+  --card: #191510;
+  --plate: #0E0C08;
+  --muted-foreground: #A99E8D;
+  --border: rgb(217 160 91 / 0.16);
 }
 
 @layer base {
@@ -442,7 +453,7 @@
   color: var(--accent-foreground);
   border: 1px solid var(--accent);
 }
-.btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 82%, #EDECE8); }
+.btn-solid:hover { background-color: color-mix(in oklab, var(--accent) 82%, #F2EDE3); }
 
 .btn-outline {
   background-color: transparent;
@@ -466,7 +477,7 @@
   letter-spacing: 0.01em;
   transition: transform 260ms cubic-bezier(0.19,1,0.22,1), box-shadow 260ms ease;
 }
-.btn-pill:hover { transform: translateY(-2px); background-color: color-mix(in oklab, var(--accent) 82%, #EDECE8); }
+.btn-pill:hover { transform: translateY(-2px); background-color: color-mix(in oklab, var(--accent) 82%, #F2EDE3); }
 .btn-pill .pill-badge {
   display: inline-flex;
   align-items: center;
@@ -534,7 +545,7 @@
 }
 .card-lift:hover {
   transform: translateY(-4px);
-  background-color: color-mix(in oklab, var(--card) 88%, #EDECE8);
+  background-color: color-mix(in oklab, var(--card) 88%, #F2EDE3);
   border-color: color-mix(in oklab, var(--accent) 55%, transparent);
 }
 

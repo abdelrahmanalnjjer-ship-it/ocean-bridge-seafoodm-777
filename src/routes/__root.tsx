@@ -86,7 +86,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Ocean Bridge Trade — Structured Seafood Sourcing" },
       { property: "og:description", content: "Bridging origin markets with global processors. Verified supply from Muscat, Oman." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Ocean Bridge Trade" },
+      { property: "og:url", content: "https://www.oceanbridge-trade.com/" },
+      /* The live site declared twitter:card=summary_large_image with NO image,
+       * so every link shared into LinkedIn, WhatsApp or email rendered as a
+       * bare text stub. For a business whose first contact with a buyer is
+       * often a pasted link, that is a real cost. og:image must be an
+       * absolute URL — relative paths are ignored by every crawler. */
+      { property: "og:image", content: "https://www.oceanbridge-trade.com/website-images/harbor-dusk.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Muscat harbour at dusk" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://www.oceanbridge-trade.com/website-images/harbor-dusk.jpg" },
     ],
     links: [
       {
