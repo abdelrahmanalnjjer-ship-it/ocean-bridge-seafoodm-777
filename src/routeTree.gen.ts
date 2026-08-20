@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
   path: '/article/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalSlugRoute = LegalSlugRouteImport.update({
+  id: '/legal/$slug',
+  path: '/legal/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/insights': typeof InsightsRoute
   '/products': typeof ProductsRoute
   '/article/$slug': typeof ArticleSlugRoute
+  '/legal/$slug': typeof LegalSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/insights': typeof InsightsRoute
   '/products': typeof ProductsRoute
   '/article/$slug': typeof ArticleSlugRoute
+  '/legal/$slug': typeof LegalSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/insights': typeof InsightsRoute
   '/products': typeof ProductsRoute
   '/article/$slug': typeof ArticleSlugRoute
+  '/legal/$slug': typeof LegalSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/contact' | '/insights' | '/products' | '/article/$slug'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/insights'
+    | '/products'
+    | '/article/$slug'
+    | '/legal/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/insights' | '/products' | '/article/$slug'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/insights'
+    | '/products'
+    | '/article/$slug'
+    | '/legal/$slug'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/insights'
     | '/products'
     | '/article/$slug'
+    | '/legal/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   InsightsRoute: typeof InsightsRoute
   ProductsRoute: typeof ProductsRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
+  LegalSlugRoute: typeof LegalSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legal/$slug': {
+      id: '/legal/$slug'
+      path: '/legal/$slug'
+      fullPath: '/legal/$slug'
+      preLoaderRoute: typeof LegalSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   InsightsRoute: InsightsRoute,
   ProductsRoute: ProductsRoute,
   ArticleSlugRoute: ArticleSlugRoute,
+  LegalSlugRoute: LegalSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
