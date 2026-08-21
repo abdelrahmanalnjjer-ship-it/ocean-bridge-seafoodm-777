@@ -9,6 +9,11 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
+/* ?url gives the hashed, content-addressed path Vite emits for the file, so
+ * the preload always points at the asset the stylesheet will actually ask
+ * for. Hardcoding /fonts/... would break on the next build. */
+import montserrat400 from "@fontsource/montserrat/files/montserrat-latin-400-normal.woff2?url";
+import cormorant400 from "@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff2?url";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -122,6 +127,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
        * before, but pointed at the 6000x3375, 4 MB source file — so WhatsApp
        * (which caps previews well under a megabyte) showed nothing, and where
        * a preview did render it was cropped to the wrong ratio. */
+      /* Mobile browser chrome. Without this Safari and Chrome paint the
+       * address bar white above a near-black page. #080705 is .band-deep,
+       * which is what the header sits on at the top of every route. */
+      { name: "theme-color", content: "#080705" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Muscat harbour at dusk" },
@@ -134,21 +143,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      /* FIVE WEIGHTS, NOT TEN.
+
+      /* THE FONTS ARE SELF-HOSTED NOW — see the block at the top of
+       * styles.css for why. What used to sit here was two preconnects and a
+       * render-blocking stylesheet on fonts.googleapis.com, which made Google
+       * the only third party this site talked to.
        *
-       * The request used to be Cormorant 300/400/500/600 + italic 400 and
-       * Montserrat 300/400/500/600/700. Half of it was never painted:
-       * .h-display, .h-statement and every font-display element in the
-       * codebase set weight 400 and nothing else, the one italic on the site
-       * sits on a font-sans element, and no rule anywhere asks for Montserrat
-       * 300. Five files were downloaded on every page load and never used.
-       *
-       * Anything added here has to be traceable to a rule that renders it. */
+       * Preloading the two faces that paint first: the body text and the
+       * headline. Everything else is discovered from the stylesheet. Both are
+       * same-origin now, so there is no handshake in front of them. */
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=Montserrat:wght@400;500;600;700&display=swap",
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: montserrat400,
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: cormorant400,
+        crossOrigin: "anonymous",
       },
     ],
   }),

@@ -3,6 +3,51 @@
 @import "tw-animate-css";
 
 /* ============================================================================
+ * TYPEFACES — SELF-HOSTED
+ *
+ * These used to come from fonts.googleapis.com. Three reasons they no longer do:
+ *
+ * 1. IT WAS THE SITE'S ONLY THIRD-PARTY ORIGIN. Every visitor's IP was handed
+ *    to Google before the page painted. A German court has already found that
+ *    embedding Google Fonts without consent breaches the GDPR, and this company
+ *    sells into Rotterdam, Vigo and Piraeus. The privacy notice in
+ *    /legal/privacy says the site makes no third-party requests — self-hosting
+ *    is what makes that sentence true.
+ * 2. Two extra DNS lookups and a TLS handshake to a third party, in front of a
+ *    render-blocking stylesheet, before a single glyph could paint.
+ * 3. Same-origin fonts are covered by the site's own cache headers.
+ *
+ * ARABIC. Neither Cormorant Garamond nor Montserrat contains a single Arabic
+ * glyph — measured, not assumed. Every Arabic string on this site was being
+ * rendered by whatever the visitor's OS happened to pick, which meant the
+ * Arabic site had no typography at all while the language switch sat in the
+ * header advertising it. Amiri and IBM Plex Sans Arabic are declared below and
+ * placed AFTER the Latin faces in the stacks, so the browser reaches them by
+ * per-character fallback: Latin glyphs resolve to Cormorant/Montserrat, Arabic
+ * glyphs fall through. No JavaScript, no locale coupling, and the Arabic files
+ * are never downloaded on an English page because nothing on it matches them.
+ *
+ * WEIGHTS. 400, 500 and 600 only. 700 was in the request and rendered nowhere:
+ * the sole `font-bold` in the codebase sits inside a comment.
+ *
+ * There is also Chinese species data in src/data/species.ts, and no CJK face
+ * here. That is deliberate — the zh locale is not reachable from the language
+ * switch yet, so nothing renders it. Add Noto Sans SC to the sans stack at the
+ * same time you enable zh, or the Chinese catalogue will land in whatever the
+ * visitor's system picks, exactly as Arabic did.
+ * ========================================================================= */
+
+@import "@fontsource/cormorant-garamond/latin-400.css";
+@import "@fontsource/montserrat/latin-400.css";
+@import "@fontsource/montserrat/latin-500.css";
+@import "@fontsource/montserrat/latin-600.css";
+
+@import "@fontsource/amiri/arabic-400.css";
+@import "@fontsource/ibm-plex-sans-arabic/arabic-400.css";
+@import "@fontsource/ibm-plex-sans-arabic/arabic-500.css";
+@import "@fontsource/ibm-plex-sans-arabic/arabic-600.css";
+
+/* ============================================================================
  * OCEAN BRIDGE TRADE — DESIGN SYSTEM
  *
  * Light editorial. Paper is the default surface; ink is the exception, used
@@ -155,10 +200,12 @@
   --track: rgb(217 160 91 / 0.15);
   --destructive: #E07A55;
 
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
-  /* System mono. Dropping JetBrains Mono and Cinzel takes the webfont
-   * payload from four families to two. */
+  /* Amiri and IBM Plex Sans Arabic sit after the Latin faces, not instead of
+   * them. The browser resolves fonts per character, so an Arabic heading gets
+   * Amiri and an English one gets Cormorant from the same declaration. */
+  --font-display: "Cormorant Garamond", "Amiri", Georgia, "Times New Roman", serif;
+  --font-sans: "Montserrat", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  /* System mono — no download at all. */
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
@@ -175,38 +222,86 @@
   color: var(--foreground);
 }
 
-/* Four steps of the SAME slate, not four different colours. Rhythm now comes
- * from luminance steps the way it does inside the photographs, so a section
- * boundary reads as depth rather than as a stripe.
+/* THREE BANDS, NOT FOUR — AND THE RHYTHM IS NOT ONLY COLOUR.
  *
- * The class names are unchanged on purpose — every route already uses them,
- * so the whole site flips without touching a single component. */
+ * The previous comment here claimed "rhythm comes from luminance steps, so a
+ * section boundary reads as depth rather than as a stripe." Measured, the
+ * steps were:
+ *
+ *     deep -> ink    1.028:1
+ *     ink  -> paper  1.027:1
+ *     paper-> wash   1.059:1
+ *
+ * Nothing is visible below about 1.10:1. The whole page was one flat colour
+ * carrying four tokens and four maintenance surfaces.
+ *
+ * Tuning the numbers does not fix it, because the range is not there to tune:
+ *
+ *   - The ground (#16130F) measures 1.134:1 against PURE BLACK. That is the
+ *     entire budget for every darker band combined, so a descending ladder
+ *     was never possible. `.band-ink` — "one step down" — could not have
+ *     existed. It is now an alias of `.band-deep`, which keeps every route
+ *     that uses it working.
+ *   - Upward, the ceiling is set by --fg-subtle at AA: no surface can pass
+ *     #2A251D without dropping clay text under 4.5:1. Cards sit above their
+ *     band, so the LIGHTEST BAND is capped well below that.
+ *
+ * Total usable range, floor to ceiling: about 2:1. Three bands is what fits.
+ * The steps below are 1.087 and 1.084 — roughly triple what shipped, and the
+ * most the contrast floor allows.
+ *
+ * That is still slight, which is why colour is no longer doing this alone:
+ * .band-wash and .band-deep carry a top hairline in the same --border token
+ * used everywhere else. On a near-black page an edge reads where a fill
+ * cannot, and it matches how the rest of this system already draws structure.
+ *
+ * Class names are unchanged on purpose — the whole site flips without
+ * touching a component. */
 
 .band-paper {                    /* the default ground */
   --background: #16130F;
-  --card: #1F1B15;
+  --card: #201C16;
   --plate: #16130F;
 }
 
 .band-wash {                     /* one step up — alternating sections */
-  --background: #1D1913;
-  --card: #26211A;
-  --plate: #1D1913;
+  --background: #201B15;
+  --card: #29241C;
+  --plate: #201B15;
   --border: rgb(217 160 91 / 0.20);
 }
 
-.band-ink {                      /* one step down — pull sections */
-  --background: #12100B;
-  --card: #1D1913;
-  --plate: #12100B;
-}
-
-.band-deep {                     /* deepest — hero, CTA, footer */
-  --background: #0E0C08;
-  --card: #191510;
-  --plate: #0E0C08;
+.band-deep {                     /* the floor — hero, CTA, footer */
+  --background: #080705;
+  --card: #1C1813;
+  --plate: #080705;
   --muted-foreground: #A99E8D;
   --border: rgb(217 160 91 / 0.16);
+}
+
+/* Retained so existing markup keeps working. There is no room beneath the
+ * ground for a distinct "one step down", so it resolves to the floor. */
+.band-ink {
+  --background: #080705;
+  --card: #1C1813;
+  --plate: #080705;
+  --muted-foreground: #A99E8D;
+  --border: rgb(217 160 91 / 0.16);
+}
+
+/* The boundary. A 1px edge does the work the fill cannot at this darkness.
+ * Suppressed where a band is the first thing on the page (the mastheads run
+ * full-bleed under the header) and where one band follows another of the
+ * same kind. */
+.band-wash,
+.band-deep {
+  border-top: 1px solid var(--border);
+}
+.band-wash:first-child,
+.band-deep:first-child,
+.band-wash + .band-wash,
+.band-deep + .band-deep {
+  border-top-color: transparent;
 }
 
 @layer base {
@@ -215,10 +310,25 @@
   }
 
   html {
+    /* THE ONE DECLARATION THAT TELLS THE BROWSER THIS SITE IS DARK.
+     *
+     * Without it the UA renders its own chrome in light mode on top of a
+     * near-black page: scrollbars come out light grey, <select> menus and
+     * date pickers open white, and Chrome paints autofilled inputs its
+     * hard-coded pale yellow — which is exactly what a buyer sees the moment
+     * their password manager fills the inquiry form.
+     *
+     * The site has been dark-only since the palette was rebuilt; nothing was
+     * ever declaring it. */
+    color-scheme: dark;
+
     scroll-behavior: smooth;
     /* Anchors clear the fixed header. */
     scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
+    /* iOS paints a translucent grey block over any tapped link by default.
+     * Focus styles below do this job properly. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -230,6 +340,24 @@
     font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Chrome paints autofilled fields with a hard-coded background that
+   * `background-color` cannot override — only an inset shadow large enough to
+   * cover the box wins. Without this the contact form's inputs turn pale
+   * yellow with near-black text the instant a password manager fills them,
+   * which is the first thing a returning buyer sees.
+   *
+   * The long transition delay is the standard trick for the brief flash
+   * before the shadow applies. */
+  :where(input, textarea, select):-webkit-autofill,
+  :where(input, textarea, select):-webkit-autofill:hover,
+  :where(input, textarea, select):-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--foreground);
+    -webkit-box-shadow: 0 0 0 1000px var(--card) inset;
+    box-shadow: 0 0 0 1000px var(--card) inset;
+    caret-color: var(--foreground);
+    transition: background-color 100000s ease-in-out 0s;
   }
 
   /* Visible focus everywhere. The UA default is unusable on both the paper
