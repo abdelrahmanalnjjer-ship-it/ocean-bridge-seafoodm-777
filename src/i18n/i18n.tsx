@@ -128,12 +128,29 @@ const Ctx = createContext<I18nCtx>({
   dir: "ltr",
 });
 
+/* Locales the language switcher will actually offer. Keep in step with
+ * ARABIC_READY in components/site-chrome.tsx — that flag governs the control,
+ * this set governs what a returning visitor can be restored into. */
+const SELECTABLE = new Set<string>(["en"]);
+
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
 
   useEffect(() => {
-    const stored = typeof window !== "undefined" ? window.localStorage.getItem("obt.locale") : null;
-    // zh is not user-selectable yet; ignore any previously stored value.
+    if (typeof window === "undefined") return;
+    const stored = window.localStorage.getItem("obt.locale");
+
+    /* Only restore a locale the switcher can currently get you out of.
+     *
+     * zh was never user-selectable. ar was, until the switch came down — and
+     * anyone who had picked it still has "ar" sitting in their localStorage.
+     * Restoring it would drop them into a mirrored, untranslated page with no
+     * visible control to leave, which is a worse trap than the one the switch
+     * was hidden to avoid. Clear it rather than strand them. */
+    if (stored && !SELECTABLE.has(stored)) {
+      window.localStorage.removeItem("obt.locale");
+      return;
+    }
     if (stored === "en" || stored === "ar") setLocaleState(stored);
   }, []);
 

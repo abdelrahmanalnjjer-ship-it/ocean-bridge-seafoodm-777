@@ -50,14 +50,45 @@ export function HtmlLangSync() {
   return null;
 }
 
+/* ---------------------------------------------------------------------------
+ * THE LANGUAGE SWITCH IS OFF UNTIL THERE IS SOMETHING TO SWITCH TO.
+ *
+ * Flip this to true when the Arabic copy lands. Nothing else needs changing —
+ * the dictionary, the RTL plumbing in HtmlLangSync, the logical properties
+ * throughout the CSS and the Arabic webfaces in styles.css are all still here
+ * and still work.
+ *
+ * WHY IT IS OFF. The switch was live and the site was not translated. Measured:
+ * 94 keys defined in i18n.tsx, 9 of them actually reached by a t() call, and
+ * roughly 907 words of body copy hardcoded in English across the routes. So
+ * clicking العربية mirrored the layout, translated four nav links, and left
+ * every headline, paragraph and button in English.
+ *
+ * Worse than untranslated: because dir="rtl" applies to the whole document,
+ * the trailing punctuation of those English sentences jumped to the visual
+ * left. The hero read ",Oman's catch" and ".cleared for arrival". That is a
+ * correct bidi rendering of Latin text in an RTL container, and it is not
+ * fixable in CSS — the only fix is Arabic content.
+ *
+ * The GCC is one of four target markets. A Jeddah buyer clicking into that was
+ * getting a worse impression than one who never saw an Arabic option at all.
+ *
+ * WHEN YOU TURN IT BACK ON: translate the body copy at the same time. The
+ * bidi behaviour above returns the moment RTL wraps English text.
+ * ------------------------------------------------------------------------ */
+const ARABIC_READY = false;
+
 function LocaleSwitcher() {
   const { locale, setLocale } = useI18n();
   /* zh stays out until the Chinese content pass ships. A permanently disabled
    * control just advertises a dead end. */
   const items: { id: Locale; label: string }[] = [
     { id: "en", label: "EN" },
-    { id: "ar", label: "العربية" },
+    ...(ARABIC_READY ? [{ id: "ar" as Locale, label: "العربية" }] : []),
   ];
+
+  /* One language, no control. A switcher with a single option is furniture. */
+  if (items.length < 2) return null;
 
   return (
     <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
