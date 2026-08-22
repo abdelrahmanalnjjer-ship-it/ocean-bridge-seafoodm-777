@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { LEGAL_DOCS } from "@/data/legal";
-/* Local files, not the Lovable-hosted /__l5e/ asset URLs the project shipped
- * with. Those break the moment the project leaves Lovable. */
+/* Local files, not the /__l5e/ asset URLs the project originally shipped
+ * with. Those pointed at the old no-code host and stopped resolving the
+ * moment the project left it. */
 
 /* REVERSED LOCKUPS. Both files are generated from the supplied artwork:
  * the navy is remapped to salt (--foreground) and the cyan wave to saffron

@@ -92,9 +92,9 @@ const DISCIPLINES = [
 /* No images here any more.
  *
  * These four entries used to carry `img: marketChina.url` and friends, which
- * resolved to Lovable-hosted /__l5e/assets-v1/… paths. Every one of those
+ * resolved to /__l5e/assets-v1/… paths on the old no-code host. Every one
  * returns 404 on the live domain — the section has been rendering four broken
- * frames in production. The logos were migrated off Lovable at some point and
+ * frames in production. The logos were migrated off that host at some point and
  * these were missed, and the source files are no longer retrievable.
  *
  * Rather than substitute four generic stock port photographs, the section is

@@ -16,7 +16,6 @@ import montserrat400 from "@fontsource/montserrat/files/montserrat-latin-400-nor
 import cormorant400 from "@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff2?url";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider } from "../i18n/i18n";
 import { SiteHeader, SiteFooter, HtmlLangSync } from "../components/site-chrome";
 import { ProgressRail } from "../components/motion";
@@ -57,9 +56,7 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+  useEffect(() => {}, [error]);
 
   return (
     <div className="band-deep flex min-h-screen items-center">
