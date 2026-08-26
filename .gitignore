@@ -35,3 +35,11 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# design-sync (claude.ai/design import)
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+.design-sync/.derived.*

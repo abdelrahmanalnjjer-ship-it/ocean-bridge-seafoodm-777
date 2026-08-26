@@ -1,0 +1,23 @@
+/* Tailwind entry for the claude.ai/design import.
+   Pulls the app's real stylesheet (tokens, fonts, component layer) and adds
+   the authored preview sources to the class scan so preview-only utilities
+   are not tree-shaken out of the shipped stylesheet. */
+@import "../src/styles.css";
+@source "./previews/*.tsx";
+
+/* THE GROUND, STATED UNLAYERED.
+ *
+ * src/styles.css sets body background/colour inside `@layer base`. Anything
+ * unlayered outranks a layer, so a host page that declares a bare
+ * `body { background: #fff }` — which the preview-card template does — wins
+ * and the whole dark-only system renders on white.
+ *
+ * This system has no light mode: :root already carries the band-paper ground,
+ * and `html { color-scheme: dark }` is declared. Restating the ground here,
+ * unlayered and at `html body` specificity, is what makes that true for every
+ * design built with this stylesheet rather than only for this repo's own app. */
+html body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
