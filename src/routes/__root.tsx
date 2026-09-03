@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -195,6 +196,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // /connect is the printed-catalog contact card: a standalone page with its
+  // own full-bleed design. It must not inherit the site's header/nav/footer.
+  const isStandalone = pathname === "/connect";
+
+  if (isStandalone) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <I18nProvider>
+          <HtmlLangSync />
+          <Outlet />
+        </I18nProvider>
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
